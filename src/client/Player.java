@@ -7,7 +7,7 @@ import java.util.Scanner;
  */
 public class Player {
 	
-	String symbol;
+	protected String symbol;
 	
 	/**
 	 * Player constructor

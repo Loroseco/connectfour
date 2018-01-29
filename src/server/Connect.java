@@ -2,6 +2,7 @@ package server;
 import java.util.ArrayList;
 import java.util.Scanner;
 import client.*;
+import computer.AI;
 /**
  * Class used to handle functions specific to Connect 4 (win condition, and the game loop itself).
  * @author Loroseco
@@ -107,6 +108,7 @@ class Connect {
 				}
 			}
 		}
+		board.printBoard();
 		System.out.println("XO".contains(winner) ? "WINNER: PLAYER " + winner 
 																	 : "GAME OVER: DRAW.");
 	}
