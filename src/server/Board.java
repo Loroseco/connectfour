@@ -4,7 +4,7 @@ import java.util.Arrays;
 /**
  * Board object. Handles Board reading and editing.
  * @author Loroseco
- *
+ * Here is a test comment
  */
 class Board {
 	private String[][] board;
