@@ -16,6 +16,7 @@ class Connect {
 	void setBoard(Board board) {
 		this.board = board;
 	}
+	
 	/**
 	 * @param boardObject	Board object to be used
 	 * @param moveString	Move given by player
@@ -24,7 +25,7 @@ class Connect {
 	 */
 	String makeMove(String moveString, String symbol) {
 		String[][] board = this.board.getBoard();
-		int rowN = board.length;
+		int rowN = this.board.getRowN();
 		try {
 			int move = Integer.parseInt(moveString);
 			for (int r = 0; r < rowN; r++) {
@@ -40,6 +41,7 @@ class Connect {
 			return "NUMBER OUT OF BOUNDS.";
 		}
 	}
+	
 	/**
 	 * Checks if either player has won
 	 * @return	Symbol of winner, "" if none
@@ -66,8 +68,9 @@ class Connect {
 							}
 							if (symbol.contains(board[row][col])) {
 								symbol = board[row][col];
+							} else {
+								continue c;
 							}
-							else continue c;
 						}
 						return symbol;
 					} catch(IndexOutOfBoundsException e) {

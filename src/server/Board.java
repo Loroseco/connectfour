@@ -4,10 +4,23 @@ import java.util.Arrays;
 /**
  * Board object. Handles Board reading and editing.
  * @author Loroseco
- * Here is a test comment
+ *
  */
 class Board {
 	private String[][] board;
+	private int rowN;
+	private int colN;
+	private String[] boardText = {" \\  / |",
+			 "  \\/  |",
+			 "  /\\  |",
+			 " /  \\ |",
+			 " /--\\ |",
+			 " |  | |",
+			 " |  | |",
+			 " \\--/ |",
+			 "      |",
+			 "------+"};
+	
 	/**
 	 * Constructor. Makes the board 2D array using rowN x colN dimensions
 	 * @param rowN	Number of rows
@@ -21,7 +34,10 @@ class Board {
 			}
 		}
 		this.board = board;
+		this.rowN = rowN;
+		this.colN = colN;
 	}
+	
 	/**
 	 * Accessor
 	 * @return board
@@ -29,6 +45,23 @@ class Board {
 	String[][] getBoard() {
 		return this.board;
 	}
+	
+	/**
+	 * Accessor
+	 * @return	Number of rows
+	 */
+	int getRowN() {
+		return this.rowN;
+	}
+	
+	/**
+	 * Accessor
+	 * @return	Number of columns
+	 */
+	int getColN() {
+		return this.colN;
+	}
+	
 	/**
 	 * Board value mutator
 	 * @param row	Value row
@@ -38,6 +71,7 @@ class Board {
 	void setValue(int row, int col, String value) {
 		this.board[row][col] = value;
 	}
+	
 	/**
 	 * Checks if board is full
 	 * @return	True or false
@@ -50,60 +84,65 @@ class Board {
 		}
 		return true;
 	}
+	
 	/**
 	 * Prints board in 2D array format
 	 */
 	void debugBoard() {
 		System.out.println(Arrays.deepToString(this.getBoard()));
 	}
+	
 	/**
 	 * Prints board in format usable for game
 	 */
 	void printBoard() {
-		int rowN = board.length;
-		int colN = board[0].length;
-		String[] text = {" \\  / |",
-						 "  \\/  |",
-						 "  /\\  |",
-						 " /  \\ |",
-						 " /--\\ |",
-						 " |  | |",
-						 " |  | |",
-						 " \\--/ |",
-						 "      |",
-						 "------+"};
+		
 		System.out.println("\n");
-		for (int r = rowN - 1; r > -2; r--) {
-			System.out.print(text[9].substring(4, 7));
-			for (int c = 0; c < colN; c++) {
-				System.out.print(text[9]);
+		for (int row = rowN - 1; row > -2; row--) {
+			printRow(row);
+		}
+		printBottomKey();
+	}
+	
+	private void printRow(int row) {
+		System.out.println(boardText[0].substring(4, 7));
+		for (int col = 0; col < colN; col++) {
+			System.out.print(boardText[9]);
+		}
+		if (row == -1) {
+			return;
+		}
+		System.out.println();
+		for (int i = 0; i < 4; i++) {
+			if (i == 1) {
+				if (row < 10) {
+					System.out.print(" ");
+				System.out.print(Integer.toString(row) + "|");
+				}
+			} else {
+				System.out.print("  |");
 			}
-			if (r == -1) {
-				break;
-			}
-			System.out.println();
-			for (int i = 0; i < 4; i++) {
-				if (i == 1) {
-					System.out.print((r < 10 ? " " 
-											 : "") 
-							+ Integer.toString(r) + "|");
+			for (int col = 0; col < colN; col++) {
+				if (board[row][col].equals("X")) {
+					System.out.println(boardText[i]);
+				} else if (board[row][col].equals("O")) {
+					System.out.println(boardText[i + 4]);
 				} else {
-        			System.out.print("  |");
-        		}
-				for (int c = 0; c < colN; c++) {
-					System.out.print(board[r][c].equals("X") ? text[i] 
-															 : board[r][c].equals("O") ? text[i + 4] 
-																	 				   : text[8]);
+					System.out.println(boardText[8]);
 				}
 				System.out.println();
 			}
 		}
-        System.out.print("\n  |");
-        for (int c = 0; c < colN; c++) {
-        	System.out.print((c < 10 ? "   " 
-        							 : "  ") 
-        			+ Integer.toString(c) + "  |");
-        }
-        System.out.println("\n");
+	}
+	
+	private void printBottomKey() {
+		System.out.print("\n  |");
+		for (int c = 0; c < colN; c++) {
+			if (c < 10) {
+				System.out.print(" ");
+			}
+			System.out.print("  " + Integer.toString(c) + "  |");
+		}
+		System.out.println("\n");
 	}
 }

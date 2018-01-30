@@ -7,6 +7,7 @@ import java.util.Scanner;
  *
  */
 class Main {
+	
 	/**
 	 * Main function, used to initiate game.
 	 */

@@ -176,6 +176,7 @@ public class MoveFetcher {
 		}
 		return false;
 	}
+	
 	/**
 	 * Checks horizontal strings. 
 	 * @param r			Row
