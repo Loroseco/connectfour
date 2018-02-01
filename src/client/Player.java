@@ -17,15 +17,6 @@ public abstract class Player {
 		this.symbol = symbol;
 	}
 	
-	
-	/**
-	 * Accessor
-	 * @return	Symbol
-	 */
-	public String getSymbol() {
-		return null;
-	}
-	
 	/**
 	 * Gets move from player
 	 * @param scan	Scanner used to get move
