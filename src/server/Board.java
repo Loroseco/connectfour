@@ -11,15 +11,15 @@ class Board {
 	private int rowN;
 	private int colN;
 	private String[] boardText = {" \\  / |",
-			 "  \\/  |",
-			 "  /\\  |",
-			 " /  \\ |",
-			 " /--\\ |",
-			 " |  | |",
-			 " |  | |",
-			 " \\--/ |",
-			 "      |",
-			 "------+"};
+								  "  \\/  |",
+								  "  /\\  |",
+								  " /  \\ |",
+								  " /--\\ |",
+								  " |  | |",
+								  " |  | |",
+								  " \\--/ |",
+								  "      |",
+			 					  "------+"};
 	
 	/**
 	 * Constructor. Makes the board 2D array using rowN x colN dimensions
@@ -105,7 +105,7 @@ class Board {
 	}
 	
 	private void printRow(int row) {
-		System.out.println(boardText[0].substring(4, 7));
+		System.out.print(boardText[9].substring(4, 7));
 		for (int col = 0; col < colN; col++) {
 			System.out.print(boardText[9]);
 		}
@@ -117,21 +117,21 @@ class Board {
 			if (i == 1) {
 				if (row < 10) {
 					System.out.print(" ");
-				System.out.print(Integer.toString(row) + "|");
 				}
+				System.out.print(Integer.toString(row) + "|");
 			} else {
 				System.out.print("  |");
 			}
 			for (int col = 0; col < colN; col++) {
 				if (board[row][col].equals("X")) {
-					System.out.println(boardText[i]);
+					System.out.print(boardText[i]);
 				} else if (board[row][col].equals("O")) {
-					System.out.println(boardText[i + 4]);
+					System.out.print(boardText[i + 4]);
 				} else {
-					System.out.println(boardText[8]);
+					System.out.print(boardText[8]);
 				}
-				System.out.println();
 			}
+			System.out.println();
 		}
 	}
 	
