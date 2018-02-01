@@ -98,7 +98,7 @@ class Connect {
 		Player[] player = new Player[2];
 		for (int p = 0; p < 2; p++) {
 			player[p] = ai[p] ? new AI(symbol[p])
-							  : new Player(symbol[p]);
+							  : new Human(symbol[p]);
 		}
 		board.printBoard();
 		String winner = "";

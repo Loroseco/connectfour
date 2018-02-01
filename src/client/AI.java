@@ -8,6 +8,7 @@ package client;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 import java.math.BigInteger;
 
 /**
@@ -72,12 +73,6 @@ public class AI extends Player {
 		
 		this.priorityRatings = priorityRatings;
 	}
-	
-//	@Override
-//	public String getMove(String[][] board) {
-//		MoveFetcher moveFetcher = new MoveFetcher(symbol, board, priorityMatrix, priorityRatings);
-//		return moveFetcher.getMove();
-//	}
 	
 	@Override
 	/**
@@ -264,5 +259,10 @@ public class AI extends Player {
 		} else {
 			return findDepth(row - 1, col, depth + 1);
 		}
+	}
+
+	@Override
+	public String getMove(Scanner scan) {
+		return "n";
 	}
 }

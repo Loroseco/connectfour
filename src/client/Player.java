@@ -5,24 +5,25 @@ import java.util.Scanner;
  * @author Loroseco
  *
  */
-public class Player {
+public abstract class Player {
 	
 	String symbol;
 	
 	/**
-	 * Player constructor
-	 * @param symbol	Symbol used to play
+	 * Abstract player constructor
+	 * @param symbol	Player symbol
 	 */
 	public Player(String symbol) {
 		this.symbol = symbol;
 	}
+	
 	
 	/**
 	 * Accessor
 	 * @return	Symbol
 	 */
 	public String getSymbol() {
-		return this.symbol;
+		return null;
 	}
 	
 	/**
@@ -30,17 +31,12 @@ public class Player {
 	 * @param scan	Scanner used to get move
 	 * @return	Move in string format
 	 */
-	public String getMove(Scanner scan) {
-		System.out.print("PLAYER " + this.getSymbol() + " - ENTER MOVE: ");
-		return scan.next();
-	}
+	public abstract String getMove(Scanner scan);
 	
 	/**
 	 * Gets move from AI
 	 * @param board	Board for AI to read
 	 * @return	Move in string format
 	 */
-	public String getMove(String[][] board) {
-		return "n";
-	}
+	public abstract String getMove(String[][] board);
 }
