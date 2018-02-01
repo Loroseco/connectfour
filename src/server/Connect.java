@@ -111,7 +111,6 @@ class Connect {
 				}
 			}
 		}
-		board.printBoard();
 		System.out.println("XO".contains(winner) ? "WINNER: PLAYER " + winner 
 																	 : "GAME OVER: DRAW.");
 	}
@@ -143,6 +142,10 @@ class Connect {
 				System.out.println(output);
 			}
 		}
-		return findWinner();
+		String result = findWinner();
+		if (result.equals(symbol) && !isAI) {
+			board.printBoard();
+		}
+		return result;
 	}
 }
