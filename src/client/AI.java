@@ -3,14 +3,11 @@
  * 
  * Version 2.2
  */
-package computer;
+package client;
  
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-
-import client.Player;
-
 import java.math.BigInteger;
 
 /**
@@ -20,7 +17,9 @@ import java.math.BigInteger;
  */
 public class AI extends Player {
 	
+	private String[][] board;
 	private BigInteger[] priorityRatings;
+	private BigInteger[] columnPriorities;
 	
 	/* priorityMatrix is all patterns the AI detects. the higher rows are higher priorities.
 	 * O	Player symbol
@@ -70,12 +69,200 @@ public class AI extends Player {
 		for (int p = 0; p < priorityMatrix.length; p++) {
 			priorityRatings[p] = new BigInteger("10").pow(priorityMatrix.length - (p + 1));
 		}
+		
 		this.priorityRatings = priorityRatings;
 	}
 	
+//	@Override
+//	public String getMove(String[][] board) {
+//		MoveFetcher moveFetcher = new MoveFetcher(symbol, board, priorityMatrix, priorityRatings);
+//		return moveFetcher.getMove();
+//	}
+	
 	@Override
+	/**
+	 * Fetches optimal move using priorityMatrix to assign priorites
+	 * @return	move
+	 */
 	public String getMove(String[][] board) {
-		MoveFetcher moveFetcher = new MoveFetcher(symbol, board, priorityMatrix, priorityRatings);
-		return moveFetcher.getMove();
+		this.board = board;
+		this.columnPriorities = new BigInteger[board[0].length];
+		for (int col = 0; col < board[0].length; col++) {
+			columnPriorities[col] = new BigInteger("0");
+		}
+		
+		for (int row = 0; row < board.length; row++) {
+			for (int col = 0; col < board[0].length; col++) {
+				addPriorityFromTableElement(row, col);
+			}
+		}
+		
+		return calculateReturnMove();
+	}
+	
+	/**
+	 * Calculates the priority given to a column by a specific element on the board
+	 * @param row	Element row
+	 * @param col	Element column
+	 */
+	private void addPriorityFromTableElement(int row, int col) {
+		for (int priorityRow = 0; priorityRow < priorityMatrix.length; priorityRow++) {
+			for (int priorityCol = 0; priorityCol < priorityMatrix[priorityRow].length; priorityCol++) {
+				String priorityString = priorityMatrix[priorityRow][priorityCol];
+				if (priorityString.startsWith("V")) {
+					addVerticalPriority(row, col, priorityRow, priorityString);
+				} else {
+					addHorizontalPriority(row, col, priorityRow, priorityString);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Calculates the optimal move, once columnPriorities has been fully populated
+	 * @return	move
+	 */
+	private String calculateReturnMove() {
+		BigInteger returnPriority = null;
+		ArrayList<Integer> returnMove = new ArrayList<Integer>();
+		for (int col = 0; col < columnPriorities.length; col++) {
+			if (board[board.length - 1][col] != " ") {
+				continue;
+			} else if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) >= 0) {
+				if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) == 1) {
+					returnPriority = columnPriorities[col];
+					returnMove = new ArrayList<Integer>();
+				}
+				returnMove.add(col);
+			}
+		}
+		
+		System.out.println(Arrays.toString(columnPriorities));
+		Random r = new Random();
+		return Integer.toString(returnMove.get(r.nextInt(returnMove.size())));
+	}
+	
+	/**
+	 * Calculates if the element gives priorities from any vertical patterns
+	 * @param row				Element row
+	 * @param col				Element column
+	 * @param priorityRow		Row of priorityMatrix being checked
+	 * @param priorityString	String in priorityRow being checked
+	 */
+	private void addVerticalPriority(int row, int col, int priorityRow, String priorityString) {
+		if (doesVerticalStringStartAtElement(row, col, priorityString)) {
+			columnPriorities[col] = columnPriorities[col].add(priorityRatings[priorityRow]);
+		}
+	}
+	
+	/**
+	 * Calculates if the element gives priorities from any horizontal patterns
+	 * @param row				Element row
+	 * @param col				Element column
+	 * @param priorityRow		Row of priorityMatrix being checked
+	 * @param priorityString	String in priorityRow being checked
+	 */
+	private void addHorizontalPriority(int row, int col, int priorityRow, String priorityString) {
+		for (int gradient = -1; gradient < 2; gradient++) {
+			if (doesHorizontalStringStartAtElement(row, col, priorityString, gradient)) {
+				for (int i = 0; i < priorityString.length(); i++) {
+					String letter = priorityString.substring(i, i + 1);
+					if (letter.equals("_")
+							|| (letter.equals("2") && priorityString.contains("O"))) {
+						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow]);
+					} else if (letter.equals("1")
+							|| (letter.equals("2") && priorityString.contains("X"))) {
+						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow].multiply(new BigInteger("-1")));
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Checks specified part of board for vertical strings
+	 * @param r			Row
+	 * @param c			Column
+	 * @param string	String to be searched for
+	 * @return			Has string been found
+	 */
+	private boolean doesVerticalStringStartAtElement(int row, int col, String string) {
+		int counter = 0;
+		try {
+			int n = Integer.parseInt(string.substring(2, 3));
+			for (int i = 0; i < 4; i++) {
+				String value = board[row + i][col];
+				String s = string.substring(1, 2);
+				if ((symbol.equals("O") && value.equals(s) && i < n)
+						|| (symbol.equals("X") && "XO".contains(value)
+								&& "XO".contains(s) && !value.equals(s) && i < n)
+						|| (value.equals(" ") && i >= n)) {
+					counter++;
+				} else {
+					break;
+				}
+			}
+			if (counter == 4) {
+				return true;
+			}
+		} catch(IndexOutOfBoundsException e) {
+			
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks specified part of board for horizontal strings. 
+	 * @param r			Row
+	 * @param c			Column
+	 * @param string	String to be searched for
+	 * @param g			Gradient to be searched from start point (2 for vertical)
+	 * @return			Has string been found
+	 */
+	private boolean doesHorizontalStringStartAtElement(int row, int col, String string, int gradient) {
+		int counter = 0;
+		try {
+			for (int i = 0; i < string.length(); i++) {
+				String s = string.substring(i, i + 1);
+				String value = board[row + (i * gradient)][col + i];
+				if ((symbol.equals("O") && value.equals(s))
+						|| (symbol.equals("X") && "XO".contains(value)
+								&& "XO".contains(s) && !value.equals(s))
+						|| (value.equals(" ") && s.equals("E"))) {
+					counter++;
+				} else if (value.equals(" ") && "123456789_N".contains(s)) {
+					int depth = findDepth(row + (i * gradient), col + i, 0);
+					if ((depth == 0 && "_N".contains(s))
+							|| Integer.toString(depth).equals(s)) {
+						counter++;
+					}
+				} else {
+					break;
+				}
+			} if (counter == string.length()) {
+				return true;
+			}
+		} catch (IndexOutOfBoundsException e) {
+			
+		}
+		return false;
+	}
+	
+	/**
+	 * Recursive function to find how far down the lowest valid move is in a column
+	 * @param board	Board to be searched
+	 * @param row	Starting row
+	 * @param col	Starting column
+	 * @param depth	Current depth
+	 * @return		Depth
+	 */
+	private int findDepth(int row, int col, int depth) {
+		if (row == 0
+				|| (board[row][col].equals(" ")
+						&& !board[row - 1][col].equals(" "))) {
+			return depth;
+		} else {
+			return findDepth(row - 1, col, depth + 1);
+		}
 	}
 }
