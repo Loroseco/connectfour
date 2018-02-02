@@ -26,18 +26,22 @@ class Connect {
 		int rowN = board.getRowN();
 		try {
 			int move = Integer.parseInt(moveString);
-			for (int row = 0; row < rowN; row++) {
-				if (board.isEqual(row, move, " ")) {
-					board.set(row, move, symbol);
-					return "MOVE MADE: PLAYER " + symbol + ", COLUMN " + moveString + ".";
+			if (board.isColumnFull(move)) {
+				return "INVALID MOVE: COLUMN IS FULL.";
+			} else {
+				for (int row = 0; row < rowN; row++) {
+					if (board.isEqual(row, move, " ")) {
+						board.set(row, move, symbol);
+						return "MOVE MADE: PLAYER " + symbol + ", COLUMN " + moveString + ".";
+					}
 				}
 			}
-			return "INVALID MOVE: COLUMN IS FULL.";
 		} catch (NumberFormatException e) {
 			return "INVALID MOVE.";
 		} catch (IndexOutOfBoundsException e) {
 			return "NUMBER OUT OF BOUNDS.";
 		}
+		return "UNKNOWN ERROR. PLEASE TRY AGAIN.";
 	}
 	
 	/**

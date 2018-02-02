@@ -13,9 +13,9 @@ class Main {
 	 */
 	public static void main(String[] args) {
 		Connect game = new Connect();
-		boolean[] ai = {false, true};
+		boolean[] isAI = {false, true};
 		Scanner scan = new Scanner(System.in);
-		game.play(7, 10, ai, scan);
+		game.play(7, 10, isAI, scan);
 		scan.close();
 	}
 }
