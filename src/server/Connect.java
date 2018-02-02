@@ -23,13 +23,12 @@ class Connect {
 	 * @return				Success output (to be printed for player)
 	 */
 	String makeMove(String moveString, String symbol) {
-		String[][] board = this.board.getBoard();
-		int rowN = this.board.getRowN();
+		int rowN = board.getRowN();
 		try {
 			int move = Integer.parseInt(moveString);
-			for (int r = 0; r < rowN; r++) {
-				if (board[r][move].equals(" ")) {
-					this.board.setValue(r, move, symbol);
+			for (int row = 0; row < rowN; row++) {
+				if (board.isEqual(row, move, " ")) {
+					board.set(row, move, symbol);
 					return "MOVE MADE: PLAYER " + symbol + ", COLUMN " + moveString + ".";
 				}
 			}
@@ -46,13 +45,12 @@ class Connect {
 	 * @return	Symbol of winner, "" if none
 	 */
 	String findWinner() {
-		String[][] board = this.board.getBoard();
 		g:
 		for (int g = -1; g < 3; g++) {
 			r:
-			for (int r = 0; r < board.length; r++) {
+			for (int r = 0; r < board.getRowN(); r++) {
 				c:
-				for (int c = 0; c < board[0].length; c++) {
+				for (int c = 0; c < board.getColN(); c++) {
 					String symbol = "XO";
 					try {
 						int row;
@@ -65,8 +63,9 @@ class Connect {
 								row = r + (i * g);
 								col = c + i;
 							}
-							if (symbol.contains(board[row][col])) {
-								symbol = board[row][col];
+							String element = board.get(row, col);
+							if (symbol.contains(element)) {
+								symbol = element;
 							} else {
 								continue c;
 							}
@@ -127,7 +126,7 @@ class Connect {
 			if (board.isBoardFull()) {
 				return "n";
 			} else {
-				String move = isAI ? player.getMove(board.getBoard())
+				String move = isAI ? player.getMove(board)
 						           : player.getMove(scan);
 				String output = makeMove(move, symbol);
 				if (output.substring(0,  4).equals("MOVE")) {

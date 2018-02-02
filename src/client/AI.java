@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
+
+import server.Board;
+
 import java.math.BigInteger;
 
 /**
@@ -18,7 +21,7 @@ import java.math.BigInteger;
  */
 public class AI extends Player {
 	
-	private String[][] board;
+	private Board board;
 	private BigInteger[] priorityRatings;
 	private BigInteger[] columnPriorities;
 	
@@ -79,15 +82,15 @@ public class AI extends Player {
 	 * Fetches optimal move using priorityMatrix to assign priorites
 	 * @return	move
 	 */
-	public String getMove(String[][] board) {
+	public String getMove(Board board) {
 		this.board = board;
-		this.columnPriorities = new BigInteger[board[0].length];
-		for (int col = 0; col < board[0].length; col++) {
+		this.columnPriorities = new BigInteger[board.getColN()];
+		for (int col = 0; col < board.getColN(); col++) {
 			columnPriorities[col] = new BigInteger("0");
 		}
 		
-		for (int row = 0; row < board.length; row++) {
-			for (int col = 0; col < board[0].length; col++) {
+		for (int row = 0; row < board.getRowN(); row++) {
+			for (int col = 0; col < board.getColN(); col++) {
 				addPriorityFromTableElement(row, col);
 			}
 		}
@@ -121,7 +124,7 @@ public class AI extends Player {
 		BigInteger returnPriority = null;
 		ArrayList<Integer> returnMove = new ArrayList<Integer>();
 		for (int col = 0; col < columnPriorities.length; col++) {
-			if (board[board.length - 1][col] != " ") {
+			if (board.isEqual(board.getRowN() - 1, col, " ")) {
 				continue;
 			} else if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) >= 0) {
 				if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) == 1) {
@@ -186,7 +189,7 @@ public class AI extends Player {
 		try {
 			int n = Integer.parseInt(string.substring(2, 3));
 			for (int i = 0; i < 4; i++) {
-				String value = board[row + i][col];
+				String value = board.get(row + i, col);
 				String s = string.substring(1, 2);
 				if ((symbol.equals("O") && value.equals(s) && i < n)
 						|| (symbol.equals("X") && "XO".contains(value)
@@ -219,7 +222,7 @@ public class AI extends Player {
 		try {
 			for (int i = 0; i < string.length(); i++) {
 				String s = string.substring(i, i + 1);
-				String value = board[row + (i * gradient)][col + i];
+				String value = board.get(row + (i * gradient), col + i);
 				if ((symbol.equals("O") && value.equals(s))
 						|| (symbol.equals("X") && "XO".contains(value)
 								&& "XO".contains(s) && !value.equals(s))
@@ -253,8 +256,8 @@ public class AI extends Player {
 	 */
 	private int findDepth(int row, int col, int depth) {
 		if (row == 0
-				|| (board[row][col].equals(" ")
-						&& !board[row - 1][col].equals(" "))) {
+				|| (board.isEqual(row, col, " ")
+						&& !board.isEqual(row - 1, col, " "))) {
 			return depth;
 		} else {
 			return findDepth(row - 1, col, depth + 1);

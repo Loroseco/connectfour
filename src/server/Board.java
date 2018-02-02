@@ -6,7 +6,7 @@ import java.util.Arrays;
  * @author Loroseco
  *
  */
-class Board {
+public class Board {
 	private String[][] board;
 	private int rowN;
 	private int colN;
@@ -27,7 +27,7 @@ class Board {
 	 * @param colN	Number of columns
 	 */
 	Board(int rowN, int colN) {
-		String[][]board = new String[rowN][colN];
+		String[][] board = new String[rowN][colN];
 		for (int r = 0; r < rowN; r++) {
 			for (int c = 0; c < colN; c++) {
 				board[r][c] = " ";
@@ -40,17 +40,17 @@ class Board {
 	
 	/**
 	 * Accessor
-	 * @return board
+	 * @return board value
 	 */
-	String[][] getBoard() {
-		return this.board;
+	public String get(int row, int col) {
+		return board[row][col];
 	}
 	
 	/**
 	 * Accessor
 	 * @return	Number of rows
 	 */
-	int getRowN() {
+	public int getRowN() {
 		return this.rowN;
 	}
 	
@@ -58,25 +58,25 @@ class Board {
 	 * Accessor
 	 * @return	Number of columns
 	 */
-	int getColN() {
+	public int getColN() {
 		return this.colN;
 	}
 	
 	/**
 	 * Board value mutator
-	 * @param row	Value row
-	 * @param col	Value column
+	 * @param row	Row to be changed
+	 * @param col	Column to be changed
 	 * @param value	New value
 	 */
-	void setValue(int row, int col, String value) {
-		this.board[row][col] = value;
+	void set(int row, int col, String value) {
+		board[row][col] = value;
 	}
 	
 	/**
 	 * Checks if board is full
 	 * @return	True or false
 	 */
-	boolean isBoardFull() {
+	public boolean isBoardFull() {
 		for (int c = 0; c < board[0].length; c++) {
 			if (board[board.length - 1][c].equals(" ")) {
 				return false; 
@@ -86,16 +86,31 @@ class Board {
 	}
 	
 	/**
+	 * Checks if element is equal to given value
+	 * @param row	Row to be checked
+	 * @param col	Column to be checked
+	 * @param value	Value to be checked against
+	 * @return		Is element equal to vale, trye or false
+	 */
+	public boolean isEqual(int row, int col, String value) {
+		if (board[row][col].equals(value)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	 * Prints board in 2D array format
 	 */
-	void debugBoard() {
-		System.out.println(Arrays.deepToString(this.getBoard()));
+	public void debugBoard() {
+		System.out.println(Arrays.deepToString(board));
 	}
 	
 	/**
 	 * Prints board in format usable for game
 	 */
-	void printBoard() {
+	public void printBoard() {
 		
 		System.out.println("\n");
 		for (int row = rowN - 1; row > -2; row--) {

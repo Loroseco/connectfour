@@ -1,5 +1,7 @@
 package client;
 import java.util.Scanner;
+
+import server.Board;
 /**
  * Player class to be used by human player
  * @author Loroseco
@@ -29,5 +31,5 @@ public abstract class Player {
 	 * @param board	Board for AI to read
 	 * @return	Move in string format
 	 */
-	public abstract String getMove(String[][] board);
+	public abstract String getMove(Board board);
 }

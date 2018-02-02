@@ -2,6 +2,8 @@ package client;
 
 import java.util.Scanner;
 
+import server.Board;
+
 public class Human extends Player {
 	
 	/**
@@ -19,7 +21,7 @@ public class Human extends Player {
 	}
 
 	@Override
-	public String getMove(String[][] board) {
+	public String getMove(Board board) {
 		return "n";
 	}
 }
