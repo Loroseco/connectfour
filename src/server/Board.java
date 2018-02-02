@@ -72,13 +72,21 @@ public class Board {
 		board[row][col] = value;
 	}
 	
+	public boolean isColumnFull(int col) {
+		if (board[getRowN() - 1][col].equals(" ")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	/**
 	 * Checks if board is full
 	 * @return	True or false
 	 */
 	public boolean isBoardFull() {
-		for (int c = 0; c < board[0].length; c++) {
-			if (board[board.length - 1][c].equals(" ")) {
+		for (int c = 0; c < getColN(); c++) {
+			if (!isColumnFull(c)) {
 				return false; 
 			}
 		}

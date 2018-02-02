@@ -124,7 +124,7 @@ public class AI extends Player {
 		BigInteger returnPriority = null;
 		ArrayList<Integer> returnMove = new ArrayList<Integer>();
 		for (int col = 0; col < columnPriorities.length; col++) {
-			if (board.isEqual(board.getRowN() - 1, col, " ")) {
+			if (board.isColumnFull(col)) {
 				continue;
 			} else if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) >= 0) {
 				if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) == 1) {
