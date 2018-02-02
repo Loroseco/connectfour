@@ -2,8 +2,6 @@ package client;
 
 import java.util.Scanner;
 
-import server.Board;
-
 public class Human extends Player {
 	
 	/**
@@ -15,13 +13,9 @@ public class Human extends Player {
 	}
 	
 	@Override
-	public String getMove(Scanner scan) {
+	public String getMove(Object scanObj) {
+		Scanner scan = (Scanner) scanObj;
 		System.out.print("PLAYER " + symbol + " - ENTER MOVE: ");
 		return scan.next();
-	}
-
-	@Override
-	public String getMove(Board board) {
-		return "n";
 	}
 }

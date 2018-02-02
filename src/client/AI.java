@@ -82,8 +82,8 @@ public class AI extends Player {
 	 * Fetches optimal move using priorityMatrix to assign priorites
 	 * @return	move
 	 */
-	public String getMove(Board board) {
-		this.board = board;
+	public String getMove(Object boardObj) {
+		this.board = (Board) boardObj;
 		this.columnPriorities = new BigInteger[board.getColN()];
 		for (int col = 0; col < board.getColN(); col++) {
 			columnPriorities[col] = new BigInteger("0");
@@ -262,10 +262,5 @@ public class AI extends Player {
 		} else {
 			return findDepth(row - 1, col, depth + 1);
 		}
-	}
-
-	@Override
-	public String getMove(Scanner scan) {
-		return "n";
 	}
 }
