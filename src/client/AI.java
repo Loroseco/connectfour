@@ -1,14 +1,8 @@
-/*
- * AI
- * 
- * Version 2.2
- */
 package client;
  
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Scanner;
 
 import server.Board;
 
@@ -84,10 +78,7 @@ public class AI extends Player {
 	 */
 	public String getMove(Object boardObj) {
 		this.board = (Board) boardObj;
-		this.columnPriorities = new BigInteger[board.getColN()];
-		for (int col = 0; col < board.getColN(); col++) {
-			columnPriorities[col] = new BigInteger("0");
-		}
+		this.columnPriorities = createColumnPrioritiesArray();
 		
 		for (int row = 0; row < board.getRowN(); row++) {
 			for (int col = 0; col < board.getColN(); col++) {
@@ -96,6 +87,14 @@ public class AI extends Player {
 		}
 		
 		return calculateReturnMove();
+	}
+	
+	private BigInteger[] createColumnPrioritiesArray() {
+		BigInteger[] array = new BigInteger[board.getColN()];
+		for (int col = 0; col < board.getColN(); col++) {
+			array[col] =  new BigInteger("0");
+		}
+		return array;
 	}
 	
 	/**

@@ -1,6 +1,8 @@
 package server;
+
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import client.*;
 /**
  * Class used to handle functions specific to Connect 4 (win condition, and the game loop itself).
@@ -11,10 +13,6 @@ class Connect {
 	
 	private Board board;
 	public ArrayList<Integer> moves = new ArrayList<Integer>();
-	
-	void setBoard(Board board) {
-		this.board = board;
-	}
 	
 	/**
 	 * @param boardObject	Board object to be used
@@ -97,7 +95,7 @@ class Connect {
 	 */
 	void play(int rowN, int colN, boolean[] ai, Scanner scan) {
 		String[] symbol = {"X", "O"};
-		setBoard(new Board(rowN, colN));
+		board = new Board(rowN, colN);
 		Player[] player = new Player[2];
 		for (int p = 0; p < 2; p++) {
 			player[p] = ai[p] ? new AI(symbol[p])
