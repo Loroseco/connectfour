@@ -111,11 +111,6 @@ class Connect {
 				}
 			}
 		}
-		for (int i = 0; i < 2; i++) {
-			if (winner.equals(symbol[i]) && !ai[i]) {
-				System.out.println(moves);
-			}
-		}
 		
 		System.out.println("XO".contains(winner) ? "WINNER: PLAYER " + winner 
 																	 : "GAME OVER: DRAW.");
