@@ -1,5 +1,6 @@
 package server;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -18,7 +19,10 @@ class Main {
 		while (!end) {
 			Connect game = new Connect();
 			boolean[] isAI = {false, true};
-			game.play(7, 10, isAI, scan);
+			ArrayList<Integer> moves = game.play(7, 10, isAI, scan);
+			if (moves != null) {
+				System.out.println(moves);
+			}
 			while (true) {
 				System.out.print("PLAY AGAIN? (Y/N): ");
 				String userInput = scan.next();

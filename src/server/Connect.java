@@ -93,7 +93,7 @@ class Connect {
 	 * @param ai	ai
 	 * @param scan	scanner
 	 */
-	void play(int rowN, int colN, boolean[] ai, Scanner scan) {
+	ArrayList<Integer> play(int rowN, int colN, boolean[] ai, Scanner scan) {
 		String[] symbol = {"X", "O"};
 		board = new Board(rowN, colN);
 		Player[] player = new Player[2];
@@ -111,8 +111,20 @@ class Connect {
 				}
 			}
 		}
+		for (int i = 0; i < 2; i++) {
+			if (winner.equals(symbol[i]) && !ai[i]) {
+				System.out.println(moves);
+			}
+		}
+		
 		System.out.println("XO".contains(winner) ? "WINNER: PLAYER " + winner 
 																	 : "GAME OVER: DRAW.");
+		for (int i = 0; i < 2; i++) {
+			if (winner.equals(symbol[i]) && !ai[i]) {
+				return moves;
+			}
+		}
+		return null;
 	}
 	
 	/**
