@@ -68,6 +68,10 @@ public class AI extends Player {
 			priorityRatings[p] = new BigInteger("10").pow(priorityMatrix.length - (p + 1));
 		}
 		
+		/*
+		 * priorityRatings is the same every game, but it is generated in the 
+		 * constructor every time to make changes to priorityRatings easier to manage.
+		 */
 		this.priorityRatings = priorityRatings;
 	}
 	
@@ -78,7 +82,7 @@ public class AI extends Player {
 	 */
 	public String getMove(Object boardObj) {
 		this.board = (Board) boardObj;
-		this.columnPriorities = createColumnPrioritiesArray();
+		resetColumnPrioritiesArray();
 		
 		for (int row = 0; row < board.getRowN(); row++) {
 			for (int col = 0; col < board.getColN(); col++) {
@@ -89,12 +93,14 @@ public class AI extends Player {
 		return calculateReturnMove();
 	}
 	
-	private BigInteger[] createColumnPrioritiesArray() {
-		BigInteger[] array = new BigInteger[board.getColN()];
+	/**
+	 * Creates an empty array for the AI to use to assign priorities to columns
+	 */
+	private void resetColumnPrioritiesArray() {
+		columnPriorities = new BigInteger[board.getColN()];
 		for (int col = 0; col < board.getColN(); col++) {
-			array[col] =  new BigInteger("0");
+			columnPriorities[col] =  new BigInteger("0");
 		}
-		return array;
 	}
 	
 	/**
@@ -113,30 +119,6 @@ public class AI extends Player {
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Calculates the optimal move, once columnPriorities has been fully populated
-	 * @return	move
-	 */
-	private String calculateReturnMove() {
-		BigInteger returnPriority = null;
-		ArrayList<Integer> returnMove = new ArrayList<Integer>();
-		for (int col = 0; col < columnPriorities.length; col++) {
-			if (board.isColumnFull(col)) {
-				continue;
-			} else if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) >= 0) {
-				if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) == 1) {
-					returnPriority = columnPriorities[col];
-					returnMove = new ArrayList<Integer>();
-				}
-				returnMove.add(col);
-			}
-		}
-		
-		System.out.println(Arrays.toString(columnPriorities));
-		Random r = new Random();
-		return Integer.toString(returnMove.get(r.nextInt(returnMove.size())));
 	}
 	
 	/**
@@ -261,5 +243,29 @@ public class AI extends Player {
 		} else {
 			return findDepth(row - 1, col, depth + 1);
 		}
+	}
+	
+	/**
+	 * Calculates the optimal move, once columnPriorities has been fully populated
+	 * @return	move
+	 */
+	private String calculateReturnMove() {
+		BigInteger returnPriority = null;
+		ArrayList<Integer> returnMove = new ArrayList<Integer>();
+		for (int col = 0; col < columnPriorities.length; col++) {
+			if (board.isColumnFull(col)) {
+				continue;
+			} else if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) >= 0) {
+				if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) == 1) {
+					returnPriority = columnPriorities[col];
+					returnMove = new ArrayList<Integer>();
+				}
+				returnMove.add(col);
+			}
+		}
+		
+		System.out.println(Arrays.toString(columnPriorities));
+		Random r = new Random();
+		return Integer.toString(returnMove.get(r.nextInt(returnMove.size())));
 	}
 }

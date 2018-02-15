@@ -28,13 +28,12 @@ public class Board {
 	 * @param colN	Number of columns
 	 */
 	Board(int rowN, int colN) {
-		String[][] board = new String[rowN][colN];
+		board = new String[rowN][colN];
 		for (int r = 0; r < rowN; r++) {
 			for (int c = 0; c < colN; c++) {
 				board[r][c] = " ";
 			}
 		}
-		this.board = board;
 		this.rowN = rowN;
 		this.colN = colN;
 	}
