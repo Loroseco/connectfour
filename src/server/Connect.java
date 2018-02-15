@@ -11,17 +11,42 @@ import client.*;
  */
 class Connect {
 	
+	private int rowN;
+	private int colN;
+	private boolean[] isAI;
+	private Scanner scan;
+	
 	private Board board;
-	public ArrayList<Integer> moves = new ArrayList<Integer>();
+	private Player[] player;
+	private ArrayList<Integer> moves = new ArrayList<Integer>();
+	private String[] symbol = {"X", "O"};
 	
 	/**
-	 * @param boardObject	Board object to be used
+	 * Main game constructor
+	 * @param rowN	Number of rows
+	 * @param colN	Number of columns
+	 * @param isAI	Array showing which players are AI
+	 * @param scan	Scanner for player input
+	 */
+	Connect(int rowN, int colN, boolean[] isAI, Scanner scan) {
+		this.rowN = rowN;
+		this.colN = colN;
+		this.isAI = isAI;
+		this.scan = scan;
+		
+		player = new Player[2];
+		for (int p = 0; p < 2; p++) {
+			player[p] = isAI[p] ? new AI(symbol[p])
+							    : new Human(symbol[p]);
+		}
+	}
+	
+	/**
 	 * @param moveString	Move given by player
 	 * @param symbol		Move symbol
 	 * @return				Success output (to be printed for player)
 	 */
 	String makeMove(String moveString, String symbol) {
-		int rowN = board.getRowN();
 		try {
 			int move = Integer.parseInt(moveString);
 			if (board.isColumnFull(move)) {
@@ -50,9 +75,9 @@ class Connect {
 		g:
 		for (int g = -1; g < 3; g++) {
 			r:
-			for (int r = 0; r < board.getRowN(); r++) {
+			for (int r = 0; r < rowN; r++) {
 				c:
-				for (int c = 0; c < board.getColN(); c++) {
+				for (int c = 0; c < colN; c++) {
 					String symbol = "XO";
 					try {
 						int row;
@@ -85,27 +110,18 @@ class Connect {
 		}
 		return "";
 	}
-	
+
 	/**
 	 * Main game loop
-	 * @param rowN	new rowN
-	 * @param colN	new colN
-	 * @param ai	ai
-	 * @param scan	scanner
+	 * @return	List of moves played
 	 */
-	ArrayList<Integer> play(int rowN, int colN, boolean[] ai, Scanner scan) {
-		String[] symbol = {"X", "O"};
+	ArrayList<Integer> play() {
 		board = new Board(rowN, colN);
-		Player[] player = new Player[2];
-		for (int p = 0; p < 2; p++) {
-			player[p] = ai[p] ? new AI(symbol[p])
-							  : new Human(symbol[p]);
-		}
-		board.printBoard();
+		board.print();
 		String winner = "";
 		while (winner.equals("")) {
 			for (int p = 0; p < 2; p++) {
-				winner = playTurn(player[p], ai[p], symbol[p], scan);
+				winner = playTurn(p);
 				if (!winner.equals("")) {
 					break;
 				}
@@ -115,7 +131,7 @@ class Connect {
 		System.out.println("XO".contains(winner) ? "WINNER: PLAYER " + winner 
 																	 : "GAME OVER: DRAW.");
 		for (int i = 0; i < 2; i++) {
-			if (winner.equals(symbol[i]) && !ai[i]) {
+			if (winner.equals(symbol[i]) && !isAI[i]) {
 				return moves;
 			}
 		}
@@ -124,23 +140,20 @@ class Connect {
 	
 	/**
 	 * Plays one turn of the game
-	 * @param player	Player
-	 * @param isAI		Is current player AI?
-	 * @param symbol	Player symbol
-	 * @param scan		Scanner
-	 * @return			Symbol of winner, "n" for draw or "" for not finished
+	 * @param p	Player number
+	 * @return	Symbol of winner, "n" for draw or "" for not finished
 	 */
-	private String playTurn(Player player, boolean isAI, String symbol, Scanner scan) {
+	private String playTurn(int p) {
 		while (true) {
 			if (board.isBoardFull()) {
 				return "n";
 			} else {
-				String move = isAI ? player.getMove(board)
-						           : player.getMove(scan);
-				String output = makeMove(move, symbol);
+				String move = isAI[p] ? player[p].getMove(board)
+						           : player[p].getMove(scan);
+				String output = makeMove(move, symbol[p]);
 				if (output.substring(0,  4).equals("MOVE")) {
-					if (isAI) {
-						board.printBoard();
+					if (isAI[p]) {
+						board.print();
 					}
 					moves.add(Integer.parseInt(move));
 					System.out.println(output);
@@ -150,8 +163,8 @@ class Connect {
 			}
 		}
 		String result = findWinner();
-		if (result.equals(symbol) && !isAI) {
-			board.printBoard();
+		if (result.equals(symbol[p]) && !isAI[p]) {
+			board.print();
 		}
 		return result;
 	}

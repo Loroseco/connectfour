@@ -2,6 +2,11 @@ package client;
 
 import java.util.Scanner;
 
+/**
+ * Human class to be used by player, handles player input from console
+ * @author Loroseco
+ *
+ */
 public class Human extends Player {
 	
 	/**

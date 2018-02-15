@@ -124,7 +124,7 @@ public class Board {
 	/**
 	 * Prints board in format usable for game
 	 */
-	public void printBoard() {
+	public void print() {
 		
 		System.out.println("\n");
 		for (int row = rowN - 1; row > -2; row--) {

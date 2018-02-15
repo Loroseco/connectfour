@@ -15,11 +15,12 @@ class Main {
 	 */
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
+		boolean[] isAI = {false, true};
+		Connect game = new Connect(7, 10, isAI, scan);
+		
 		boolean end = false;
 		while (!end) {
-			Connect game = new Connect();
-			boolean[] isAI = {false, true};
-			ArrayList<Integer> moves = game.play(7, 10, isAI, scan);
+			ArrayList<Integer> moves = game.play();
 			if (moves != null) {
 				System.out.println(moves);
 			}

@@ -1,7 +1,7 @@
 package client;
 
 /**
- * Player class to be used by human player
+ * Parent player class
  * @author Loroseco
  *
  */
