@@ -2,6 +2,8 @@ package client;
 
 import java.util.Scanner;
 
+import computer.Player;
+
 /**
  * Human class to be used by player, handles player input from console
  * @author Loroseco

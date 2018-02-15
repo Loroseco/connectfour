@@ -1,4 +1,4 @@
-package client;
+package computer;
 
 /**
  * Parent player class
@@ -7,7 +7,7 @@ package client;
  */
 public abstract class Player {
 	
-	String symbol;
+	public String symbol;
 	
 	public Player(String symbol) {
 		this.symbol = symbol;

@@ -117,14 +117,14 @@ public class Board {
 	/**
 	 * Prints board in 2D array format
 	 */
-	public void debugBoard() {
+	void debugBoard() {
 		System.out.println(Arrays.deepToString(board));
 	}
 	
 	/**
-	 * Prints board in format usable for game
+	 * Prints board in format suitable for display
 	 */
-	public void print() {
+	void print() {
 		
 		System.out.println("\n");
 		for (int row = rowN - 1; row > -2; row--) {
@@ -133,6 +133,10 @@ public class Board {
 		printBottomKey();
 	}
 	
+	/**
+	 * Prints the chosen for in format suitable for display
+	 * @param row	Chosen row
+	 */
 	private void printRow(int row) {
 		System.out.print(boardText[9].substring(4, 7));
 		for (int col = 0; col < colN; col++) {
@@ -164,6 +168,9 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Prints the bottom key for the board in format suitable for display
+	 */
 	private void printBottomKey() {
 		System.out.print("\n  |");
 		for (int c = 0; c < colN; c++) {
