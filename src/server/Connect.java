@@ -18,7 +18,7 @@ class Connect {
 	
 	private Board board;
 	private Player[] player;
-	private ArrayList<Integer> moves = new ArrayList<Integer>();
+	private ArrayList<Integer> moves;
 	private String[] symbol = {"X", "O"};
 	
 	/**
@@ -39,6 +39,14 @@ class Connect {
 			player[p] = isAI[p] ? new AI(symbol[p])
 							    : new Human(symbol[p]);
 		}
+	}
+	
+	/**
+	 * Moves list accessor
+	 * @return	List of played moves
+	 */
+	ArrayList<Integer> getMoves() {
+		return this.moves;
 	}
 	
 	/**
@@ -113,10 +121,10 @@ class Connect {
 
 	/**
 	 * Main game loop
-	 * @return	List of moves played
 	 */
-	ArrayList<Integer> play() {
+	void play() {
 		board = new Board(rowN, colN);
+		moves = new ArrayList<Integer>();
 		board.print();
 		String winner = "";
 		while (winner.equals("")) {
@@ -130,12 +138,6 @@ class Connect {
 		
 		System.out.println("XO".contains(winner) ? "WINNER: PLAYER " + winner 
 																	 : "GAME OVER: DRAW.");
-		for (int i = 0; i < 2; i++) {
-			if (winner.equals(symbol[i]) && !isAI[i]) {
-				return moves;
-			}
-		}
-		return null;
 	}
 	
 	/**

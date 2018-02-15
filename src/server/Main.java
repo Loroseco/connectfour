@@ -20,7 +20,8 @@ class Main {
 		
 		boolean end = false;
 		while (!end) {
-			ArrayList<Integer> moves = game.play();
+			game.play();
+			ArrayList<Integer> moves = game.getMoves();
 			if (moves != null) {
 				System.out.println(moves);
 			}
