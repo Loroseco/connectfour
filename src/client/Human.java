@@ -11,17 +11,18 @@ import computer.Player;
  */
 public class Human extends Player {
 	
+	private Scanner scan;
 	/**
 	 * Human constructor
 	 * @param symbol	Symbol used to play
 	 */
-	public Human(String symbol) {
+	public Human(String symbol, Scanner scan) {
 		super(symbol);
+		this.scan = scan;
 	}
 	
 	@Override
-	public String getMove(Object scanObj) {
-		Scanner scan = (Scanner) scanObj;
+	public String getMove() {
 		System.out.print("PLAYER " + symbol + " - ENTER MOVE: ");
 		return scan.next();
 	}

@@ -15,12 +15,12 @@ class Connect {
 	private int rowN;
 	private int colN;
 	private boolean[] isAI;
-	private Scanner scan;
-	
 	private Board board;
-	private Player[] player;
+	
 	private ArrayList<Integer> moves;
+	private Player[] player;
 	private String[] symbol = {"X", "O"};
+	
 	
 	/**
 	 * Main game constructor
@@ -33,12 +33,13 @@ class Connect {
 		this.rowN = rowN;
 		this.colN = colN;
 		this.isAI = isAI;
-		this.scan = scan;
+		this.board = new Board(rowN, colN);
 		
+		moves = new ArrayList<Integer>();
 		player = new Player[2];
 		for (int p = 0; p < 2; p++) {
-			player[p] = isAI[p] ? new AI(symbol[p])
-							    : new Human(symbol[p]);
+			player[p] = isAI[p] ? new AI(symbol[p], board)
+							    : new Human(symbol[p], scan);
 		}
 	}
 	
@@ -48,6 +49,54 @@ class Connect {
 	 */
 	ArrayList<Integer> getMoves() {
 		return this.moves;
+	}
+	
+	/**
+	 * Main game loop
+	 */
+	void play() {
+		board.createBoard();
+		moves.clear();
+
+		String winner = "";
+		int playerNumber = 1;
+		while (winner.equals("")) {
+			playerNumber = (playerNumber == 1) ? 0 : 1;
+			winner = playTurn(playerNumber);
+		}
+		
+		System.out.println("XO".contains(winner) ? "WINNER: PLAYER " + winner 
+																	 : "GAME OVER: DRAW.");
+	}
+	
+	/**
+	 * Plays one turn of the game
+	 * @param p	Player number
+	 * @return	Symbol of winner, "n" for draw or "" for not finished
+	 */
+	private String playTurn(int p) {
+		while (true) {
+			if (board.isBoardFull()) {
+				return "n";
+			} else {
+				String move = player[p].getMove();
+				String output = makeMove(move, symbol[p]);
+				if (output.substring(0,  4).equals("MOVE")) {
+					if (isAI[p]) {
+						board.print();
+					}
+					moves.add(Integer.parseInt(move));
+					System.out.println(output);
+					break;
+				}
+				System.out.println(output);
+			}
+		}
+		String result = findWinner();
+		if (result.equals(symbol[p]) && !isAI[p]) {
+			board.print();
+		}
+		return result;
 	}
 	
 	/**
@@ -118,57 +167,5 @@ class Connect {
 			}
 		}
 		return "";
-	}
-
-	/**
-	 * Main game loop
-	 */
-	void play() {
-		board = new Board(rowN, colN);
-		moves = new ArrayList<Integer>();
-		board.print();
-		String winner = "";
-		while (winner.equals("")) {
-			for (int p = 0; p < 2; p++) {
-				winner = playTurn(p);
-				if (!winner.equals("")) {
-					break;
-				}
-			}
-		}
-		
-		System.out.println("XO".contains(winner) ? "WINNER: PLAYER " + winner 
-																	 : "GAME OVER: DRAW.");
-	}
-	
-	/**
-	 * Plays one turn of the game
-	 * @param p	Player number
-	 * @return	Symbol of winner, "n" for draw or "" for not finished
-	 */
-	private String playTurn(int p) {
-		while (true) {
-			if (board.isBoardFull()) {
-				return "n";
-			} else {
-				String move = isAI[p] ? player[p].getMove(board)
-						           : player[p].getMove(scan);
-				String output = makeMove(move, symbol[p]);
-				if (output.substring(0,  4).equals("MOVE")) {
-					if (isAI[p]) {
-						board.print();
-					}
-					moves.add(Integer.parseInt(move));
-					System.out.println(output);
-					break;
-				}
-				System.out.println(output);
-			}
-		}
-		String result = findWinner();
-		if (result.equals(symbol[p]) && !isAI[p]) {
-			board.print();
-		}
-		return result;
 	}
 }

@@ -28,14 +28,9 @@ public class Board {
 	 * @param colN	Number of columns
 	 */
 	Board(int rowN, int colN) {
-		board = new String[rowN][colN];
-		for (int r = 0; r < rowN; r++) {
-			for (int c = 0; c < colN; c++) {
-				board[r][c] = " ";
-			}
-		}
 		this.rowN = rowN;
 		this.colN = colN;
+		this.board = new String[rowN][colN];
 	}
 	
 	/**
@@ -111,6 +106,17 @@ public class Board {
 		} else {
 			return false;
 		}
+	}
+	/**
+	 * Creates a new board for a new game
+	 */
+	public void createBoard() {
+		for (int r = 0;  r < rowN; r++) {
+			for (int c = 0; c < colN; c++) {
+				board[r][c] = " ";
+			}
+		}
+		print();
 	}
 	
 	/**

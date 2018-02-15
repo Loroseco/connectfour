@@ -15,11 +15,11 @@ class Main {
 	 */
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
-		boolean[] isAI = {false, true};
+		boolean[] isAI = {false, true}; // Change here to assign AI to certain players
 		Connect game = new Connect(7, 10, isAI, scan);
 		
-		boolean end = false;
-		while (!end) {
+		boolean playing = true;
+		while (playing) {
 			game.play();
 			ArrayList<Integer> moves = game.getMoves();
 			if (moves != null) {
@@ -32,7 +32,7 @@ class Main {
 				if (inputLower.equals("y") || inputLower.equals("yes")) {
 					break;
 				} else if (inputLower.equals("n") || inputLower.equals("no")) {
-					end = true;
+					playing = false;
 					break;
 				} else {
 					System.out.println("INVALID CHOICE");

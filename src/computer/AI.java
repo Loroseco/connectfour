@@ -61,7 +61,7 @@ public class AI extends Player {
 	 * Constructor. Populates priorityRatings, used to give ratings specific to each column in priorityMatrix
 	 * @param symbol	Symbol the AI uses to play
 	 */
-	public AI(String symbol) {
+	public AI(String symbol, Board board) {
 		super(symbol);
 		BigInteger[] priorityRatings = new BigInteger[priorityMatrix.length];
 		for (int p = 0; p < priorityMatrix.length; p++) {
@@ -73,6 +73,7 @@ public class AI extends Player {
 		 * constructor every time to make changes to priorityRatings easier to manage.
 		 */
 		this.priorityRatings = priorityRatings;
+		this.board = board;
 	}
 	
 	@Override
@@ -80,8 +81,7 @@ public class AI extends Player {
 	 * Fetches optimal move using priorityMatrix to assign priorites
 	 * @return	move
 	 */
-	public String getMove(Object boardObj) {
-		this.board = (Board) boardObj;
+	public String getMove() {
 		resetColumnPrioritiesArray();
 		
 		for (int row = 0; row < board.getRowN(); row++) {

@@ -13,6 +13,6 @@ public abstract class Player {
 		this.symbol = symbol;
 	}
 
-	public abstract String getMove(Object obj);
+	public abstract String getMove();
 
 }
