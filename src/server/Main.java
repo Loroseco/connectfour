@@ -31,12 +31,12 @@ class Main {
 				String inputLower = userInput.toLowerCase();
 				if (inputLower.equals("y") || inputLower.equals("yes")) {
 					break;
-				} else if (inputLower.equals("n") || inputLower.equals("no")) {
+				} 
+				if (inputLower.equals("n") || inputLower.equals("no")) {
 					playing = false;
 					break;
-				} else {
-					System.out.println("INVALID CHOICE");
 				}
+				System.out.println("INVALID CHOICE");
 			}
 		}
 		scan.close();

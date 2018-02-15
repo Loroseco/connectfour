@@ -12,7 +12,11 @@ public abstract class Player {
 	public Player(String symbol) {
 		this.symbol = symbol;
 	}
-
+	
+	/**
+	 * Fetches move
+	 * @return	Column of move
+	 */
 	public abstract String getMove();
 
 }

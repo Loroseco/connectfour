@@ -17,6 +17,9 @@ class Connect {
 	private boolean[] isAI;
 	private Board board;
 	
+	/**
+	 * Arraylist of moves played by both players, in order
+	 */
 	private ArrayList<Integer> moves;
 	private Player[] player;
 	private String[] symbol = {"X", "O"};
@@ -81,7 +84,7 @@ class Connect {
 			} else {
 				String move = player[p].getMove();
 				String output = makeMove(move, symbol[p]);
-				if (output.substring(0,  4).equals("MOVE")) {
+				if (output.substring(0, 4).equals("MOVE")) {
 					if (isAI[p]) {
 						board.print();
 					}

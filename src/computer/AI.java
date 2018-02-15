@@ -16,16 +16,26 @@ import java.math.BigInteger;
 public class AI extends Player {
 	
 	private Board board;
+	
+	/**
+	 * A matrix representing the priorities of priorityMatrix, one entry per priorityMatrix row.					<br>
+	 * Generated in the constructor every time to make changes to priorityRatings easier to manage.
+	 */
 	private BigInteger[] priorityRatings;
+	
+	/**
+	 * Priority of play for each column in the board, calculated by AI.
+	 */
 	private BigInteger[] columnPriorities;
 	
-	/* priorityMatrix is all patterns the AI detects. the higher rows are higher priorities.
-	 * O	Player symbol
-	 * X	Opponent symbol		NOTE: O in priorities is always the player symbol, and X is always the opponent.
-	 * _	Valid move
-	 * 1	Empty space above a valid move
-	 * 2	Empty space above "1"
-	 * N	Valid move that is not assigned a priority from this string
+	/**
+	 * priorityMatrix is all patterns the AI detects. the higher rows are higher priorities.						<br>
+	 * O	Player symbol																							<br>
+	 * X	Opponent symbol		NOTE: O in priorities is always the player symbol, and X is always the opponent.	<br>
+	 * _	Valid move																								<br>
+	 * 1	Empty space above a valid move																			<br>
+	 * 2	Empty space above "1"																					<br>
+	 * N	Valid move that is not assigned a priority from this string												<br>
 	 * V	Vertical pattern. 2nd symbol is player symbol and 3rd is the height of the pattern.
 	 */
 	private String[][] priorityMatrix =
@@ -68,10 +78,6 @@ public class AI extends Player {
 			priorityRatings[p] = new BigInteger("10").pow(priorityMatrix.length - (p + 1));
 		}
 		
-		/*
-		 * priorityRatings is the same every game, but it is generated in the 
-		 * constructor every time to make changes to priorityRatings easier to manage.
-		 */
 		this.priorityRatings = priorityRatings;
 		this.board = board;
 	}
