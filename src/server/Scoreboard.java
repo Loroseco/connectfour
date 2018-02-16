@@ -20,7 +20,7 @@ class Scoreboard {
 		System.out.println();		
 	}
 	
-	void addScore(String symbol) {
+	void add(String symbol) {
 		for (int p = 0; p < this.symbol.length; p++) {
 			if (this.symbol[p].equals(symbol)) {
 				score[p]++;

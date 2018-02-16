@@ -21,6 +21,7 @@ class Connect {
 	 * Arraylist of moves played by both players, in order
 	 */
 	private ArrayList<Integer> moves;
+	private Scoreboard score;
 	private Player[] player;
 	private String[] symbol = {"X", "O"};
 	
@@ -38,20 +39,13 @@ class Connect {
 		this.isAI = isAI;
 		this.board = new Board(rowN, colN);
 		this.moves = new ArrayList<Integer>();
+		this.score = new Scoreboard(symbol);
 		this.player = new Player[2];
 		
 		for (int p = 0; p < 2; p++) {
 			player[p] = isAI[p] ? new AI(symbol[p], board)
 							    : new Human(symbol[p], scan);
 		}
-	}
-	
-	/**
-	 * Moves list accessor
-	 * @return	List of played moves
-	 */
-	ArrayList<Integer> getMoves() {
-		return this.moves;
 	}
 	
 	/**
@@ -68,8 +62,15 @@ class Connect {
 			winner = playTurn(playerNumber);
 		}
 		
-		System.out.println("XO".contains(winner) ? "WINNER: PLAYER " + winner 
-																	 : "GAME OVER: DRAW.");
+		if ("XO".contains(winner)) {
+			System.out.println("WINNER: PLAYER " + winner + ".");
+			score.add(winner);
+			printMoves(winner);
+		} else {
+			System.out.println("GAME OVER: DRAW.");
+		}
+		score.print();
+		
 	}
 	
 	/**
@@ -170,5 +171,18 @@ class Connect {
 			}
 		}
 		return "";
+	}
+	
+	/**
+	 * Prints moves arraylist if AI loses a game, for analysis purposes
+	 * @param winner	Winning symbol
+	 */
+	private void printMoves(String winner) {
+		for (int p = 0; p < symbol.length; p++) {
+			if (!winner.equals(symbol[p]) && isAI[p]) {
+				System.out.println(moves);
+				break;
+			}
+		}
 	}
 }
