@@ -17,70 +17,78 @@ public class AI extends Player {
 	
 	private Board board;
 	
+	private String opponentSymbol;
+	
 	/**
-	 * A matrix representing the priorities of priorityMatrix, one entry per priorityMatrix row.					<br>
+	 * A matrix representing the priorities of priorityMatrix, one entry per priorityMatrix row.		<br>
 	 * Generated in the constructor every time to make changes to priorityRatings easier to manage.
 	 */
 	private BigInteger[] priorityRatings;
 	
 	/**
-	 * Priority of play for each column in the board, calculated by AI.												<br>
+	 * Priority of play for each column in the board, calculated by AI.									<br>
 	 * Each priority is a magnitude of 10.
 	 */
 	private BigInteger[] columnPriorities;
 	
 	/**
-	 * priorityMatrix is all patterns the AI detects. the higher rows are higher priorities.						<br>
-	 * O	Player symbol																							<br>
-	 * X	Opponent symbol		NOTE: O in priorities is always the player symbol, and X is always the opponent.	<br>
-	 * _	Valid move																								<br>
-	 * 1	Empty space above a valid move																			<br>
-	 * 2	Empty space above "1"																					<br>
-	 * N	Valid move that is not assigned a priority from this string												<br>
+	 * priorityMatrix is all patterns the AI detects. the higher rows are higher priorities.			<br>
+	 * P	AI symbol																					<br>
+	 * Q	Opponent symbol																				<br>
+	 * _	Valid move																					<br>
+	 * 1	Empty space above a valid move																<br>
+	 * 2	Empty space above "1"																		<br>
+	 * N	Valid move that is not assigned a priority from this string									<br>
 	 * V	Vertical pattern. 2nd symbol is player symbol and 3rd is the height of the pattern.
 	 */
 	private String[][] priorityMatrix =
-		{{"O_OO", "OO_O", "OOO_", "_OOO", "VO3"},
-		 {"X_XX", "XX_X", "XXX_", "_XXX", "VX3"},
-		 {"X1XX", "XX1X", "XXX1", "1XXX"},
-		 {"N_OON", "NO_ON", "NOO_N"},
-		 {"N_XXN", "NX_XN", "NXX_N"},
-		 {"N1XXN", "NX1XN", "NXX1N", "1XXNN", "1NXXN", "1XNXN", "1NXNX", "NXXN1", "NNXX1", "NXNX1", "XNXN1"},
-		 {"O2OO", "OO2O", "OOO2", "2OOO"},
-		 {"O1OO", "OO1O", "OOO1", "1OOO"},
-		 {"X2XX", "XX2X", "XXX2", "2XXX"},
-		 {"N2OON", "NO2ON", "NOO2N", "2OONN", "2NOON", "2ONON", "2NONO", "NOON2", "NNOO2", "NONO2", "ONON2"},
-		 {"N1OON", "NO1ON", "NOO1N", "1OONN", "1NOON", "1ONON", "1NONO", "NOON1", "NNOO1", "NONO1", "ONON1"},
-		 {"N2XXN", "NX2XN", "NXX2N", "2XXNN", "2NXXN", "2XNXN", "2NXNX", "NXXN2", "NNXX2", "NXNX2", "XNXN2"},
-		 {"OO__", "O_O_", "O__O", "_O_O", "__OO", "_OO_", "VO2"},
-		 {"XX__", "X_X_", "X__X", "_X_X", "__XX", "_XX_", "VX2"},
-		 {"OO1_", "O1O_", "O1_O", "1O_O", "1_OO", "1OO_", "OO_1", "O_O1", "O_1O", "_O1O", "_1OO", "_OO1"},
-		 {"XX1_", "X1X_", "X1_X", "1X_X", "1_XX", "1XX_", "XX_1", "X_X1", "X_1X", "_X1X", "_1XX", "_XX1"},
-		 {"OO11", "O1O1", "O11O", "1O1O", "11OO", "1OO1"},
-		 {"XX11", "X1X1", "X11X", "1X1X", "11XX", "1XX1"},
-		 {"O___", "___O", "__O_", "_O__", "VO1"},
-		 {"X___", "___X", "__X_", "_X__", "VX1"},
-		 {"O_1_", "_1_O", "_1O_", "_O1_", "O__1", "__1O", "__O1", "_O_1", "O1__", "1__O", "1_O_", "1O__"},
-		 {"X_1_", "_1_X", "_1X_", "_X1_", "X__1", "__1X", "__X1", "_X_1", "X1__", "1__X", "1_X_", "1X__"},
-		 {"O11_", "11_O", "11O_", "1O1_", "O1_1", "1_1O", "1_O1", "1O_1", "O_11", "_11O", "_1O1", "_O11"},
-		 {"X11_", "11_X", "11X_", "1X1_", "X_11", "_11X", "_1X1", "_X11", "X1_1", "1_1X", "1_X1", "1X_1"},                          
-		 {"O111", "111O", "11O1", "1O11"},
-		 {"X111", "111X", "11X1", "1X11"}
+		{{"P_PP", "PP_P", "PPP_", "_PPP", "VP3"},
+		 {"Q_QQ", "QQ_Q", "QQQ_", "_QQQ", "VQ3"},
+		 {"Q1QQ", "QQ1Q", "QQQ1", "1QQQ"},
+		 {"N_PPN", "NP_PN", "NPP_N"},
+		 {"N_QQN", "NQ_QN", "NQQ_N"},
+		 {"N1QQN", "NQ1QN", "NQQ1N", "1QQNN", "1NQQN", "1QNQN", "1NQNQ", "NQQN1", "NNQQ1", "NQNQ1", "QNQN1"},
+		 {"P2PP", "PP2P", "PPP2", "2PPP"},
+		 {"P1PP", "PP1P", "PPP1", "1PPP"},
+		 {"Q2QQ", "QQ2Q", "QQQ2", "2QQQ"},
+		 {"N2PPN", "NP2PN", "NPP2N", "2PPNN", "2NPPN", "2PNPN", "2NPNP", "NPPN2", "NNPP2", "NPNP2", "PNPN2"},
+		 {"N1PPN", "NP1PN", "NPP1N", "1PPNN", "1NPPN", "1PNPN", "1NPNP", "NPPN1", "NNPP1", "NPNP1", "PNPN1"},
+		 {"N2QQN", "NQ2QN", "NQQ2N", "2QQNN", "2NQQN", "2QNQN", "2NQNQ", "NQQN2", "NNQQ2", "NQNQ2", "QNQN2"},
+		 {"PP__", "P_P_", "P__P", "_P_P", "__PP", "_PP_", "VP2"},
+		 {"QQ__", "Q_Q_", "Q__Q", "_Q_Q", "__QQ", "_QQ_", "VQ2"},
+		 {"PP1_", "P1P_", "P1_P", "1P_P", "1_PP", "1PP_", "PP_1", "P_P1", "P_1P", "_P1P", "_1PP", "_PP1"},
+		 {"QQ1_", "Q1Q_", "Q1_Q", "1Q_Q", "1_QQ", "1QQ_", "QQ_1", "Q_Q1", "Q_1Q", "_Q1Q", "_1QQ", "_QQ1"},
+		 {"PP11", "P1P1", "P11P", "1P1P", "11PP", "1PP1"},
+		 {"QQ11", "Q1Q1", "Q11Q", "1Q1Q", "11QQ", "1QQ1"},
+		 {"P___", "___P", "__P_", "_P__", "VP1"},
+		 {"Q___", "___Q", "__Q_", "_Q__", "VQ1"},
+		 {"P_1_", "_1_P", "_1P_", "_P1_", "P__1", "__1P", "__P1", "_P_1", "P1__", "1__P", "1_P_", "1P__"},
+		 {"Q_1_", "_1_Q", "_1Q_", "_Q1_", "Q__1", "__1Q", "__Q1", "_Q_1", "Q1__", "1__Q", "1_Q_", "1Q__"},
+		 {"P11_", "11_P", "11P_", "1P1_", "P1_1", "1_1P", "1_P1", "1P_1", "P_11", "_11P", "_1P1", "_P11"},
+		 {"Q11_", "11_Q", "11Q_", "1Q1_", "Q_11", "_11Q", "_1Q1", "_Q11", "Q1_1", "1_1Q", "1_Q1", "1Q_1"},                          
+		 {"P111", "111P", "11P1", "1P11"},
+		 {"Q111", "111Q", "11Q1", "1Q11"}
 		};
 	
 	/**
-	 * Constructor. Populates priorityRatings, used to give ratings specific to each column in priorityMatrix
+	 * Constructor. 																					<br>
+	 * Populates symbol and opponentSymbol, calculates priorityRatings
 	 * @param symbol	Symbol the AI uses to play
 	 */
-	public AI(String symbol, Board board) {
-		super(symbol);
-		BigInteger[] priorityRatings = new BigInteger[priorityMatrix.length];
+	public AI(String[] symbol, int playerNumber, Board board) {
+		super(symbol[playerNumber]);
+		for (int p = 0; p < symbol.length; p++) {
+			if (!symbol[p].equals(this.symbol)) {
+				opponentSymbol = symbol[p];
+				break;
+			}
+		}
+		
+		this.board = board;
+		this.priorityRatings = new BigInteger[priorityMatrix.length];
 		for (int p = 0; p < priorityMatrix.length; p++) {
 			priorityRatings[p] = new BigInteger("10").pow(priorityMatrix.length - (p + 1));
 		}
-		
-		this.priorityRatings = priorityRatings;
-		this.board = board;
 	}
 	
 	@Override
@@ -93,7 +101,7 @@ public class AI extends Player {
 		
 		for (int row = 0; row < board.getRowN(); row++) {
 			for (int col = 0; col < board.getColN(); col++) {
-				addPriorityFromTableElement(row, col);
+				addPriorityFromBoardIndex(row, col);
 			}
 		}
 		
@@ -111,11 +119,11 @@ public class AI extends Player {
 	}
 	
 	/**
-	 * Calculates the priority given to a column by a specific element on the board
-	 * @param row	Element row
-	 * @param col	Element column
+	 * Calculates the priority given to a column by a specific index on the board
+	 * @param row	Index row
+	 * @param col	Index column
 	 */
-	private void addPriorityFromTableElement(int row, int col) {
+	private void addPriorityFromBoardIndex(int row, int col) {
 		for (int priorityRow = 0; priorityRow < priorityMatrix.length; priorityRow++) {
 			for (int priorityCol = 0; priorityCol < priorityMatrix[priorityRow].length; priorityCol++) {
 				String priorityString = priorityMatrix[priorityRow][priorityCol];
@@ -129,35 +137,35 @@ public class AI extends Player {
 	}
 	
 	/**
-	 * Calculates if the element gives priorities from any vertical patterns
-	 * @param row				Element row
-	 * @param col				Element column
+	 * Calculates if the index gives priorities from any vertical patterns
+	 * @param row				Index row
+	 * @param col				Index column
 	 * @param priorityRow		Row of priorityMatrix being checked
 	 * @param priorityString	String in priorityRow being checked
 	 */
 	private void addVerticalPriority(int row, int col, int priorityRow, String priorityString) {
-		if (doesVerticalStringStartAtElement(row, col, priorityString)) {
+		if (doesVerticalStringStartAtIndex(row, col, priorityString)) {
 			columnPriorities[col] = columnPriorities[col].add(priorityRatings[priorityRow]);
 		}
 	}
 	
 	/**
-	 * Calculates if the element gives priorities from any horizontal patterns
-	 * @param row				Element row
-	 * @param col				Element column
+	 * Calculates if the index gives priorities from any horizontal patterns
+	 * @param row				Index row
+	 * @param col				Index column
 	 * @param priorityRow		Row of priorityMatrix being checked
 	 * @param priorityString	String in priorityRow being checked
 	 */
 	private void addHorizontalPriority(int row, int col, int priorityRow, String priorityString) {
 		for (int gradient = -1; gradient < 2; gradient++) {
-			if (doesHorizontalStringStartAtElement(row, col, priorityString, gradient)) {
+			if (doesHorizontalStringStartAtIndex(row, col, priorityString, gradient)) {
 				for (int i = 0; i < priorityString.length(); i++) {
 					String letter = priorityString.substring(i, i + 1);
 					if (letter.equals("_")
-							|| (letter.equals("2") && priorityString.contains("O"))) {
+							|| (letter.equals("2") && priorityString.contains("P"))) {
 						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow]);
 					} else if (letter.equals("1")
-							|| (letter.equals("2") && priorityString.contains("X"))) {
+							|| (letter.equals("2") && priorityString.contains("Q"))) {
 						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow].multiply(new BigInteger("-1")));
 					}
 				}
@@ -172,16 +180,15 @@ public class AI extends Player {
 	 * @param string	String to be searched for
 	 * @return			Has string been found
 	 */
-	private boolean doesVerticalStringStartAtElement(int row, int col, String string) {
+	private boolean doesVerticalStringStartAtIndex(int row, int col, String string) {
 		int counter = 0;
 		try {
 			int n = Integer.parseInt(string.substring(2, 3));
 			for (int i = 0; i < 4; i++) {
 				String value = board.get(row + i, col);
 				String s = string.substring(1, 2);
-				if ((symbol.equals("O") && value.equals(s) && i < n)
-						|| (symbol.equals("X") && "XO".contains(value)
-								&& "XO".contains(s) && !value.equals(s) && i < n)
+				if ((value.equals(symbol) && s.equals("P") && i < n) 
+						|| (value.equals(opponentSymbol) && s.equals("Q") && i < n)
 						|| (value.equals(" ") && i >= n)) {
 					counter++;
 				} else {
@@ -205,15 +212,14 @@ public class AI extends Player {
 	 * @param g			Gradient to be searched from start point (2 for vertical)
 	 * @return			Has string been found
 	 */
-	private boolean doesHorizontalStringStartAtElement(int row, int col, String string, int gradient) {
+	private boolean doesHorizontalStringStartAtIndex(int row, int col, String string, int gradient) {
 		int counter = 0;
 		try {
 			for (int i = 0; i < string.length(); i++) {
 				String s = string.substring(i, i + 1);
 				String value = board.get(row + (i * gradient), col + i);
-				if ((symbol.equals("O") && value.equals(s))
-						|| (symbol.equals("X") && "XO".contains(value)
-								&& "XO".contains(s) && !value.equals(s))
+				if ((value.equals(symbol) && s.equals("P"))
+						|| (value.equals(opponentSymbol) && s.equals("Q"))
 						|| (value.equals(" ") && s.equals("E"))) {
 					counter++;
 				} else if (value.equals(" ") && "123456789_N".contains(s)) {
@@ -253,8 +259,8 @@ public class AI extends Player {
 	}
 	
 	/**
-	 * Calculates the optimal move, once columnPriorities has been fully populated
-	 * @return	move
+	 * Returns the largest value in columnPriorities, picks one at random if there is a tie
+	 * @return	Column of optimal move
 	 */
 	private String calculateReturnMove() {
 		BigInteger returnPriority = null;

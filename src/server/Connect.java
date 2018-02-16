@@ -43,7 +43,7 @@ class Connect {
 		this.player = new Player[2];
 		
 		for (int p = 0; p < 2; p++) {
-			player[p] = isAI[p] ? new AI(symbol[p], board)
+			player[p] = isAI[p] ? new AI(symbol, p, board)
 							    : new Human(symbol[p], scan);
 		}
 	}
