@@ -36,7 +36,7 @@ class Main {
 					playing = false;
 					break;
 				}
-				System.out.println("INVALID CHOICE");
+				System.out.println("INVALID CHOICE.");
 			}
 		}
 		scan.close();

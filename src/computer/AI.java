@@ -24,7 +24,8 @@ public class AI extends Player {
 	private BigInteger[] priorityRatings;
 	
 	/**
-	 * Priority of play for each column in the board, calculated by AI.
+	 * Priority of play for each column in the board, calculated by AI.												<br>
+	 * Each priority is a magnitude of 10.
 	 */
 	private BigInteger[] columnPriorities;
 	

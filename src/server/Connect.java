@@ -37,9 +37,9 @@ class Connect {
 		this.colN = colN;
 		this.isAI = isAI;
 		this.board = new Board(rowN, colN);
+		this.moves = new ArrayList<Integer>();
+		this.player = new Player[2];
 		
-		moves = new ArrayList<Integer>();
-		player = new Player[2];
 		for (int p = 0; p < 2; p++) {
 			player[p] = isAI[p] ? new AI(symbol[p], board)
 							    : new Human(symbol[p], scan);

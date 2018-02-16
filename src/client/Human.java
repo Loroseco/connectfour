@@ -12,6 +12,7 @@ import computer.Player;
 public class Human extends Player {
 	
 	private Scanner scan;
+	
 	/**
 	 * Human constructor
 	 * @param symbol	Symbol used to play
