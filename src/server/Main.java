@@ -3,7 +3,7 @@ package server;
 import java.util.Scanner;
 
 /**
- * Connect 4 game. Play at your own peril. Please tell me if you manage to break it tia
+ * Class containing main function
  * @author Loroseco
  *
  */

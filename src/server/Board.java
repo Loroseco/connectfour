@@ -153,10 +153,7 @@ public class Board {
 		System.out.println();
 		for (int i = 0; i < 4; i++) {
 			if (i == 1) {
-				if (row < 10) {
-					System.out.print(" ");
-				}
-				System.out.print(Integer.toString(row) + "|");
+				System.out.print(String.format("%s%s|", row < 10 ? " " : "", row, "|"));
 			} else {
 				System.out.print("  |");
 			}
@@ -179,10 +176,7 @@ public class Board {
 	private void printBottomKey() {
 		System.out.print("\n  |");
 		for (int c = 0; c < colN; c++) {
-			if (c < 10) {
-				System.out.print(" ");
-			}
-			System.out.print("  " + Integer.toString(c) + "  |");
+			System.out.print(String.format("%s  %s  |", c < 10 ? " " : "", c));
 		}
 		System.out.println("\n");
 	}

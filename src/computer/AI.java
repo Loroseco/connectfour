@@ -209,7 +209,7 @@ public class AI extends Player {
 	 * @param r			Row
 	 * @param c			Column
 	 * @param string	String to be searched for
-	 * @param g			Gradient to be searched from start point (2 for vertical)
+	 * @param g			Gradient to be searched from start point
 	 * @return			Has string been found
 	 */
 	private boolean doesHorizontalStringStartAtIndex(int row, int col, String string, int gradient) {

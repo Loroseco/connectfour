@@ -63,7 +63,7 @@ class Connect {
 		}
 		
 		if ("XO".contains(winner)) {
-			System.out.println("WINNER: PLAYER " + winner + ".");
+			System.out.println(String.format("WINNER: PLAYER %s.", winner));
 			score.add(winner);
 			printMoves(winner);
 		} else {
@@ -117,7 +117,7 @@ class Connect {
 				for (int row = 0; row < rowN; row++) {
 					if (board.isEqual(row, move, " ")) {
 						board.set(row, move, symbol);
-						return "MOVE MADE: PLAYER " + symbol + ", COLUMN " + moveString + ".";
+						return String.format("MOVE MADE: PLAYER %s, COLUMN %s.", symbol, moveString);
 					}
 				}
 			}

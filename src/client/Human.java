@@ -24,7 +24,7 @@ public class Human extends Player {
 	
 	@Override
 	public String getMove() {
-		System.out.print("PLAYER " + symbol + " - ENTER MOVE: ");
+		System.out.print(String.format("PLAYER %s - ENTER MOVE: ", symbol));
 		return scan.next();
 	}
 }
