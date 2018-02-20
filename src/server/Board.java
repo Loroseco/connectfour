@@ -34,8 +34,10 @@ public class Board {
 	}
 	
 	/**
-	 * Accessor
-	 * @return board value
+	 * Accessor for an index
+	 * @param row 		Index row
+	 * @param col		Index column
+	 * @return board 	value
 	 */
 	public String get(int row, int col) {
 		return board[row][col];
@@ -58,7 +60,7 @@ public class Board {
 	}
 	
 	/**
-	 * Board value mutator
+	 * Board index mutator
 	 * @param row	Row to be changed
 	 * @param col	Column to be changed
 	 * @param value	New value

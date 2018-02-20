@@ -73,13 +73,15 @@ public class AI extends Player {
 	/**
 	 * Constructor. 																					<br>
 	 * Populates symbol and opponentSymbol, calculates priorityRatings
-	 * @param symbol	Symbol the AI uses to play
+	 * @param symbolArray		Array of symbols, both the AI and the opponent
+	 * @param playerNumber	Index of player symbol in symbol array
+	 * @param board			Board object currently in play
 	 */
-	public AI(String[] symbol, int playerNumber, Board board) {
-		super(symbol[playerNumber]);
-		for (int p = 0; p < symbol.length; p++) {
-			if (!symbol[p].equals(this.symbol)) {
-				opponentSymbol = symbol[p];
+	public AI(String[] symbolArray, int playerNumber, Board board) {
+		super(symbolArray[playerNumber]);
+		for (int p = 0; p < symbolArray.length; p++) {
+			if (!symbolArray[p].equals(this.symbol)) {
+				opponentSymbol = symbolArray[p];
 				break;
 			}
 		}
@@ -175,18 +177,18 @@ public class AI extends Player {
 	
 	/**
 	 * Checks specified part of board for vertical strings
-	 * @param r			Row
-	 * @param c			Column
-	 * @param string	String to be searched for
+	 * @param row		Row
+	 * @param col		Column
+	 * @param pattern	String to be searched for
 	 * @return			Has string been found
 	 */
-	private boolean doesVerticalStringStartAtIndex(int row, int col, String string) {
+	private boolean doesVerticalStringStartAtIndex(int row, int col, String pattern) {
 		int counter = 0;
 		try {
-			int n = Integer.parseInt(string.substring(2, 3));
+			int n = Integer.parseInt(pattern.substring(2, 3));
 			for (int i = 0; i < 4; i++) {
 				String value = board.get(row + i, col);
-				String s = string.substring(1, 2);
+				String s = pattern.substring(1, 2);
 				if ((value.equals(symbol) && s.equals("P") && i < n) 
 						|| (value.equals(opponentSymbol) && s.equals("Q") && i < n)
 						|| (value.equals(" ") && i >= n)) {
@@ -206,17 +208,17 @@ public class AI extends Player {
 	
 	/**
 	 * Checks specified part of board for horizontal strings. 
-	 * @param r			Row
-	 * @param c			Column
-	 * @param string	String to be searched for
+	 * @param row		Row
+	 * @param col		Column
+	 * @param pattern	String to be searched for
 	 * @param g			Gradient to be searched from start point
 	 * @return			Has string been found
 	 */
-	private boolean doesHorizontalStringStartAtIndex(int row, int col, String string, int gradient) {
+	private boolean doesHorizontalStringStartAtIndex(int row, int col, String pattern, int gradient) {
 		int counter = 0;
 		try {
-			for (int i = 0; i < string.length(); i++) {
-				String s = string.substring(i, i + 1);
+			for (int i = 0; i < pattern.length(); i++) {
+				String s = pattern.substring(i, i + 1);
 				String value = board.get(row + (i * gradient), col + i);
 				if ((value.equals(symbol) && s.equals("P"))
 						|| (value.equals(opponentSymbol) && s.equals("Q"))
@@ -231,7 +233,7 @@ public class AI extends Player {
 				} else {
 					break;
 				}
-			} if (counter == string.length()) {
+			} if (counter == pattern.length()) {
 				return true;
 			}
 		} catch (IndexOutOfBoundsException e) {
@@ -242,7 +244,6 @@ public class AI extends Player {
 	
 	/**
 	 * Recursive function to find how far down the lowest valid move is in a column
-	 * @param board	Board to be searched
 	 * @param row	Starting row
 	 * @param col	Starting column
 	 * @param depth	Current depth

@@ -16,6 +16,7 @@ public class Human extends Player {
 	/**
 	 * Human constructor
 	 * @param symbol	Symbol used to play
+	 * @param scan		Scanner used for human input
 	 */
 	public Human(String symbol, Scanner scan) {
 		super(symbol);
