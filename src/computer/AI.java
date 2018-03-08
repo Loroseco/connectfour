@@ -13,7 +13,8 @@ import java.math.BigInteger;
  * @author Loroseco
  *
  */
-public class AI extends Player {
+public class AI extends Player 
+{
 	
 	private final Board board;
 	
@@ -41,13 +42,15 @@ public class AI extends Player {
 	 * @param playerNumber	Index of player symbol in symbol array
 	 * @param board			Board object currently in play
 	 */
-	public AI(int playerNumber, Board board) {
+	public AI(int playerNumber, Board board) 
+	{
 		super(playerNumber);
 		this.board = board;
 		
 		q = playerNumber == 0 ? 1 : 0;
 		priorityRatings = new BigInteger[Config.PRIORITY_MATRIX.length];
-		for (int p = 0; p < Config.PRIORITY_MATRIX.length; p++) {
+		for (int p = 0; p < Config.PRIORITY_MATRIX.length; p++) 
+		{
 			priorityRatings[p] = new BigInteger("10").pow(Config.PRIORITY_MATRIX.length - (p + 1));
 		}
 	}
@@ -57,11 +60,14 @@ public class AI extends Player {
 	 * Fetches optimal move using priorityMatrix to assign priorites
 	 * @return	move
 	 */
-	public String getMove() {
+	public String getMove() 
+	{
 		resetColumnPriorities();
 		
-		for (int row = 0; row < board.getRowN(); row++) {
-			for (int col = 0; col < board.getColN(); col++) {
+		for (int row = 0; row < board.getRowN(); row++) 
+		{
+			for (int col = 0; col < board.getColN(); col++) 
+			{
 				addPriorityFromBoardIndex(row, col);
 			}
 		}
@@ -72,9 +78,11 @@ public class AI extends Player {
 	/**
 	 * Creates an empty array for the AI to use to assign priorities to columns
 	 */
-	private void resetColumnPriorities() {
+	private void resetColumnPriorities() 
+	{
 		columnPriorities = new BigInteger[board.getColN()];
-		for (int col = 0; col < board.getColN(); col++) {
+		for (int col = 0; col < board.getColN(); col++)
+		{
 			columnPriorities[col] =  new BigInteger("0");
 		}
 	}
@@ -84,13 +92,19 @@ public class AI extends Player {
 	 * @param row	Index row
 	 * @param col	Index column
 	 */
-	private void addPriorityFromBoardIndex(int row, int col) {
-		for (int priorityRow = 0; priorityRow < Config.PRIORITY_MATRIX.length; priorityRow++) {
-			for (int priorityCol = 0; priorityCol < Config.PRIORITY_MATRIX[priorityRow].length; priorityCol++) {
+	private void addPriorityFromBoardIndex(int row, int col)
+	{
+		for (int priorityRow = 0; priorityRow < Config.PRIORITY_MATRIX.length; priorityRow++)
+		{
+			for (int priorityCol = 0; priorityCol < Config.PRIORITY_MATRIX[priorityRow].length; priorityCol++) 
+			{
 				String priorityString = Config.PRIORITY_MATRIX[priorityRow][priorityCol];
-				if (priorityString.startsWith(Config.VERTICAL)) {
+				if (priorityString.startsWith(Config.VERTICAL)) 
+				{
 					addVerticalPriority(row, col, priorityRow, priorityString);
-				} else {
+				} 
+				else 
+				{
 					addHorizontalPriority(row, col, priorityRow, priorityString);
 				}
 			}
@@ -104,8 +118,10 @@ public class AI extends Player {
 	 * @param priorityRow		Row of priorityMatrix being checked
 	 * @param priorityString	String in priorityRow being checked
 	 */
-	private void addVerticalPriority(int row, int col, int priorityRow, String priorityString) {
-		if (doesVerticalStringStartAtIndex(row, col, priorityString)) {
+	private void addVerticalPriority(int row, int col, int priorityRow, String priorityString) 
+	{
+		if (doesVerticalStringStartAtIndex(row, col, priorityString))
+		{
 			columnPriorities[col] = columnPriorities[col].add(priorityRatings[priorityRow]);
 		}
 	}
@@ -117,16 +133,23 @@ public class AI extends Player {
 	 * @param priorityRow		Row of priorityMatrix being checked
 	 * @param priorityString	String in priorityRow being checked
 	 */
-	private void addHorizontalPriority(int row, int col, int priorityRow, String priorityString) {
-		for (int gradient = -1; gradient < 2; gradient++) {
-			if (doesHorizontalStringStartAtIndex(row, col, priorityString, gradient)) {
-				for (int i = 0; i < priorityString.length(); i++) {
+	private void addHorizontalPriority(int row, int col, int priorityRow, String priorityString) 
+	{
+		for (int gradient = -1; gradient < 2; gradient++)
+		{
+			if (doesHorizontalStringStartAtIndex(row, col, priorityString, gradient))
+			{
+				for (int i = 0; i < priorityString.length(); i++)
+				{
 					String letter = priorityString.substring(i, i + 1);
 					if (letter.equals(Config.E)
-							|| (letter.equals(Config.TWO) && priorityString.contains(Config.P))) {
+							|| (letter.equals(Config.TWO) && priorityString.contains(Config.P))) 
+					{
 						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow]);
-					} else if (letter.equals(Config.ONE)
-							|| (letter.equals(Config.TWO) && priorityString.contains(Config.Q))) {
+					} 
+					else if (letter.equals(Config.ONE)
+							|| (letter.equals(Config.TWO) && priorityString.contains(Config.Q))) 
+					{
 						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow].multiply(new BigInteger("-1")));
 					}
 				}
@@ -141,24 +164,32 @@ public class AI extends Player {
 	 * @param pattern	String to be searched for
 	 * @return			Has string been found
 	 */
-	private boolean doesVerticalStringStartAtIndex(int row, int col, String pattern) {
+	private boolean doesVerticalStringStartAtIndex(int row, int col, String pattern)
+	{
 		int counter = 0;
-		try {
+		try 
+		{
 			int n = Integer.parseInt(pattern.substring(2, 3));
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) 
+			{
 				String s = pattern.substring(1, 2);
 				if ((board.isIndexEqual(row + i, col, p) && s.equals(Config.P) && i < n) 
 						|| (board.isIndexEqual(row + i, col, q) && s.equals(Config.Q) && i < n)
-						|| (board.isIndexEmpty(row + 1, col) && i >= n)) {
+						|| (board.isIndexEmpty(row + 1, col) && i >= n)) 
+				{
 					counter++;
-				} else {
+				} 
+				else 
+				{
 					break;
 				}
 			}
-			if (counter == 4) {
+			if (counter == 4) 
+			{
 				return true;
 			}
-		} catch(IndexOutOfBoundsException e) {
+		} catch(IndexOutOfBoundsException e) 
+		{
 			
 		}
 		return false;
@@ -172,30 +203,41 @@ public class AI extends Player {
 	 * @param g			Gradient to be searched from start point
 	 * @return			Has string been found
 	 */
-	private boolean doesHorizontalStringStartAtIndex(int r, int c, String pattern, int gradient) {
+	private boolean doesHorizontalStringStartAtIndex(int r, int c, String pattern, int gradient) 
+	{
 		int counter = 0;
-		try {
-			for (int i = 0; i < pattern.length(); i++) {
+		try 
+		{
+			for (int i = 0; i < pattern.length(); i++) 
+			{
 				int row = r + (i * gradient);
 				int col = c + i;
 				
 				String letter = pattern.substring(i, i + 1);
 				if ((board.isIndexEqual(row, col, p) && letter.equals(Config.P))
-						|| (board.isIndexEqual(row, col, q) && letter.equals(Config.Q))) {
+						|| (board.isIndexEqual(row, col, q) && letter.equals(Config.Q))) 
+				{
 					counter++;
-				} else if (board.isIndexEmpty(row, col) && (letter.equals(Config.ONE) || letter.equals(Config.TWO) || letter.equals(Config.N))) {
+				} 
+				else if (board.isIndexEmpty(row, col) && (letter.equals(Config.ONE) || letter.equals(Config.TWO) || letter.equals(Config.N))) 
+				{
 					int depth = findDepth(row, col, 0);
 					if ((depth == 0 && (letter.equals(Config.E) || letter.equals(Config.N)))
-							|| Integer.toString(depth).equals(letter)) {
+							|| Integer.toString(depth).equals(letter)) 
+					{
 						counter++;
 					}
-				} else {
+				} 
+				else 
+				{
 					break;
 				}
-			} if (counter == pattern.length()) {
+			} if (counter == pattern.length()) 
+			{
 				return true;
 			}
-		} catch (IndexOutOfBoundsException e) {
+		} catch (IndexOutOfBoundsException e) 
+		{
 			
 		}
 		return false;
@@ -208,12 +250,16 @@ public class AI extends Player {
 	 * @param depth	Current depth
 	 * @return		Depth
 	 */
-	private int findDepth(int row, int col, int depth) {
+	private int findDepth(int row, int col, int depth) 
+	{
 		if (row == 0
 				|| (board.isIndexEmpty(row, col)
-						&& !board.isIndexEmpty(row - 1, col))) {
+						&& !board.isIndexEmpty(row - 1, col))) 
+		{
 			return depth;
-		} else {
+		}
+		else 
+		{
 			return findDepth(row - 1, col, depth + 1);
 		}
 	}
@@ -222,14 +268,20 @@ public class AI extends Player {
 	 * Returns the largest value in columnPriorities, picks one at random if there is a tie
 	 * @return	Column of optimal move
 	 */
-	private String calculateReturnMove() {
+	private String calculateReturnMove() 
+	{
 		BigInteger returnPriority = null;
 		ArrayList<Integer> returnMove = new ArrayList<Integer>();
-		for (int col = 0; col < columnPriorities.length; col++) {
-			if (board.isColumnFull(col)) {
+		for (int col = 0; col < columnPriorities.length; col++) 
+		{
+			if (board.isColumnFull(col)) 
+			{
 				continue;
-			} else if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) >= 0) {
-				if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) == 1) {
+			} 
+			else if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) >= 0) 
+			{
+				if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) == 1) 
+				{
 					returnPriority = columnPriorities[col];
 					returnMove = new ArrayList<Integer>();
 				}

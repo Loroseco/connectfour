@@ -6,7 +6,8 @@ package computer;
  * @author Loroseco
  *
  */
-class Config {
+class Config 
+{
 	
 	/**
 	 * AI Symbol

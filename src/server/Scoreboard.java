@@ -5,16 +5,19 @@ package server;
  * @author Loroseco
  *
  */
-class Scoreboard {
+class Scoreboard 
+{
 	private int[] score;
 	
 	/**
 	 * Constructor, allows the scoreboard to potentially support more than two players
 	 * @param symbol	Array of player symbols
 	 */
-	Scoreboard() {
+	Scoreboard()
+	{
 		this.score = new int[Output.SYMBOL.length];
-		for (int p = 0; p < score.length; p++) {
+		for (int p = 0; p < score.length; p++) 
+		{
 			score[p] = 0;
 		}
 	}
@@ -22,7 +25,8 @@ class Scoreboard {
 	/**
 	 * Prints all players' scores in format suitable for display
 	 */
-	void print() {
+	void print() 
+	{
 		Output.score(score);	
 	}
 	
@@ -30,9 +34,12 @@ class Scoreboard {
 	 * Adds one point to the chosen player
 	 * @param winner	Chosen player symbol
 	 */
-	void add(int winner) {
-		for (int p = 0; p < Output.SYMBOL.length; p++) {
-			if (p == winner) {
+	void add(int winner) 
+	{
+		for (int p = 0; p < Output.SYMBOL.length; p++) 
+		{
+			if (p == winner) 
+			{
 				score[p]++;
 				break;
 			}

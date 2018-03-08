@@ -5,14 +5,16 @@ package computer;
  * @author Loroseco
  *
  */
-public abstract class Player {
+public abstract class Player 
+{
 	
 	/**
 	 * Player number
 	 */
 	public int p;
 	
-	public Player(int p) {
+	public Player(int p)
+	{
 		this.p = p;
 	}
 	

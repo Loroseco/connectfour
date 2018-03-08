@@ -7,27 +7,33 @@ import java.util.Scanner;
  * @author Loroseco
  *
  */
-class Main {
+class Main 
+{
 	
 	/**
 	 * Main function, used to initiate game.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		Scanner scan = new Scanner(System.in);
 		boolean[] isAI = {false, true}; // Change here to assign AI to certain players
 		Connect game = new Connect(7, 10, isAI, scan);
 		
 		boolean playing = true;
-		while (playing) {
+		while (playing) 
+		{
 			game.play();
-
-			while (true) {
+			
+			while (true) 
+			{
 				Output.playAgain();
 				String input = scan.next().toLowerCase();
-				if (input.equals("y") || input.equals("yes")) {
+				if (input.equals("y") || input.equals("yes")) 
+				{
 					break;
 				} 
-				if (input.equals("n") || input.equals("no")) {
+				if (input.equals("n") || input.equals("no")) 
+				{
 					playing = false;
 					break;
 				}

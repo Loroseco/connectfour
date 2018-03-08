@@ -10,7 +10,8 @@ import server.Output;
  * @author Loroseco
  *
  */
-public class Human extends Player {
+public class Human extends Player 
+{
 	
 	private final Scanner scan;
 	
@@ -19,13 +20,15 @@ public class Human extends Player {
 	 * @param symbol	Symbol used to play
 	 * @param scan		Scanner used for human input
 	 */
-	public Human(int p, Scanner scan) {
+	public Human(int p, Scanner scan) 
+	{
 		super(p);
 		this.scan = scan;
 	}
 	
 	@Override
-	public String getMove() {
+	public String getMove() 
+	{
 		Output.printHumanMove(p);
 		return scan.next();
 	}
