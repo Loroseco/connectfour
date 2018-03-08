@@ -58,7 +58,7 @@ class Connect {
 		String winner = "";
 		int playerNumber = 1;
 		while (winner.equals("")) {
-			playerNumber = (playerNumber == 1) ? 0 : 1;
+			playerNumber = playerNumber == 1 ? 0 : 1;
 			winner = playTurn(playerNumber);
 		}
 		
@@ -84,7 +84,7 @@ class Connect {
 				return "n";
 			} else {
 				String move = player[p].getMove();
-				String output = makeMove(move, symbol[p]);
+				String output = makeMove(move, p);
 				if (output.substring(0, 4).equals("MOVE")) {
 					if (isAI[p]) {
 						board.print();
@@ -96,11 +96,11 @@ class Connect {
 				System.out.println(output);
 			}
 		}
-		String result = findWinner();
-		if (result.equals(symbol[p]) && !isAI[p]) {
+		String winner = findWinner();
+		if (winner.equals(symbol[p]) && !isAI[p]) {
 			board.print();
 		}
-		return result;
+		return winner;
 	}
 	
 	/**
@@ -108,7 +108,7 @@ class Connect {
 	 * @param symbol		Move symbol
 	 * @return				Success output (to be printed for player)
 	 */
-	String makeMove(String moveString, String symbol) {
+	String makeMove(String moveString, int p) {
 		try {
 			int move = Integer.parseInt(moveString);
 			if (board.isColumnFull(move)) {
@@ -116,8 +116,8 @@ class Connect {
 			} else {
 				for (int row = 0; row < rowN; row++) {
 					if (board.isEqual(row, move, " ")) {
-						board.set(row, move, symbol);
-						return String.format("MOVE MADE: PLAYER %s, COLUMN %s.", symbol, moveString);
+						board.set(row, move, symbol[p]);
+						return String.format("MOVE MADE: PLAYER %s, COLUMN %s.", symbol[p], moveString);
 					}
 				}
 			}

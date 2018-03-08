@@ -23,12 +23,11 @@ class Main {
 
 			while (true) {
 				System.out.print("PLAY AGAIN? (Y/N): ");
-				String userInput = scan.next();
-				String inputLower = userInput.toLowerCase();
-				if (inputLower.equals("y") || inputLower.equals("yes")) {
+				String input = scan.next().toLowerCase();
+				if (input.equals("y") || input.equals("yes")) {
 					break;
 				} 
-				if (inputLower.equals("n") || inputLower.equals("no")) {
+				if (input.equals("n") || input.equals("no")) {
 					playing = false;
 					break;
 				}
