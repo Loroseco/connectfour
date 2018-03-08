@@ -22,7 +22,7 @@ class Main {
 			game.play();
 
 			while (true) {
-				System.out.print("PLAY AGAIN? (Y/N): ");
+				Output.playAgain();
 				String input = scan.next().toLowerCase();
 				if (input.equals("y") || input.equals("yes")) {
 					break;
@@ -31,7 +31,7 @@ class Main {
 					playing = false;
 					break;
 				}
-				System.out.println("INVALID CHOICE.");
+				Output.error(1);
 			}
 		}
 		scan.close();

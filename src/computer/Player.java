@@ -7,10 +7,13 @@ package computer;
  */
 public abstract class Player {
 	
-	public String symbol;
+	/**
+	 * Player number
+	 */
+	public int p;
 	
-	public Player(String symbol) {
-		this.symbol = symbol;
+	public Player(int p) {
+		this.p = p;
 	}
 	
 	/**

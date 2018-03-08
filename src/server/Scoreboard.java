@@ -7,15 +7,13 @@ package server;
  */
 class Scoreboard {
 	private int[] score;
-	private String[] symbol;
 	
 	/**
 	 * Constructor, allows the scoreboard to potentially support more than two players
 	 * @param symbol	Array of player symbols
 	 */
-	Scoreboard(String[] symbol) {
-		this.symbol = symbol;
-		this.score = new int[symbol.length];
+	Scoreboard() {
+		this.score = new int[Output.SYMBOL.length];
 		for (int p = 0; p < score.length; p++) {
 			score[p] = 0;
 		}
@@ -25,20 +23,16 @@ class Scoreboard {
 	 * Prints all players' scores in format suitable for display
 	 */
 	void print() {
-		for (int p = 0; p < symbol.length; p++) {
-			System.out.print((p != 0) ? " , " : "");
-			System.out.print("PLAYER " + symbol[p] + ": " + Integer.toString(score[p]));
-		}
-		System.out.println();		
+		Output.score(score);	
 	}
 	
 	/**
 	 * Adds one point to the chosen player
-	 * @param symbol	Chosen player symbol
+	 * @param winner	Chosen player symbol
 	 */
-	void add(String symbol) {
-		for (int p = 0; p < this.symbol.length; p++) {
-			if (this.symbol[p].equals(symbol)) {
+	void add(int winner) {
+		for (int p = 0; p < Output.SYMBOL.length; p++) {
+			if (p == winner) {
 				score[p]++;
 				break;
 			}

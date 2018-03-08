@@ -12,18 +12,17 @@ import computer.*;
  */
 class Connect {
 	
-	private int rowN;
-	private int colN;
-	private boolean[] isAI;
-	private Board board;
+	private final int rowN;
+	private final int colN;
+	private final boolean[] isAI;
+	private final Board board;
 	
 	/**
 	 * Arraylist of moves played by both players, in order
 	 */
-	private ArrayList<Integer> moves;
-	private Scoreboard score;
-	private Player[] player;
-	private String[] symbol = {"X", "O"};
+	private final ArrayList<Integer> moves;
+	private final Scoreboard score;
+	private final Player[] player;
 	
 	
 	/**
@@ -39,12 +38,12 @@ class Connect {
 		this.isAI = isAI;
 		this.board = new Board(rowN, colN);
 		this.moves = new ArrayList<Integer>();
-		this.score = new Scoreboard(symbol);
+		this.score = new Scoreboard();
 		this.player = new Player[2];
 		
 		for (int p = 0; p < 2; p++) {
-			player[p] = isAI[p] ? new AI(symbol, p, board)
-							    : new Human(symbol[p], scan);
+			player[p] = isAI[p] ? new AI(p, board)
+							    : new Human(p, scan);
 		}
 	}
 	
@@ -55,14 +54,14 @@ class Connect {
 		board.createBoard();
 		moves.clear();
 
-		String winner = "";
+		int winner = 3;
 		int playerNumber = 1;
-		while (winner.equals("")) {
+		while (winner == 3) {
 			playerNumber = playerNumber == 1 ? 0 : 1;
 			winner = playTurn(playerNumber);
 		}
 		
-		if ("XO".contains(winner)) {
+		if (winner == 0 || winner == 1) {
 			System.out.println(String.format("WINNER: PLAYER %s.", winner));
 			score.add(winner);
 			printMoves(winner);
@@ -78,26 +77,26 @@ class Connect {
 	 * @param p	Player number
 	 * @return	Symbol of winner, "n" for draw or "" for not finished
 	 */
-	private String playTurn(int p) {
+	private int playTurn(int p) {
 		while (true) {
 			if (board.isBoardFull()) {
-				return "n";
+				return 2;
 			} else {
 				String move = player[p].getMove();
-				String output = makeMove(move, p);
-				if (output.substring(0, 4).equals("MOVE")) {
+				int output = makeMove(move, p);
+				if (output == 0) {
 					if (isAI[p]) {
 						board.print();
 					}
 					moves.add(Integer.parseInt(move));
-					System.out.println(output);
+					Output.moveMade(p, move);
 					break;
 				}
-				System.out.println(output);
+				Output.error(output);
 			}
 		}
-		String winner = findWinner();
-		if (winner.equals(symbol[p]) && !isAI[p]) {
+		int winner = findWinner();
+		if (winner == p && !isAI[p]) {
 			board.print();
 		}
 		return winner;
@@ -108,39 +107,39 @@ class Connect {
 	 * @param symbol		Move symbol
 	 * @return				Success output (to be printed for player)
 	 */
-	String makeMove(String moveString, int p) {
+	int makeMove(String moveString, int p) {
 		try {
 			int move = Integer.parseInt(moveString);
 			if (board.isColumnFull(move)) {
-				return "INVALID MOVE: COLUMN IS FULL.";
+				return 1;
 			} else {
 				for (int row = 0; row < rowN; row++) {
-					if (board.isEqual(row, move, " ")) {
-						board.set(row, move, symbol[p]);
-						return String.format("MOVE MADE: PLAYER %s, COLUMN %s.", symbol[p], moveString);
+					if (board.isIndexEmpty(row, move)) {
+						board.set(row, move, p);
+						return 0;
 					}
 				}
 			}
 		} catch (NumberFormatException e) {
-			return "INVALID MOVE.";
+			return 2;
 		} catch (IndexOutOfBoundsException e) {
-			return "NUMBER OUT OF BOUNDS.";
+			return 3;
 		}
-		return "UNKNOWN ERROR. PLEASE TRY AGAIN.";
+		return -1;
 	}
 	
 	/**
 	 * Checks if either player has won
 	 * @return	Symbol of winner, "" if none
 	 */
-	String findWinner() {
+	private int findWinner() {
 		g:
 		for (int g = -1; g < 3; g++) {
 			r:
 			for (int r = 0; r < rowN; r++) {
 				c:
 				for (int c = 0; c < colN; c++) {
-					String symbol = "XO";
+					int[] counter = {0, 0};
 					try {
 						int row;
 						int col;
@@ -152,14 +151,18 @@ class Connect {
 								row = r + (i * g);
 								col = c + i;
 							}
-							String element = board.get(row, col);
-							if (symbol.contains(element)) {
-								symbol = element;
-							} else {
-								continue c;
+							for (int p = 0; p < Output.SYMBOL.length; p++) {
+								if (board.isIndexEqual(row, col, p)) {
+									counter[p]++;
+								}
 							}
 						}
-						return symbol;
+						for (int p = 0; p < counter.length; p++) {
+							if (counter[p] == 4) {
+								return p;
+							}
+						}
+						continue c;
 					} catch(IndexOutOfBoundsException e) {
 						if (g == 2) {
 							break g;
@@ -170,16 +173,16 @@ class Connect {
 				}
 			}
 		}
-		return "";
+		return 3;
 	}
 	
 	/**
 	 * Prints moves arraylist if AI loses a game, for analysis purposes
 	 * @param winner	Winning symbol
 	 */
-	private void printMoves(String winner) {
-		for (int p = 0; p < symbol.length; p++) {
-			if (!winner.equals(symbol[p]) && isAI[p]) {
+	private void printMoves(int winner) {
+		for (int p = 0; p < Output.SYMBOL.length; p++) {
+			if (winner != p && isAI[p]) {
 				System.out.println(moves);
 				break;
 			}

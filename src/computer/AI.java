@@ -16,13 +16,17 @@ import java.math.BigInteger;
 public class AI extends Player {
 	
 	private final Board board;
-	private final String opponentSymbol;
+	
+	/**
+	 * Opponent player number
+	 */
+	private final int q;
 	
 	/**
 	 * A matrix representing the priorities of priorityMatrix, one entry per priorityMatrix row.		<br>
 	 * Generated in the constructor every time to make changes to priorityRatings easier to manage.
 	 */
-	private BigInteger[] priorityRatings;
+	private final BigInteger[] priorityRatings;
 	
 	/**
 	 * Priority of play for each column in the board, calculated by AI.									<br>
@@ -37,11 +41,11 @@ public class AI extends Player {
 	 * @param playerNumber	Index of player symbol in symbol array
 	 * @param board			Board object currently in play
 	 */
-	public AI(String[] symbolArray, int playerNumber, Board board) {
-		super(symbolArray[playerNumber]);
+	public AI(int playerNumber, Board board) {
+		super(playerNumber);
 		this.board = board;
 		
-		opponentSymbol = symbolArray[playerNumber == 0 ? 1 : 0];
+		q = playerNumber == 0 ? 1 : 0;
 		priorityRatings = new BigInteger[Config.PRIORITY_MATRIX.length];
 		for (int p = 0; p < Config.PRIORITY_MATRIX.length; p++) {
 			priorityRatings[p] = new BigInteger("10").pow(Config.PRIORITY_MATRIX.length - (p + 1));
@@ -84,7 +88,7 @@ public class AI extends Player {
 		for (int priorityRow = 0; priorityRow < Config.PRIORITY_MATRIX.length; priorityRow++) {
 			for (int priorityCol = 0; priorityCol < Config.PRIORITY_MATRIX[priorityRow].length; priorityCol++) {
 				String priorityString = Config.PRIORITY_MATRIX[priorityRow][priorityCol];
-				if (priorityString.startsWith("V")) {
+				if (priorityString.startsWith(Config.VERTICAL)) {
 					addVerticalPriority(row, col, priorityRow, priorityString);
 				} else {
 					addHorizontalPriority(row, col, priorityRow, priorityString);
@@ -118,11 +122,11 @@ public class AI extends Player {
 			if (doesHorizontalStringStartAtIndex(row, col, priorityString, gradient)) {
 				for (int i = 0; i < priorityString.length(); i++) {
 					String letter = priorityString.substring(i, i + 1);
-					if (letter.equals("_")
-							|| (letter.equals("2") && priorityString.contains("P"))) {
+					if (letter.equals(Config.E)
+							|| (letter.equals(Config.TWO) && priorityString.contains(Config.P))) {
 						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow]);
-					} else if (letter.equals("1")
-							|| (letter.equals("2") && priorityString.contains("Q"))) {
+					} else if (letter.equals(Config.ONE)
+							|| (letter.equals(Config.TWO) && priorityString.contains(Config.Q))) {
 						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow].multiply(new BigInteger("-1")));
 					}
 				}
@@ -142,11 +146,10 @@ public class AI extends Player {
 		try {
 			int n = Integer.parseInt(pattern.substring(2, 3));
 			for (int i = 0; i < 4; i++) {
-				String value = board.get(row + i, col);
 				String s = pattern.substring(1, 2);
-				if ((value.equals(symbol) && s.equals("P") && i < n) 
-						|| (value.equals(opponentSymbol) && s.equals("Q") && i < n)
-						|| (value.equals(" ") && i >= n)) {
+				if ((board.isIndexEqual(row + i, col, p) && s.equals(Config.P) && i < n) 
+						|| (board.isIndexEqual(row + i, col, q) && s.equals(Config.Q) && i < n)
+						|| (board.isIndexEmpty(row + 1, col) && i >= n)) {
 					counter++;
 				} else {
 					break;
@@ -163,26 +166,27 @@ public class AI extends Player {
 	
 	/**
 	 * Checks specified part of board for horizontal strings. 
-	 * @param row		Row
-	 * @param col		Column
+	 * @param r			Row
+	 * @param c			Column
 	 * @param pattern	String to be searched for
 	 * @param g			Gradient to be searched from start point
 	 * @return			Has string been found
 	 */
-	private boolean doesHorizontalStringStartAtIndex(int row, int col, String pattern, int gradient) {
+	private boolean doesHorizontalStringStartAtIndex(int r, int c, String pattern, int gradient) {
 		int counter = 0;
 		try {
 			for (int i = 0; i < pattern.length(); i++) {
-				String s = pattern.substring(i, i + 1);
-				String value = board.get(row + (i * gradient), col + i);
-				if ((value.equals(symbol) && s.equals("P"))
-						|| (value.equals(opponentSymbol) && s.equals("Q"))
-						|| (value.equals(" ") && s.equals("E"))) {
+				int row = r + (i * gradient);
+				int col = c + i;
+				
+				String letter = pattern.substring(i, i + 1);
+				if ((board.isIndexEqual(row, col, p) && letter.equals(Config.P))
+						|| (board.isIndexEqual(row, col, q) && letter.equals(Config.Q))) {
 					counter++;
-				} else if (value.equals(" ") && "123456789_N".contains(s)) {
-					int depth = findDepth(row + (i * gradient), col + i, 0);
-					if ((depth == 0 && "_N".contains(s))
-							|| Integer.toString(depth).equals(s)) {
+				} else if (board.isIndexEmpty(row, col) && (letter.equals(Config.ONE) || letter.equals(Config.TWO) || letter.equals(Config.N))) {
+					int depth = findDepth(row, col, 0);
+					if ((depth == 0 && (letter.equals(Config.E) || letter.equals(Config.N)))
+							|| Integer.toString(depth).equals(letter)) {
 						counter++;
 					}
 				} else {
@@ -206,8 +210,8 @@ public class AI extends Player {
 	 */
 	private int findDepth(int row, int col, int depth) {
 		if (row == 0
-				|| (board.isEqual(row, col, " ")
-						&& !board.isEqual(row - 1, col, " "))) {
+				|| (board.isIndexEmpty(row, col)
+						&& !board.isIndexEmpty(row - 1, col))) {
 			return depth;
 		} else {
 			return findDepth(row - 1, col, depth + 1);

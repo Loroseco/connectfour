@@ -9,8 +9,8 @@ import java.util.Arrays;
  */
 public class Board {
 	private String[][] board;
-	private int rowN;
-	private int colN;
+	private final int rowN;
+	private final int colN;
 	private String[] boardText = {" \\  / |",
 								  "  \\/  |",
 								  "  /\\  |",
@@ -63,10 +63,10 @@ public class Board {
 	 * Board index mutator
 	 * @param row	Row to be changed
 	 * @param col	Column to be changed
-	 * @param value	New value
+	 * @param p		New value
 	 */
-	void set(int row, int col, String value) {
-		board[row][col] = value;
+	void set(int row, int col, int p) {
+		board[row][col] = Output.SYMBOL[p];
 	}
 	
 	/**
@@ -96,14 +96,28 @@ public class Board {
 	}
 	
 	/**
-	 * Checks if element is equal to given value
+	 * Checks if the index is empty
 	 * @param row	Row to be checked
 	 * @param col	Column to be checked
-	 * @param value	Value to be checked against
-	 * @return		Is element equal to vale, trye or false
+	 * @return		Is index empty
 	 */
-	public boolean isEqual(int row, int col, String value) {
-		if (board[row][col].equals(value)) {
+	public boolean isIndexEmpty(int row, int col) {
+		if (board[row][col].equals(Output.EMPTY)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Checks if indwx is equal to given value
+	 * @param row	Row to be checked
+	 * @param col	Column to be checked
+	 * @param p		Symbol to be checked for
+	 * @return		Does index contain the symbol
+	 */
+	public boolean isIndexEqual(int row, int col, int p) {
+		if (board[row][col].equals(Output.SYMBOL[p])) {
 			return true;
 		} else {
 			return false;
@@ -115,7 +129,7 @@ public class Board {
 	public void createBoard() {
 		for (int r = 0;  r < rowN; r++) {
 			for (int c = 0; c < colN; c++) {
-				board[r][c] = " ";
+				board[r][c] = Output.EMPTY;
 			}
 		}
 		print();

@@ -3,6 +3,7 @@ package client;
 import java.util.Scanner;
 
 import computer.Player;
+import server.Output;
 
 /**
  * Human class to be used by player, handles player input from console
@@ -11,21 +12,21 @@ import computer.Player;
  */
 public class Human extends Player {
 	
-	private Scanner scan;
+	private final Scanner scan;
 	
 	/**
 	 * Human constructor
 	 * @param symbol	Symbol used to play
 	 * @param scan		Scanner used for human input
 	 */
-	public Human(String symbol, Scanner scan) {
-		super(symbol);
+	public Human(int p, Scanner scan) {
+		super(p);
 		this.scan = scan;
 	}
 	
 	@Override
 	public String getMove() {
-		System.out.print(String.format("PLAYER %s - ENTER MOVE: ", symbol));
+		Output.printHumanMove(p);
 		return scan.next();
 	}
 }

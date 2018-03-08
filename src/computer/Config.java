@@ -9,14 +9,43 @@ package computer;
 class Config {
 	
 	/**
-	 * All patterns that the AI detects. the higher rows are higher priorities.							<br>
-	 * P	AI symbol																					<br>
-	 * Q	Opponent symbol																				<br>
-	 * _	Valid move																					<br>
-	 * 1	Empty space above a valid move																<br>
-	 * 2	Empty space above "1"																		<br>
-	 * N	Valid move that is not assigned a priority from this string									<br>
-	 * V	Vertical pattern. 2nd symbol is player symbol and 3rd is the height of the pattern.
+	 * AI Symbol
+	 */
+	static final String P = "P";
+	
+	/**
+	 * Opponent Symbol
+	 */
+	static final String Q = "Q";
+	
+	/**
+	 * Valid move
+	 */
+	static final String E = "_";
+	
+	/**
+	 * Empty space above a valid move
+	 */
+	static final String ONE = "1";
+	
+	/**
+	 * Empty space above "ONE"
+	 */
+	static final String TWO = "2";
+	
+	/**
+	 * Valid move that is not assigned a priority from this string	
+	 */
+	static final String N = "N";
+	
+	/**
+	 * Vertical pattern. 2nd symbol is player symbol and 3rd is the height of the pattern.
+	 */
+	static final String VERTICAL = "V";
+	
+	
+	/**
+	 * All patterns that the AI detects. the higher rows are higher priorities.
 	 */
 	static final String[][] PRIORITY_MATRIX = 
 		{{"P_PP", "PP_P", "PPP_", "_PPP", "VP3"},
