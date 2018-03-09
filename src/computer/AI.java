@@ -49,10 +49,10 @@ public class AI extends Player
 		this.board = board;
 		
 		q = playerNumber == 0 ? 1 : 0;
-		priorityRatings = new BigInteger[Config.PRIORITY_MATRIX.length];
-		for (int p = 0; p < Config.PRIORITY_MATRIX.length; p++) 
+		priorityRatings = new BigInteger[AIConfig.PRIORITY_MATRIX.length];
+		for (int p = 0; p < AIConfig.PRIORITY_MATRIX.length; p++) 
 		{
-			priorityRatings[p] = new BigInteger("10").pow(Config.PRIORITY_MATRIX.length - (p + 1));
+			priorityRatings[p] = new BigInteger("10").pow(AIConfig.PRIORITY_MATRIX.length - (p + 1));
 		}
 	}
 	
@@ -95,18 +95,17 @@ public class AI extends Player
 	 */
 	private void addPriorityFromBoardIndex(int row, int col)
 	{
-		for (int priorityRow = 0; priorityRow < Config.PRIORITY_MATRIX.length; priorityRow++)
+		for (int priorityRow = 0; priorityRow < AIConfig.PRIORITY_MATRIX.length; priorityRow++)
 		{
-			for (int priorityCol = 0; priorityCol < Config.PRIORITY_MATRIX[priorityRow].length; priorityCol++) 
+			for (int priorityCol = 0; priorityCol < AIConfig.PRIORITY_MATRIX[priorityRow].length; priorityCol++) 
 			{
-				String priorityString = Config.PRIORITY_MATRIX[priorityRow][priorityCol];
-				if (priorityString.startsWith(Config.VERTICAL)) 
+				if (AIConfig.PRIORITY_MATRIX[priorityRow][priorityCol].startsWith(AIConfig.VERTICAL.get())) 
 				{
-					addVerticalPriority(row, col, priorityRow, priorityString);
+					addVerticalPriority(row, col, priorityRow, priorityCol);
 				} 
 				else 
 				{
-					addHorizontalPriority(row, col, priorityRow, priorityString);
+					addHorizontalPriority(row, col, priorityRow, priorityCol);
 				}
 			}
 		}
@@ -119,8 +118,9 @@ public class AI extends Player
 	 * @param priorityRow		Row of priorityMatrix being checked
 	 * @param priorityString	String in priorityRow being checked
 	 */
-	private void addVerticalPriority(int row, int col, int priorityRow, String priorityString) 
-	{
+	private void addVerticalPriority(int row, int col, int priorityRow, int priorityCol) 
+	{	
+		String priorityString = AIConfig.PRIORITY_MATRIX[priorityRow][priorityCol];
 		if (doesVerticalStringStartAtIndex(row, col, priorityString))
 		{
 			columnPriorities[col] = columnPriorities[col].add(priorityRatings[priorityRow]);
@@ -134,8 +134,9 @@ public class AI extends Player
 	 * @param priorityRow		Row of priorityMatrix being checked
 	 * @param priorityString	String in priorityRow being checked
 	 */
-	private void addHorizontalPriority(int row, int col, int priorityRow, String priorityString) 
-	{
+	private void addHorizontalPriority(int row, int col, int priorityRow, int priorityCol) 
+	{	
+		String priorityString = AIConfig.PRIORITY_MATRIX[priorityRow][priorityCol];
 		for (int gradient = -1; gradient < 2; gradient++)
 		{
 			if (doesHorizontalStringStartAtIndex(row, col, priorityString, gradient))
@@ -143,13 +144,13 @@ public class AI extends Player
 				for (int i = 0; i < priorityString.length(); i++)
 				{
 					String letter = priorityString.substring(i, i + 1);
-					if (letter.equals(Config.VALID)
-							|| (letter.equals(Config.TWO) && priorityString.contains(Config.PLAYER))) 
+					if (letter.equals(AIConfig.VALID.get())
+							|| (letter.equals(AIConfig.TWO.get()) && priorityString.contains(AIConfig.PLAYER.get()))) 
 					{
 						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow]);
 					} 
-					else if (letter.equals(Config.ONE)
-							|| (letter.equals(Config.TWO) && priorityString.contains(Config.OPPONENT))) 
+					else if (letter.equals(AIConfig.ONE.get())
+							|| (letter.equals(AIConfig.TWO.get()) && priorityString.contains(AIConfig.OPPONENT.get()))) 
 					{
 						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow].multiply(new BigInteger("-1")));
 					}
@@ -174,8 +175,8 @@ public class AI extends Player
 			for (int i = 0; i < 4; i++) 
 			{
 				String s = pattern.substring(1, 2);
-				if ((board.isIndexEqual(row + i, col, p) && s.equals(Config.PLAYER) && i < n) 
-						|| (board.isIndexEqual(row + i, col, q) && s.equals(Config.OPPONENT) && i < n)
+				if ((board.isIndexEqual(row + i, col, p) && s.equals(AIConfig.PLAYER.get()) && i < n) 
+						|| (board.isIndexEqual(row + i, col, q) && s.equals(AIConfig.OPPONENT.get()) && i < n)
 						|| (board.isIndexEmpty(row + 1, col) && i >= n)) 
 				{
 					counter++;
@@ -215,17 +216,17 @@ public class AI extends Player
 				int col = c + i;
 				
 				String letter = pattern.substring(i, i + 1);
-				if ((board.isIndexEqual(row, col, p) && letter.equals(Config.PLAYER))
-						|| (board.isIndexEqual(row, col, q) && letter.equals(Config.OPPONENT))) 
+				if ((board.isIndexEqual(row, col, p) && letter.equals(AIConfig.PLAYER.get()))
+						|| (board.isIndexEqual(row, col, q) && letter.equals(AIConfig.OPPONENT.get()))) 
 				{
 					counter++;
 				} 
 				else if (board.isIndexEmpty(row, col) 
-						&& (letter.equals(Config.ONE) || letter.equals(Config.TWO) 
-								|| letter.equals(Config.NO_SCORE) || letter.equals(Config.VALID))) 
+						&& (letter.equals(AIConfig.ONE.get()) || letter.equals(AIConfig.TWO.get()) 
+								|| letter.equals(AIConfig.NO_SCORE.get()) || letter.equals(AIConfig.VALID.get()))) 
 				{
 					int depth = findDepth(row, col, 0);
-					if ((depth == 0 && (letter.equals(Config.VALID) || letter.equals(Config.NO_SCORE)))
+					if ((depth == 0 && (letter.equals(AIConfig.VALID.get()) || letter.equals(AIConfig.NO_SCORE.get())))
 							|| Integer.toString(depth).equals(letter)) 
 					{
 						counter++;
