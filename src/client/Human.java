@@ -29,7 +29,7 @@ public class Human extends Player
 	@Override
 	public String getMove() 
 	{
-		Output.printHumanMove(p);
+		Output.HUMAN_MOVE.print(p);
 		return scan.next();
 	}
 }

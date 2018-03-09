@@ -89,18 +89,16 @@ class Connect
 			else
 			{
 				String move = player[p].getMove();
-				int output = makeMove(move, p);
-				if (output == 0) 
+				if (makeMove(move, p)) 
 				{
 					if (Config.IS_AI[p]) 
 					{
 						board.print();
 					}
 					moves.add(Integer.parseInt(move));
-					Output.moveMade(p, move);
+					Output.MOVE_MADE.println(p, move);
 					break;
 				}
-				Output.error(output);
 			}
 		}
 		int winner = findWinner();
@@ -116,14 +114,15 @@ class Connect
 	 * @param symbol		Move symbol
 	 * @return				Success output (to be printed for player)
 	 */
-	int makeMove(String moveString, int p) 
+	boolean makeMove(String moveString, int p) 
 	{
 		try 
 		{
 			int move = Integer.parseInt(moveString);
 			if (board.isColumnFull(move)) 
 			{
-				return 1;
+				Output.EXCEPTION_COLUMN_FULL.println();
+				return false;
 			} 
 			else 
 			{
@@ -132,20 +131,23 @@ class Connect
 					if (board.isIndexEmpty(row, move)) 
 					{
 						board.set(row, move, p);
-						return 0;
+						return true;
 					}
 				}
 			}
 		} 
 		catch (NumberFormatException e) 
 		{
-			return 2;
+			Output.EXCEPTION_INVALID.println();
+			return false;
 		} 
 		catch (IndexOutOfBoundsException e) 
 		{
-			return 3;
+			Output.EXCEPTION_OUT_OF_BOUNDS.println();
+			return false;
 		}
-		return -1;
+		Output.EXCEPTION_UNKNOWN.println();
+		return false;
 	}
 	
 	/**

@@ -1,49 +1,49 @@
 package server;
 
-public class Output 
-{	
-	public static void printHumanMove(int p) 
+public enum Output {
+	HUMAN_MOVE("PLAYER %s - ENTER MOVE: "),
+	SCORE("PLAYER %s SCORE: %s"),
+	MOVE_MADE("MOVE MADE: PLAYER %s, COLUMN %s."),
+	PLAY_AGAIN("PLAY AGAIN? (Y/N): "),
+	EXCEPTION_COLUMN_FULL("INVALID MOVE: COLUMN IS FULL."),
+	EXCEPTION_INVALID("INVALID CHOICE."),
+	EXCEPTION_OUT_OF_BOUNDS("NUMBER OUT OF BOUNDS."),
+	EXCEPTION_UNKNOWN("UNKNOWN ERROR. PLEASE TRY AGAIN.");
+	
+	private String message;
+	
+	Output(String message)
 	{
-		System.out.print(String.format("PLAYER %s - ENTER MOVE: ", Config.SYMBOLS[p]));
+		this.message = message;
 	}
 	
-	public static void score(int[] score) 
+	public void print()
 	{
-		for (int p = 0; p < Config.SYMBOLS.length; p++) 
-		{
-			System.out.print((p != 0) ? " , " : "");
-			System.out.print("PLAYER " + Config.SYMBOLS[p] + ": " + Integer.toString(score[p]));
-		}
-		System.out.println();
+		System.out.print(message);
 	}
 	
-	public static void moveMade(int p, String move) 
+	public void print(int p)
 	{
-		System.out.println(String.format("MOVE MADE: PLAYER %s, COLUMN %s.", Config.SYMBOLS[p], move));
+		System.out.print(String.format(message, Config.SYMBOLS[p]));
 	}
 	
-	public static void error(int i)
+	public void print(int p, String arg)
 	{
-		if (i == 0) 
-		{
-			System.out.println("INVALID MOVE: COLUMN IS FULL.");
-		} 
-		else if (i == 1) 
-		{
-			System.out.println("INVALID CHOICE.");
-		} 
-		else if (i == 2) 
-		{
-			System.out.println("NUMBER OUT OF BOUNDS.");
-		} 
-		else 
-		{
-			System.out.println("UNKNOWN ERROR. PLEASE TRY AGAIN.");
-		}
+		System.out.print(String.format(message, Config.SYMBOLS[p], arg));
 	}
 	
-	public static void playAgain() 
+	public void println()
 	{
-		System.out.print("PLAY AGAIN? (Y/N): ");
+		System.out.println(message);
+	}
+	
+	public void println(int p)
+	{
+		System.out.println(String.format(message, Config.SYMBOLS[p]));
+	}
+	
+	public void println(int p, String arg)
+	{
+		System.out.println(String.format(message, Config.SYMBOLS[p], arg));
 	}
 }

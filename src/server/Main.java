@@ -25,7 +25,7 @@ class Main
 			
 			while (true) 
 			{
-				Output.playAgain();
+				Output.PLAY_AGAIN.print();
 				String input = scan.next().toLowerCase();
 				if (input.equals("y") || input.equals("yes")) 
 				{
@@ -36,7 +36,7 @@ class Main
 					playing = false;
 					break;
 				}
-				Output.error(1);
+				Output.EXCEPTION_INVALID.println();
 			}
 		}
 		scan.close();
