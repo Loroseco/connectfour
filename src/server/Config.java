@@ -1,4 +1,4 @@
-package computer;
+package server;
 
 /**
  * Config class to hold priority order for AI class.
@@ -6,49 +6,58 @@ package computer;
  * @author Loroseco
  *
  */
-class Config 
+public final class Config 
 {
 	
 	/**
-	 * AI Symbol
+	 * Array of player symbols
 	 */
-	static final String P = "P";
+	public static final String[] SYMBOLS = {"X", "O"};
 	
 	/**
-	 * Opponent Symbol
+	 * Number of players
 	 */
-	static final String Q = "Q";
+	public static final int PLAYER_N = SYMBOLS.length;
 	
 	/**
-	 * Valid move
+	 * Number of rows
 	 */
-	static final String E = "_";
+	public static final int ROW_N = 7;
 	
 	/**
-	 * Empty space above a valid move
+	 * Number of columns
 	 */
-	static final String ONE = "1";
+	public static final int COL_N = 10;
 	
 	/**
-	 * Empty space above "ONE"
+	 * Which players will be AI
 	 */
-	static final String TWO = "2";
+	public static final boolean[] IS_AI = {false, true};
 	
 	/**
-	 * Valid move that is not assigned a priority from this string	
+	 * Used as empty space in the board
 	 */
-	static final String N = "N";
+	public static final String EMPTY = " ";
 	
 	/**
-	 * Vertical pattern. 2nd symbol is player symbol and 3rd is the height of the pattern.
+	 * Text used to draw board
 	 */
-	static final String VERTICAL = "V";
-	
+	public static final String[] BOARD_TEXT = 
+	     {" \\  / |",
+		  "  \\/  |",
+		  "  /\\  |",
+		  " /  \\ |",
+		  " /--\\ |",
+		  " |  | |",
+		  " |  | |",
+		  " \\--/ |",
+		  "      |",
+		  "------+"};
 	
 	/**
 	 * All patterns that the AI detects. the higher rows are higher priorities.
 	 */
-	static final String[][] PRIORITY_MATRIX = 
+	public static final String[][] PRIORITY_MATRIX = 
 		{{"P_PP", "PP_P", "PPP_", "_PPP", "VP3"},
 		 {"Q_QQ", "QQ_Q", "QQQ_", "_QQQ", "VQ3"},
 		 {"Q1QQ", "QQ1Q", "QQQ1", "1QQQ"},
@@ -76,4 +85,39 @@ class Config
 		 {"P111", "111P", "11P1", "1P11"},
 		 {"Q111", "111Q", "11Q1", "1Q11"}
 		};
+	
+	/**
+	 * AI Symbol in PRIORITY_MATRIX
+	 */
+	public static final String PLAYER = "P";
+	
+	/**
+	 * Opponent Symbol in PRIORITY_MATRIX
+	 */
+	public static final String OPPONENT = "Q";
+	
+	/**
+	 * Valid move in PRIORITY_MATRIX
+	 */
+	public static final String VALID = "_";
+	
+	/**
+	 * Empty space above a valid move in PRIORITY_MATRIX
+	 */
+	public static final String ONE = "1";
+	
+	/**
+	 * Empty space above "ONE" in PRIORITY_MATRIX
+	 */
+	public static final String TWO = "2";
+	
+	/**
+	 * Valid move that is not assigned a priority from this string in PRIORITY_MATRIX
+	 */
+	public static final String NO_SCORE = "N";
+	
+	/**
+	 * Vertical pattern in PRIORITY_MATRIX. 2nd symbol is player symbol and 3rd is the height of the pattern.
+	 */
+	public static final String VERTICAL = "V";
 }

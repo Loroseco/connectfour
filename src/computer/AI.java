@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import server.Board;
+import server.Config;
 
 import java.math.BigInteger;
 
@@ -64,9 +65,9 @@ public class AI extends Player
 	{
 		resetColumnPriorities();
 		
-		for (int row = 0; row < board.getRowN(); row++) 
+		for (int row = 0; row < Config.ROW_N; row++) 
 		{
-			for (int col = 0; col < board.getColN(); col++) 
+			for (int col = 0; col < Config.COL_N; col++) 
 			{
 				addPriorityFromBoardIndex(row, col);
 			}
@@ -80,8 +81,8 @@ public class AI extends Player
 	 */
 	private void resetColumnPriorities() 
 	{
-		columnPriorities = new BigInteger[board.getColN()];
-		for (int col = 0; col < board.getColN(); col++)
+		columnPriorities = new BigInteger[Config.COL_N];
+		for (int col = 0; col < Config.COL_N; col++)
 		{
 			columnPriorities[col] =  new BigInteger("0");
 		}
@@ -142,13 +143,13 @@ public class AI extends Player
 				for (int i = 0; i < priorityString.length(); i++)
 				{
 					String letter = priorityString.substring(i, i + 1);
-					if (letter.equals(Config.E)
-							|| (letter.equals(Config.TWO) && priorityString.contains(Config.P))) 
+					if (letter.equals(Config.VALID)
+							|| (letter.equals(Config.TWO) && priorityString.contains(Config.PLAYER))) 
 					{
 						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow]);
 					} 
 					else if (letter.equals(Config.ONE)
-							|| (letter.equals(Config.TWO) && priorityString.contains(Config.Q))) 
+							|| (letter.equals(Config.TWO) && priorityString.contains(Config.OPPONENT))) 
 					{
 						columnPriorities[col + i] = columnPriorities[col + i].add(priorityRatings[priorityRow].multiply(new BigInteger("-1")));
 					}
@@ -173,8 +174,8 @@ public class AI extends Player
 			for (int i = 0; i < 4; i++) 
 			{
 				String s = pattern.substring(1, 2);
-				if ((board.isIndexEqual(row + i, col, p) && s.equals(Config.P) && i < n) 
-						|| (board.isIndexEqual(row + i, col, q) && s.equals(Config.Q) && i < n)
+				if ((board.isIndexEqual(row + i, col, p) && s.equals(Config.PLAYER) && i < n) 
+						|| (board.isIndexEqual(row + i, col, q) && s.equals(Config.OPPONENT) && i < n)
 						|| (board.isIndexEmpty(row + 1, col) && i >= n)) 
 				{
 					counter++;
@@ -214,15 +215,17 @@ public class AI extends Player
 				int col = c + i;
 				
 				String letter = pattern.substring(i, i + 1);
-				if ((board.isIndexEqual(row, col, p) && letter.equals(Config.P))
-						|| (board.isIndexEqual(row, col, q) && letter.equals(Config.Q))) 
+				if ((board.isIndexEqual(row, col, p) && letter.equals(Config.PLAYER))
+						|| (board.isIndexEqual(row, col, q) && letter.equals(Config.OPPONENT))) 
 				{
 					counter++;
 				} 
-				else if (board.isIndexEmpty(row, col) && (letter.equals(Config.ONE) || letter.equals(Config.TWO) || letter.equals(Config.N))) 
+				else if (board.isIndexEmpty(row, col) 
+						&& (letter.equals(Config.ONE) || letter.equals(Config.TWO) 
+								|| letter.equals(Config.NO_SCORE) || letter.equals(Config.VALID))) 
 				{
 					int depth = findDepth(row, col, 0);
-					if ((depth == 0 && (letter.equals(Config.E) || letter.equals(Config.N)))
+					if ((depth == 0 && (letter.equals(Config.VALID) || letter.equals(Config.NO_SCORE)))
 							|| Integer.toString(depth).equals(letter)) 
 					{
 						counter++;

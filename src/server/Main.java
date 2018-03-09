@@ -16,8 +16,7 @@ class Main
 	public static void main(String[] args) 
 	{
 		Scanner scan = new Scanner(System.in);
-		boolean[] isAI = {false, true}; // Change here to assign AI to certain players
-		Connect game = new Connect(7, 10, isAI, scan);
+		Connect game = new Connect(scan);
 		
 		boolean playing = true;
 		while (playing) 

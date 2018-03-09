@@ -15,7 +15,7 @@ class Scoreboard
 	 */
 	Scoreboard()
 	{
-		this.score = new int[Output.SYMBOL.length];
+		this.score = new int[Config.PLAYER_N];
 		for (int p = 0; p < score.length; p++) 
 		{
 			score[p] = 0;
@@ -36,7 +36,7 @@ class Scoreboard
 	 */
 	void add(int winner) 
 	{
-		for (int p = 0; p < Output.SYMBOL.length; p++) 
+		for (int p = 0; p < Config.PLAYER_N; p++) 
 		{
 			if (p == winner) 
 			{

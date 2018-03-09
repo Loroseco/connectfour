@@ -10,8 +10,6 @@ import java.util.Arrays;
 public class Board 
 {
 	private String[][] board;
-	private final int rowN;
-	private final int colN;
 	private String[] boardText = 
 		{" \\  / |",
 		 "  \\/  |",
@@ -29,29 +27,9 @@ public class Board
 	 * @param rowN	Number of rows
 	 * @param colN	Number of columns
 	 */
-	Board(int rowN, int colN) 
+	Board() 
 	{
-		this.rowN = rowN;
-		this.colN = colN;
-		this.board = new String[rowN][colN];
-	}
-	
-	/**
-	 * Accessor
-	 * @return	Number of rows
-	 */
-	public int getRowN() 
-	{
-		return this.rowN;
-	}
-	
-	/**
-	 * Accessor
-	 * @return	Number of columns
-	 */
-	public int getColN() 
-	{
-		return this.colN;
+		this.board = new String[Config.ROW_N][Config.COL_N];
 	}
 	
 	/**
@@ -62,7 +40,7 @@ public class Board
 	 */
 	void set(int row, int col, int p) 
 	{
-		board[row][col] = Output.SYMBOL[p];
+		board[row][col] = Config.SYMBOLS[p];
 	}
 	
 	/**
@@ -72,7 +50,7 @@ public class Board
 	 */
 	public boolean isColumnFull(int col) 
 	{
-		if (isIndexEmpty(rowN - 1, col)) {
+		if (isIndexEmpty(Config.ROW_N - 1, col)) {
 			
 			return false;
 		}
@@ -88,7 +66,7 @@ public class Board
 	 */
 	public boolean isBoardFull()
 	{
-		for (int c = 0; c < colN; c++) 
+		for (int c = 0; c < Config.COL_N; c++) 
 		{
 			if (!isColumnFull(c)) 
 			{
@@ -106,7 +84,7 @@ public class Board
 	 */
 	public boolean isIndexEmpty(int row, int col) 
 	{
-		if (board[row][col].equals(Output.EMPTY)) 
+		if (board[row][col].equals(Config.EMPTY)) 
 		{
 			return true;
 		} 
@@ -125,7 +103,7 @@ public class Board
 	 */
 	public boolean isIndexEqual(int row, int col, int p)
 	{
-		if (board[row][col].equals(Output.SYMBOL[p]))
+		if (board[row][col].equals(Config.SYMBOLS[p]))
 		{
 			return true;
 		} 
@@ -139,11 +117,11 @@ public class Board
 	 */
 	public void createBoard() 
 	{
-		for (int r = 0;  r < rowN; r++) 
+		for (int r = 0;  r < Config.ROW_N; r++) 
 		{
-			for (int c = 0; c < colN; c++) 
+			for (int c = 0; c < Config.COL_N; c++) 
 			{
-				board[r][c] = Output.EMPTY;
+				board[r][c] = Config.EMPTY;
 			}
 		}
 		print();
@@ -164,7 +142,7 @@ public class Board
 	{
 		
 		System.out.println("\n");
-		for (int row = rowN - 1; row > -2; row--)
+		for (int row = Config.ROW_N - 1; row > -2; row--)
 		{
 			printRow(row);
 		}
@@ -178,7 +156,7 @@ public class Board
 	private void printRow(int row) 
 	{
 		System.out.print(boardText[9].substring(4, 7));
-		for (int col = 0; col < colN; col++) 
+		for (int col = 0; col < Config.COL_N; col++) 
 		{
 			System.out.print(boardText[9]);
 		}
@@ -197,7 +175,7 @@ public class Board
 			{
 				System.out.print("  |");
 			}
-			for (int col = 0; col < colN; col++)
+			for (int col = 0; col < Config.COL_N; col++)
 			{
 				if (board[row][col].equals("X")) 
 				{
@@ -222,7 +200,7 @@ public class Board
 	private void printBottomKey() 
 	{
 		System.out.print("\n  |");
-		for (int c = 0; c < colN; c++)
+		for (int c = 0; c < Config.COL_N; c++)
 		{
 			System.out.print(String.format("%s  %s  |", c < 10 ? " " : "", c));
 		}

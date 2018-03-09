@@ -12,10 +12,6 @@ import computer.*;
  */
 class Connect 
 {
-	
-	private final int rowN;
-	private final int colN;
-	private final boolean[] isAI;
 	private final Board board;
 	
 	/**
@@ -33,19 +29,16 @@ class Connect
 	 * @param isAI	Array showing which players are AI
 	 * @param scan	Scanner for player input
 	 */
-	Connect(int rowN, int colN, boolean[] isAI, Scanner scan) 
+	Connect(Scanner scan) 
 	{
-		this.rowN = rowN;
-		this.colN = colN;
-		this.isAI = isAI;
-		this.board = new Board(rowN, colN);
+		this.board = new Board();
 		this.moves = new ArrayList<Integer>();
 		this.score = new Scoreboard();
 		this.player = new Player[2];
 		
 		for (int p = 0; p < 2; p++) 
 		{
-			player[p] = isAI[p] ? new AI(p, board)
+			player[p] = Config.IS_AI[p] ? new AI(p, board)
 							    : new Human(p, scan);
 		}
 	}
@@ -99,7 +92,7 @@ class Connect
 				int output = makeMove(move, p);
 				if (output == 0) 
 				{
-					if (isAI[p]) 
+					if (Config.IS_AI[p]) 
 					{
 						board.print();
 					}
@@ -111,7 +104,7 @@ class Connect
 			}
 		}
 		int winner = findWinner();
-		if (winner == p && !isAI[p]) 
+		if (winner == p && !Config.IS_AI[p]) 
 		{
 			board.print();
 		}
@@ -134,7 +127,7 @@ class Connect
 			} 
 			else 
 			{
-				for (int row = 0; row < rowN; row++) 
+				for (int row = 0; row < Config.ROW_N; row++) 
 				{
 					if (board.isIndexEmpty(row, move)) 
 					{
@@ -165,10 +158,10 @@ class Connect
 		for (int g = -1; g < 3; g++) 
 		{
 			r:
-			for (int r = 0; r < rowN; r++)
+			for (int r = 0; r < Config.ROW_N; r++)
 			{
 				c:
-				for (int c = 0; c < colN; c++) 
+				for (int c = 0; c < Config.COL_N; c++) 
 				{
 					int[] counter = {0, 0};
 					try 
@@ -187,7 +180,7 @@ class Connect
 								row = r + (i * g);
 								col = c + i;
 							}
-							for (int p = 0; p < Output.SYMBOL.length; p++) 
+							for (int p = 0; p < Config.PLAYER_N; p++) 
 							{
 								if (board.isIndexEqual(row, col, p)) 
 								{
@@ -226,8 +219,8 @@ class Connect
 	 */
 	private void printMoves(int winner)
 	{
-		for (int p = 0; p < Output.SYMBOL.length; p++) {
-			if (winner != p && isAI[p])
+		for (int p = 0; p < Config.PLAYER_N; p++) {
+			if (winner != p && Config.IS_AI[p])
 			{
 				System.out.println(moves);
 				break;
