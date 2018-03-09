@@ -1,5 +1,10 @@
 package computer;
 
+/**
+ * enum that manages the AI's priority matrix, as well as defining the representation of each type of move in the matrix.
+ * @author Loroseco
+ *
+ */
 public enum AIConfig 
 {	
 	/** AI Symbol in PRIORITY_MATRIX */

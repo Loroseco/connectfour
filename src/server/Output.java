@@ -1,10 +1,17 @@
 package server;
 
+/**
+ * enum that stores all console output for the game. TODO: Have output manage printing the board
+ * @author Loroseco
+ *
+ */
 public enum Output {
 	HUMAN_MOVE("PLAYER %s - ENTER MOVE: "),
 	SCORE("PLAYER %s SCORE: %s"),
 	MOVE_MADE("MOVE MADE: PLAYER %s, COLUMN %s."),
 	PLAY_AGAIN("PLAY AGAIN? (Y/N): "),
+	WINNER("WINNER: PLAYER %s."),
+	DRAW("GAME OVER: DRAW."),
 	EXCEPTION_COLUMN_FULL("INVALID MOVE: COLUMN IS FULL."),
 	EXCEPTION_INVALID("INVALID CHOICE."),
 	EXCEPTION_OUT_OF_BOUNDS("NUMBER OUT OF BOUNDS."),

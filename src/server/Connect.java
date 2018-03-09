@@ -63,13 +63,13 @@ class Connect
 		
 		if (winner == 0 || winner == 1) 
 		{
-			System.out.println(String.format("WINNER: PLAYER %s.", winner));
+			Output.WINNER.println(winner);
 			score.add(winner);
 			printMoves(winner);
 		} 
 		else 
 		{
-			System.out.println("GAME OVER: DRAW.");
+			Output.DRAW.println();
 		}
 		score.print();
 		
