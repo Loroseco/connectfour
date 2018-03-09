@@ -3,8 +3,10 @@ package server;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import client.*;
-import computer.*;
+import client.Human;
+import computer.AI;
+import computer.Player;
+
 /**
  * Class used to handle functions specific to Connect 4 (win condition, and the game loop itself).
  * @author Loroseco
