@@ -43,14 +43,14 @@ public final class Config
 	 * Text used to draw board
 	 */
 	public static final String[] BOARD_TEXT = 
-	     {" \\  / |",
+	     {" \\  / |", //Player Symbol
 		  "  \\/  |",
 		  "  /\\  |",
 		  " /  \\ |",
-		  " /--\\ |",
+		  " /--\\ |", //Opponent Symbol
 		  " |  | |",
 		  " |  | |",
 		  " \\--/ |",
-		  "      |",
-		  "------+"};
+		  "      |",  //Empty
+		  "------+"}; //Border
 }

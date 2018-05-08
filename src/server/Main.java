@@ -36,7 +36,7 @@ class Main
 					playing = false;
 					break;
 				}
-				Output.EXCEPTION_INVALID.println();
+				Output.ERROR_INVALID.println();
 			}
 		}
 		scan.close();

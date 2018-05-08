@@ -275,7 +275,7 @@ public class AI extends Player
 	private String calculateReturnMove() 
 	{
 		BigInteger returnPriority = null;
-		ArrayList<Integer> returnMove = new ArrayList<Integer>();
+		ArrayList<Integer> returnMove = new ArrayList<>();
 		for (int col = 0; col < columnPriorities.length; col++) 
 		{
 			if (board.isColumnFull(col)) 
@@ -287,7 +287,7 @@ public class AI extends Player
 				if (returnPriority == null || columnPriorities[col].compareTo(returnPriority) == 1) 
 				{
 					returnPriority = columnPriorities[col];
-					returnMove = new ArrayList<Integer>();
+					returnMove = new ArrayList<>();
 				}
 				returnMove.add(col);
 			}

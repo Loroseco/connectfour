@@ -24,6 +24,8 @@ public enum AIConfig
 	
 	/**
 	 * All patterns that the AI detects. the higher rows are higher priorities.
+	 * P = AI player
+	 * Q = Opponent
 	 */
 	public static final String[][] PRIORITY_MATRIX = 
 		{{"P_PP", "PP_P", "PPP_", "_PPP", "VP3"},

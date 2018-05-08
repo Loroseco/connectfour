@@ -34,7 +34,7 @@ class Connect
 	Connect(Scanner scan) 
 	{
 		this.board = new Board();
-		this.moves = new ArrayList<Integer>();
+		this.moves = new ArrayList<>();
 		this.score = new Scoreboard();
 		this.player = new Player[2];
 		
@@ -123,7 +123,7 @@ class Connect
 			int move = Integer.parseInt(moveString);
 			if (board.isColumnFull(move)) 
 			{
-				Output.EXCEPTION_COLUMN_FULL.println();
+				Output.ERROR_COLUMN_FULL.println();
 				return false;
 			} 
 			else 
@@ -140,15 +140,15 @@ class Connect
 		} 
 		catch (NumberFormatException e) 
 		{
-			Output.EXCEPTION_INVALID.println();
+			Output.ERROR_INVALID.println();
 			return false;
 		} 
 		catch (IndexOutOfBoundsException e) 
 		{
-			Output.EXCEPTION_OUT_OF_BOUNDS.println();
+			Output.ERROR_OUT_OF_BOUNDS.println();
 			return false;
 		}
-		Output.EXCEPTION_UNKNOWN.println();
+		Output.ERROR_UNKNOWN.println();
 		return false;
 	}
 	
