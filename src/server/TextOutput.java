@@ -19,38 +19,31 @@ public enum TextOutput {
 	
 	private String message;
 	
-	TextOutput(String message)
-	{
+	TextOutput(String message) {
 		this.message = message;
 	}
 	
-	public void print()
-	{
+	public void print() {
 		System.out.print(message);
 	}
 	
-	public void print(int p)
-	{
+	public void print(int p) {
 		System.out.print(String.format(message, Config.SYMBOLS[p]));
 	}
 	
-	public void print(int p, String col)
-	{
+	public void print(int p, String col) {
 		System.out.print(String.format(message, Config.SYMBOLS[p], col));
 	}
 	
-	public void println()
-	{
+	public void println() {
 		System.out.println(message);
 	}
 	
-	public void println(int p)
-	{
+	public void println(int p) {
 		System.out.println(String.format(message, Config.SYMBOLS[p]));
 	}
 	
-	public void println(int p, String col)
-	{
+	public void println(int p, String col) {
 		System.out.println(String.format(message, Config.SYMBOLS[p], col));
 	}
 }

@@ -12,69 +12,54 @@ import computer.Player;
  * @author Loroseco
  *
  */
-class Connect 
-{
+class Connect {
 	private final Board board;
 	private final ArrayList<Integer> movesPlayed;
 	private final Scoreboard score;
 	private final Player[] player;
 	
-	Connect(Scanner scan) 
-	{
+	Connect(Scanner scan) {
 		this.board = new Board();
 		this.movesPlayed = new ArrayList<>();
 		this.score = new Scoreboard();
 		this.player = new Player[2];
 		
-		for (int playerNumber = 0; playerNumber < 2; playerNumber++) 
-		{
+		for (int playerNumber = 0; playerNumber < 2; playerNumber++) {
 			player[playerNumber] = Config.IS_AI[playerNumber] ? new AI(playerNumber, board)
-							    : new Human(playerNumber, scan);
+							    							  : new Human(playerNumber, scan);
 		}
 	}
 	
-	void play() 
-	{
+	void play() {
 		board.createBoard();
 		movesPlayed.clear();
 
 		int winner = 3;
 		int playerNumber = 1;
-		while (winner == 3) 
-		{
+		while (winner == 3) {
 			playerNumber = playerNumber == 1 ? 0 : 1;
 			winner = playTurn(playerNumber);
 		}
 		
-		if (winner == 0 || winner == 1) 
-		{
+		if (winner == 0 || winner == 1) {
 			TextOutput.WINNER.println(winner);
 			score.addScore(winner);
 			printMoves(winner);
-		} 
-		else 
-		{
+		} else {
 			TextOutput.DRAW.println();
 		}
 		score.printAllScores();
-		
 	}
 	
-	private int playTurn(int playerNumber)
-	{
-		while (true) 
-		{
-			if (board.isBoardFull()) 
-			{
+	private int playTurn(int playerNumber) {
+		while (true) {
+			if (board.isBoardFull()) {
 				return 2;
 			} 
-			else
-			{
+			else {
 				String move = player[playerNumber].getMove();
-				if (makeMove(move, playerNumber)) 
-				{
-					if (Config.IS_AI[playerNumber]) 
-					{
+				if (makeMove(move, playerNumber)) {
+					if (Config.IS_AI[playerNumber]) {
 						board.print();
 					}
 					movesPlayed.add(Integer.parseInt(move));
@@ -84,8 +69,7 @@ class Connect
 			}
 		}
 		int winner = findWinner();
-		if (winner == playerNumber && !Config.IS_AI[playerNumber]) 
-		{
+		if (winner == playerNumber && !Config.IS_AI[playerNumber]) {
 			board.print();
 		}
 		return winner;
@@ -93,33 +77,23 @@ class Connect
 	
 	boolean makeMove(String moveString, int playerNumber) 
 	{
-		try 
-		{
+		try {
 			int move = Integer.parseInt(moveString);
-			if (board.isColumnFull(move)) 
-			{
+			if (board.isColumnFull(move)) {
 				TextOutput.ERROR_COLUMN_FULL.println();
 				return false;
-			} 
-			else 
-			{
-				for (int row = 0; row < Config.NO_OF_ROWS; row++) 
-				{
-					if (board.isIndexEmpty(row, move)) 
-					{
+			} else {
+				for (int row = 0; row < Config.NO_OF_ROWS; row++) {
+					if (board.isIndexEmpty(row, move)) {
 						board.set(row, move, playerNumber);
 						return true;
 					}
 				}
 			}
-		} 
-		catch (NumberFormatException e) 
-		{
+		} catch (NumberFormatException e) {
 			TextOutput.ERROR_INVALID.println();
 			return false;
-		} 
-		catch (IndexOutOfBoundsException e) 
-		{
+		} catch (IndexOutOfBoundsException e) {
 			TextOutput.ERROR_OUT_OF_BOUNDS.println();
 			return false;
 		}
@@ -130,58 +104,41 @@ class Connect
 	/**
 	 * @return	0 or 1 for winning players, 3 if no winner
 	 */
-	private int findWinner() 
-	{
+	private int findWinner() {
 		gradientLoop:
-		for (int gradient = -1; gradient < 3; gradient++) 
-		{
+		for (int gradient = -1; gradient < 3; gradient++) {
 			rowLoop:
-			for (int row = 0; row < Config.NO_OF_ROWS; row++)
-			{
+			for (int row = 0; row < Config.NO_OF_ROWS; row++) {
 				columnLoop:
-				for (int col = 0; col < Config.NO_OF_COLS; col++) 
-				{
+				for (int col = 0; col < Config.NO_OF_COLS; col++) {
 					int[] counter = {0, 0};
-					try 
-					{
+					try {
 						int newRow;
 						int newCol;
-						for (int i = 0; i < 4; i++) 
-						{
-							if (gradient == 2) 
-							{
+						for (int i = 0; i < 4; i++) {
+							if (gradient == 2) {
 								newRow = row + i;
 								newCol = col;
-							}
-							else 
-							{
+							} else {
 								newRow = row + (i * gradient);
 								newCol = col + i;
 							}
-							for (int p = 0; p < Config.NO_OF_PLAYERS; p++) 
-							{
-								if (board.isIndexEqual(newRow, newCol, p)) 
-								{
+							for (int p = 0; p < Config.NO_OF_PLAYERS; p++) {
+								if (board.isIndexEqual(newRow, newCol, p)) {
 									counter[p]++;
 								}
 							}
 						}
-						for (int p = 0; p < counter.length; p++) 
-						{
-							if (counter[p] == 4) 
-							{
+						for (int p = 0; p < counter.length; p++) {
+							if (counter[p] == 4) {
 								return p;
 							}
 						}
 						continue columnLoop;
-					} catch(IndexOutOfBoundsException e) 
-					{
-						if (gradient == 2) 
-						{
+					} catch(IndexOutOfBoundsException e) {
+						if (gradient == 2) {
 							break gradientLoop;
-						} 
-						else 
-						{
+						} else {
 							continue rowLoop;
 						}
 					}
@@ -191,11 +148,9 @@ class Connect
 		return 3;
 	}
 	
-	private void printMoves(int winner)
-	{
+	private void printMoves(int winner) {
 		for (int p = 0; p < Config.NO_OF_PLAYERS; p++) {
-			if (winner != p && Config.IS_AI[p])
-			{
+			if (winner != p && Config.IS_AI[p]) {
 				System.out.println(movesPlayed);
 				break;
 			}

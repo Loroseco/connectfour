@@ -7,28 +7,22 @@ import java.util.Scanner;
  * @author Loroseco
  *
  */
-class Main 
-{
-	public static void main(String[] args) 
-	{
+class Main {
+	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
 		Connect game = new Connect(scan);
 		
 		boolean playing = true;
-		while (playing) 
-		{
+		while (playing) {
 			game.play();
 			
-			while (true) 
-			{
+			while (true) {
 				TextOutput.PLAY_AGAIN.print();
 				String input = scan.next().toLowerCase();
-				if (input.equals("y") || input.equals("yes")) 
-				{
+				if (input.equals("y") || input.equals("yes")) {
 					break;
 				} 
-				if (input.equals("n") || input.equals("no")) 
-				{
+				if (input.equals("n") || input.equals("no")) {
 					playing = false;
 					break;
 				}

@@ -6,8 +6,7 @@ package server;
  * @author Loroseco
  *
  */
-public final class Config 
-{
+public final class Config {
 	
 	public static final String[] SYMBOLS = {"X", "O"};
 	public static final int NO_OF_PLAYERS = SYMBOLS.length;

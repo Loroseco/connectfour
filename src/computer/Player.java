@@ -5,12 +5,10 @@ package computer;
  * @author Loroseco
  *
  */
-public abstract class Player 
-{
+public abstract class Player {
 	public int playerNumber;
 	
-	public Player(int playerNumber)
-	{
+	public Player(int playerNumber) {
 		this.playerNumber = playerNumber;
 	}
 	

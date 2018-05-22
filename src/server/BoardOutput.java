@@ -19,8 +19,7 @@ package server;
  * @author Loroseco
  * 
  */
-public final class BoardOutput
-{
+public final class BoardOutput {
 	/**
 	 * Text used to draw board
 	 */
@@ -38,33 +37,27 @@ public final class BoardOutput
 		  "%s|",   //Side key
 		  "  %s  |"};//Bottom key 
 	
-	public static void print(int i)
-	{
+	public static void print(int i) {
 		System.out.print(BOARD[i]);
 	}
 	
-	public static void print(int i, String key)
-	{
+	public static void print(int i, String key) {
 		System.out.print(String.format(BOARD[i], key));
 	}
 	
-	public static void printPartial(int i)
-	{
+	public static void printPartial(int i) {
 		System.out.print(BOARD[i].substring(4));
 	}
 	
-	public static void println(int i)
-	{
+	public static void println(int i) {
 		System.out.println(BOARD[i]);
 	}
 	
-	public static void println(int i, String key)
-	{
+	public static void println(int i, String key) {
 		System.out.println(String.format(BOARD[i], key));
 	}
 	
-	public static void printlnPartial(int i)
-	{
+	public static void printlnPartial(int i) {
 		System.out.println(BOARD[i].substring(4));
 	}
 }

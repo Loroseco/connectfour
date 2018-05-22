@@ -10,20 +10,17 @@ import server.TextOutput;
  * @author Loroseco
  *
  */
-public class Human extends Player 
-{
+public class Human extends Player {
 	
 	private final Scanner scan;
 	
-	public Human(int playerNumber, Scanner scan) 
-	{
+	public Human(int playerNumber, Scanner scan) {
 		super(playerNumber);
 		this.scan = scan;
 	}
 	
 	@Override
-	public String getMove() 
-	{
+	public String getMove() {
 		TextOutput.HUMAN_MOVE.print(playerNumber);
 		return scan.next();
 	}
