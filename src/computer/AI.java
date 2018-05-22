@@ -2,7 +2,6 @@ package computer;
  
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 import server.Board;
 import server.Config;
@@ -163,7 +162,7 @@ public class AI extends Player {
 	
 	private String calculateReturnMove() {
 		BigInteger returnPriority = null;
-		ArrayList<Integer> returnMove = new ArrayList<>();
+		ArrayList<Integer> returnMoves = new ArrayList<>();
 		for (int col = 0; col < priorityPerColumn.length; col++) {
 			if (board.isColumnFull(col)) {
 				continue;
@@ -171,16 +170,28 @@ public class AI extends Player {
 			else if (returnPriority == null || priorityPerColumn[col].compareTo(returnPriority) >= 0) {
 				if (returnPriority == null || priorityPerColumn[col].compareTo(returnPriority) == 1) {
 					returnPriority = priorityPerColumn[col];
-					returnMove = new ArrayList<>();
+					returnMoves = new ArrayList<>();
 				}
-				returnMove.add(col);
+				returnMoves.add(col);
 			}
 		}
 		
 		if (Config.DEBUG) {
 			System.out.println(Arrays.toString(priorityPerColumn));
 		}
-		Random r = new Random();
-		return Integer.toString(returnMove.get(r.nextInt(returnMove.size())));
+
+		int chosenMove = -1;
+		int chosenVariance = Config.NO_OF_COLS;
+		int middleColumn = Config.NO_OF_COLS / 2;
+		
+		for (int move : returnMoves) {
+			int variance = Math.abs(move - middleColumn);
+			if (variance < chosenVariance) {
+				chosenMove = move;
+				chosenVariance = variance;
+			}
+		}
+		
+		return Integer.toString(chosenMove);
 	}
 }
