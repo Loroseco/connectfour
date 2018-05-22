@@ -82,14 +82,14 @@ public class Board {
 	}
 	
 	private void printSide(int row, int rowSection) {
-		String rowStr = "  ";
+		String rowString = "  ";
 		if (rowSection == 1) {
-			rowStr = Integer.toString(row);
+			rowString = Integer.toString(row);
 			if (row < 10) {
-				rowStr = " " + rowStr;
+				rowString = " " + rowString;
 			}
 		}
-		BoardOutput.print(10, rowStr);
+		BoardOutput.print(10, rowString);
 	}
 	
 	private void printBorder() {
@@ -102,9 +102,13 @@ public class Board {
 
 	private void printBottomKey() {
 		printBorder();
-		System.out.print("  |");
-		for (int c = 0; c < Config.NO_OF_COLS; c++) {
-			System.out.print(String.format("%s  %s  |", c < 10 ? " " : "", c));
+		printSide(0, 0);
+		for (int col = 0; col < Config.NO_OF_COLS; col++) {
+			String colString = Integer.toString(col);
+			if (col < 10) {
+				colString = " " + colString;
+			}
+			BoardOutput.print(11, colString);
 		}
 		System.out.println("\n");
 	}
