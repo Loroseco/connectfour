@@ -63,13 +63,13 @@ class Connect
 		
 		if (winner == 0 || winner == 1) 
 		{
-			Output.WINNER.println(winner);
+			TextOutput.WINNER.println(winner);
 			score.add(winner);
 			printMoves(winner);
 		} 
 		else 
 		{
-			Output.DRAW.println();
+			TextOutput.DRAW.println();
 		}
 		score.print();
 		
@@ -98,7 +98,7 @@ class Connect
 						board.print();
 					}
 					moves.add(Integer.parseInt(move));
-					Output.MOVE_MADE.println(p, move);
+					TextOutput.MOVE_MADE.println(p, move);
 					break;
 				}
 			}
@@ -123,7 +123,7 @@ class Connect
 			int move = Integer.parseInt(moveString);
 			if (board.isColumnFull(move)) 
 			{
-				Output.ERROR_COLUMN_FULL.println();
+				TextOutput.ERROR_COLUMN_FULL.println();
 				return false;
 			} 
 			else 
@@ -140,15 +140,15 @@ class Connect
 		} 
 		catch (NumberFormatException e) 
 		{
-			Output.ERROR_INVALID.println();
+			TextOutput.ERROR_INVALID.println();
 			return false;
 		} 
 		catch (IndexOutOfBoundsException e) 
 		{
-			Output.ERROR_OUT_OF_BOUNDS.println();
+			TextOutput.ERROR_OUT_OF_BOUNDS.println();
 			return false;
 		}
-		Output.ERROR_UNKNOWN.println();
+		TextOutput.ERROR_UNKNOWN.println();
 		return false;
 	}
 	

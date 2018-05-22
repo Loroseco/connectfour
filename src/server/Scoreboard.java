@@ -29,7 +29,7 @@ class Scoreboard
 	{
 		for (int p = 0; p < Config.PLAYER_N; p++)
 		{
-			Output.SCORE.println(p, Integer.toString(score[p]));
+			TextOutput.SCORE.println(p, Integer.toString(score[p]));
 		}	
 	}
 	

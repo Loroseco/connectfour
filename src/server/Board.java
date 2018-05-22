@@ -10,17 +10,6 @@ import java.util.Arrays;
 public class Board 
 {
 	private String[][] board;
-	private String[] boardText = 
-		{" \\  / |",
-		 "  \\/  |",
-		 "  /\\  |",
-		 " /  \\ |",
-		 " /--\\ |",
-		 " |  | |",
-		 " |  | |",
-		 " \\--/ |",
-		 "      |",
-		 "------+"};
 	
 	/**
 	 * Constructor. Makes the board 2D array using rowN x colN dimensions
@@ -103,14 +92,7 @@ public class Board
 	 */
 	public boolean isIndexEqual(int row, int col, int p)
 	{
-		if (board[row][col].equals(Config.SYMBOLS[p]))
-		{
-			return true;
-		} 
-		else 
-		{
-			return false;
-		}
+		return board[row][col].equals(Config.SYMBOLS[p]);
 	}
 	/**
 	 * Creates a new board for a new game
@@ -140,58 +122,61 @@ public class Board
 	 */
 	void print()
 	{
-		
-		System.out.println("\n");
-		for (int row = Config.ROW_N - 1; row > -2; row--)
+		debugBoard();
+		for (int row = Config.ROW_N - 1; row > -1; row--)
 		{
-			printRow(row);
+			printBorder();	
+			for (int i = 0; i < 4; i++)
+			{
+				printRow(row, i);
+			}
 		}
 		printBottomKey();
 	}
 	
-	/**
-	 * Prints the chosen for in format suitable for display
-	 * @param row	Chosen row
-	 */
-	private void printRow(int row) 
+	private void printRow(int row, int i)
 	{
-		System.out.print(boardText[9].substring(4, 7));
-		for (int col = 0; col < Config.COL_N; col++) 
+		printSide(i, row);
+		for (int col = 0; col < Config.COL_N; col++)
 		{
-			System.out.print(boardText[9]);
-		}
-		if (row == -1)
-		{
-			return;
+			if (board[row][col].equals(Config.SYMBOLS[0]))
+			{
+				BoardOutput.print(i);
+			}
+			else if (board[row][col].equals(Config.SYMBOLS[1]))
+			{
+				BoardOutput.print(i + 4);
+			}
+			else
+			{
+				BoardOutput.print(8);
+			}
 		}
 		System.out.println();
-		for (int i = 0; i < 4; i++) 
+	}
+	
+	private void printSide(int i, int row)
+	{
+		String rowStr = "  ";
+		if (i == 1)
 		{
-			if (i == 1)
+			rowStr = Integer.toString(row);
+			if (row < 10)
 			{
-				System.out.print(String.format("%s%s|", row < 10 ? " " : "", row, "|"));
+				rowStr = " " + rowStr;
 			}
-			else 
-			{
-				System.out.print("  |");
-			}
-			for (int col = 0; col < Config.COL_N; col++)
-			{
-				if (board[row][col].equals("X")) 
-				{
-					System.out.print(boardText[i]);
-				} 
-				else if (board[row][col].equals("O")) 
-				{
-					System.out.print(boardText[i + 4]);
-				} 
-				else 
-				{
-					System.out.print(boardText[8]);
-				}
-			}
-			System.out.println();
 		}
+		BoardOutput.print(10, rowStr);
+	}
+	
+	private void printBorder()
+	{
+		BoardOutput.printPartial(9);
+		for (int col = 0; col < Config.COL_N - 1; col++)
+		{
+			BoardOutput.print(9);
+		}
+		BoardOutput.println(9);
 	}
 	
 	/**
@@ -199,7 +184,8 @@ public class Board
 	 */
 	private void printBottomKey() 
 	{
-		System.out.print("\n  |");
+		printBorder();
+		System.out.print("  |");
 		for (int c = 0; c < Config.COL_N; c++)
 		{
 			System.out.print(String.format("%s  %s  |", c < 10 ? " " : "", c));

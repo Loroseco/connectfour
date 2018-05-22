@@ -1,11 +1,11 @@
 package server;
 
 /**
- * enum that stores all console output for the game. TODO: Have output manage printing the board
+ * enum that stores all console output for the game.
  * @author Loroseco
  *
  */
-public enum Output {
+public enum TextOutput {
 	HUMAN_MOVE("PLAYER %s - ENTER MOVE: "),
 	SCORE("PLAYER %s SCORE: %s"),
 	MOVE_MADE("MOVE MADE: PLAYER %s, COLUMN %s."),
@@ -19,7 +19,7 @@ public enum Output {
 	
 	private String message;
 	
-	Output(String message)
+	TextOutput(String message)
 	{
 		this.message = message;
 	}

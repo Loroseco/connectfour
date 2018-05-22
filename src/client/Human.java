@@ -3,7 +3,7 @@ package client;
 import java.util.Scanner;
 
 import computer.Player;
-import server.Output;
+import server.TextOutput;
 
 /**
  * Human class to be used by player, handles player input from console
@@ -29,7 +29,7 @@ public class Human extends Player
 	@Override
 	public String getMove() 
 	{
-		Output.HUMAN_MOVE.print(p);
+		TextOutput.HUMAN_MOVE.print(p);
 		return scan.next();
 	}
 }

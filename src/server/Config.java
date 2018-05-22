@@ -38,19 +38,4 @@ public final class Config
 	 * Used as empty space in the board
 	 */
 	public static final String EMPTY = " ";
-	
-	/**
-	 * Text used to draw board
-	 */
-	public static final String[] BOARD_TEXT = 
-	     {" \\  / |", //Player Symbol
-		  "  \\/  |",
-		  "  /\\  |",
-		  " /  \\ |",
-		  " /--\\ |", //Opponent Symbol
-		  " |  | |",
-		  " |  | |",
-		  " \\--/ |",
-		  "      |",  //Empty
-		  "------+"}; //Border
 }
