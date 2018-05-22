@@ -15,21 +15,16 @@ public class Human extends Player
 	
 	private final Scanner scan;
 	
-	/**
-	 * Human constructor
-	 * @param symbol	Symbol used to play
-	 * @param scan		Scanner used for human input
-	 */
-	public Human(int p, Scanner scan) 
+	public Human(int playerNumber, Scanner scan) 
 	{
-		super(p);
+		super(playerNumber);
 		this.scan = scan;
 	}
 	
 	@Override
 	public String getMove() 
 	{
-		TextOutput.HUMAN_MOVE.print(p);
+		TextOutput.HUMAN_MOVE.print(playerNumber);
 		return scan.next();
 	}
 }

@@ -7,21 +7,13 @@ package computer;
  */
 public abstract class Player 
 {
+	public int playerNumber;
 	
-	/**
-	 * Player number
-	 */
-	public int p;
-	
-	public Player(int p)
+	public Player(int playerNumber)
 	{
-		this.p = p;
+		this.playerNumber = playerNumber;
 	}
 	
-	/**
-	 * Fetches move
-	 * @return	Column of move
-	 */
 	public abstract String getMove();
 
 }

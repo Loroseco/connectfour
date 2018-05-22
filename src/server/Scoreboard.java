@@ -9,41 +9,30 @@ class Scoreboard
 {
 	private int[] score;
 	
-	/**
-	 * Constructor, allows the scoreboard to potentially support more than two players
-	 * @param symbol	Array of player symbols
-	 */
 	Scoreboard()
 	{
-		this.score = new int[Config.PLAYER_N];
-		for (int p = 0; p < score.length; p++) 
+		this.score = new int[Config.NO_OF_PLAYERS];
+		for (int playerNumber = 0; playerNumber < score.length; playerNumber++) 
 		{
-			score[p] = 0;
+			score[playerNumber] = 0;
 		}
 	}
 	
-	/**
-	 * Prints all players' scores in format suitable for display
-	 */
-	void print() 
+	void printAllScores() 
 	{
-		for (int p = 0; p < Config.PLAYER_N; p++)
+		for (int playerNumber = 0; playerNumber < Config.NO_OF_PLAYERS; playerNumber++)
 		{
-			TextOutput.SCORE.println(p, Integer.toString(score[p]));
+			TextOutput.SCORE.println(playerNumber, Integer.toString(score[playerNumber]));
 		}	
 	}
 	
-	/**
-	 * Adds one point to the chosen player
-	 * @param winner	Chosen player symbol
-	 */
-	void add(int winner) 
+	void addScore(int winner) 
 	{
-		for (int p = 0; p < Config.PLAYER_N; p++) 
+		for (int playerNumber = 0; playerNumber < Config.NO_OF_PLAYERS; playerNumber++) 
 		{
-			if (p == winner) 
+			if (playerNumber == winner) 
 			{
-				score[p]++;
+				score[playerNumber]++;
 				break;
 			}
 		}

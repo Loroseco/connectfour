@@ -18,8 +18,6 @@ package server;
  * 
  * @author Loroseco
  * 
- * 
- *
  */
 public final class BoardOutput
 {

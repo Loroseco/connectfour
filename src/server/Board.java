@@ -11,53 +11,26 @@ public class Board
 {
 	private String[][] board;
 	
-	/**
-	 * Constructor. Makes the board 2D array using rowN x colN dimensions
-	 * @param rowN	Number of rows
-	 * @param colN	Number of columns
-	 */
 	Board() 
 	{
-		this.board = new String[Config.ROW_N][Config.COL_N];
+		this.board = new String[Config.NO_OF_ROWS][Config.NO_OF_COLS];
 	}
 	
-	/**
-	 * Board index mutator
-	 * @param row	Row to be changed
-	 * @param col	Column to be changed
-	 * @param p		New value
-	 */
-	void set(int row, int col, int p) 
+	void set(int row, int col, int playerNumber) 
 	{
-		board[row][col] = Config.SYMBOLS[p];
+		board[row][col] = Config.SYMBOLS[playerNumber];
 	}
 	
-	/**
-	 * Checks if column is full
-	 * @param col	Column to be checked
-	 * @return		Is column full
-	 */
 	public boolean isColumnFull(int col) 
 	{
-		if (isIndexEmpty(Config.ROW_N - 1, col)) {
-			
-			return false;
-		}
-		else 
-		{
-			return true;
-		}
+		return !isIndexEmpty(Config.NO_OF_ROWS - 1, col);
 	}
 	
-	/**
-	 * Checks if board is full
-	 * @return	True or false
-	 */
 	public boolean isBoardFull()
 	{
-		for (int c = 0; c < Config.COL_N; c++) 
+		for (int col = 0; col < Config.NO_OF_COLS; col++) 
 		{
-			if (!isColumnFull(c)) 
+			if (!isColumnFull(col)) 
 			{
 				return false; 
 			}
@@ -65,45 +38,25 @@ public class Board
 		return true;
 	}
 	
-	/**
-	 * Checks if the index is empty
-	 * @param row	Row to be checked
-	 * @param col	Column to be checked
-	 * @return		Is index empty
-	 */
 	public boolean isIndexEmpty(int row, int col) 
 	{
-		if (board[row][col].equals(Config.EMPTY)) 
-		{
-			return true;
-		} 
-		else
-		{
-			return false;
-		}
+		return board[row][col].equals(Config.EMPTY_SPACE);
 	}
 	
-	/**
-	 * Checks if indwx is equal to given value
-	 * @param row	Row to be checked
-	 * @param col	Column to be checked
-	 * @param p		Symbol to be checked for
-	 * @return		Does index contain the symbol
-	 */
-	public boolean isIndexEqual(int row, int col, int p)
+	public boolean isIndexEqual(int row, int col, int playerNumber)
 	{
-		return board[row][col].equals(Config.SYMBOLS[p]);
+		return board[row][col].equals(Config.SYMBOLS[playerNumber]);
 	}
 	/**
 	 * Creates a new board for a new game
 	 */
 	public void createBoard() 
 	{
-		for (int r = 0;  r < Config.ROW_N; r++) 
+		for (int row = 0;  row < Config.NO_OF_ROWS; row++) 
 		{
-			for (int c = 0; c < Config.COL_N; c++) 
+			for (int col = 0; col < Config.NO_OF_COLS; col++) 
 			{
-				board[r][c] = Config.EMPTY;
+				board[row][col] = Config.EMPTY_SPACE;
 			}
 		}
 		print();
@@ -123,29 +76,29 @@ public class Board
 	void print()
 	{
 		debugBoard();
-		for (int row = Config.ROW_N - 1; row > -1; row--)
+		for (int row = Config.NO_OF_ROWS - 1; row > -1; row--)
 		{
 			printBorder();	
-			for (int i = 0; i < 4; i++)
+			for (int rowSection = 0; rowSection < 4; rowSection++)
 			{
-				printRow(row, i);
+				printRow(row, rowSection);
 			}
 		}
 		printBottomKey();
 	}
 	
-	private void printRow(int row, int i)
+	private void printRow(int row, int rowSection)
 	{
-		printSide(i, row);
-		for (int col = 0; col < Config.COL_N; col++)
+		printSide(row, rowSection);
+		for (int col = 0; col < Config.NO_OF_COLS; col++)
 		{
 			if (board[row][col].equals(Config.SYMBOLS[0]))
 			{
-				BoardOutput.print(i);
+				BoardOutput.print(rowSection);
 			}
 			else if (board[row][col].equals(Config.SYMBOLS[1]))
 			{
-				BoardOutput.print(i + 4);
+				BoardOutput.print(rowSection + 4);
 			}
 			else
 			{
@@ -155,10 +108,10 @@ public class Board
 		System.out.println();
 	}
 	
-	private void printSide(int i, int row)
+	private void printSide(int row, int rowSection)
 	{
 		String rowStr = "  ";
-		if (i == 1)
+		if (rowSection == 1)
 		{
 			rowStr = Integer.toString(row);
 			if (row < 10)
@@ -172,21 +125,18 @@ public class Board
 	private void printBorder()
 	{
 		BoardOutput.printPartial(9);
-		for (int col = 0; col < Config.COL_N - 1; col++)
+		for (int col = 0; col < Config.NO_OF_COLS - 1; col++)
 		{
 			BoardOutput.print(9);
 		}
 		BoardOutput.println(9);
 	}
-	
-	/**
-	 * Prints the bottom key for the board in format suitable for display
-	 */
+
 	private void printBottomKey() 
 	{
 		printBorder();
 		System.out.print("  |");
-		for (int c = 0; c < Config.COL_N; c++)
+		for (int c = 0; c < Config.NO_OF_COLS; c++)
 		{
 			System.out.print(String.format("%s  %s  |", c < 10 ? " " : "", c));
 		}

@@ -9,10 +9,6 @@ import java.util.Scanner;
  */
 class Main 
 {
-	
-	/**
-	 * Main function, used to initiate game.
-	 */
 	public static void main(String[] args) 
 	{
 		Scanner scan = new Scanner(System.in);

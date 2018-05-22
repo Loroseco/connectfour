@@ -15,43 +15,28 @@ import computer.Player;
 class Connect 
 {
 	private final Board board;
-	
-	/**
-	 * Arraylist of moves played by both players, in order
-	 */
-	private final ArrayList<Integer> moves;
+	private final ArrayList<Integer> movesPlayed;
 	private final Scoreboard score;
 	private final Player[] player;
 	
-	
-	/**
-	 * Main game constructor
-	 * @param rowN	Number of rows
-	 * @param colN	Number of columns
-	 * @param isAI	Array showing which players are AI
-	 * @param scan	Scanner for player input
-	 */
 	Connect(Scanner scan) 
 	{
 		this.board = new Board();
-		this.moves = new ArrayList<>();
+		this.movesPlayed = new ArrayList<>();
 		this.score = new Scoreboard();
 		this.player = new Player[2];
 		
-		for (int p = 0; p < 2; p++) 
+		for (int playerNumber = 0; playerNumber < 2; playerNumber++) 
 		{
-			player[p] = Config.IS_AI[p] ? new AI(p, board)
-							    : new Human(p, scan);
+			player[playerNumber] = Config.IS_AI[playerNumber] ? new AI(playerNumber, board)
+							    : new Human(playerNumber, scan);
 		}
 	}
 	
-	/**
-	 * Main game loop
-	 */
 	void play() 
 	{
 		board.createBoard();
-		moves.clear();
+		movesPlayed.clear();
 
 		int winner = 3;
 		int playerNumber = 1;
@@ -64,23 +49,18 @@ class Connect
 		if (winner == 0 || winner == 1) 
 		{
 			TextOutput.WINNER.println(winner);
-			score.add(winner);
+			score.addScore(winner);
 			printMoves(winner);
 		} 
 		else 
 		{
 			TextOutput.DRAW.println();
 		}
-		score.print();
+		score.printAllScores();
 		
 	}
 	
-	/**
-	 * Plays one turn of the game
-	 * @param p	Player number
-	 * @return	Symbol of winner, "n" for draw or "" for not finished
-	 */
-	private int playTurn(int p)
+	private int playTurn(int playerNumber)
 	{
 		while (true) 
 		{
@@ -90,33 +70,28 @@ class Connect
 			} 
 			else
 			{
-				String move = player[p].getMove();
-				if (makeMove(move, p)) 
+				String move = player[playerNumber].getMove();
+				if (makeMove(move, playerNumber)) 
 				{
-					if (Config.IS_AI[p]) 
+					if (Config.IS_AI[playerNumber]) 
 					{
 						board.print();
 					}
-					moves.add(Integer.parseInt(move));
-					TextOutput.MOVE_MADE.println(p, move);
+					movesPlayed.add(Integer.parseInt(move));
+					TextOutput.MOVE_MADE.println(playerNumber, move);
 					break;
 				}
 			}
 		}
 		int winner = findWinner();
-		if (winner == p && !Config.IS_AI[p]) 
+		if (winner == playerNumber && !Config.IS_AI[playerNumber]) 
 		{
 			board.print();
 		}
 		return winner;
 	}
 	
-	/**
-	 * @param moveString	Move given by player
-	 * @param symbol		Move symbol
-	 * @return				Success output (to be printed for player)
-	 */
-	boolean makeMove(String moveString, int p) 
+	boolean makeMove(String moveString, int playerNumber) 
 	{
 		try 
 		{
@@ -128,11 +103,11 @@ class Connect
 			} 
 			else 
 			{
-				for (int row = 0; row < Config.ROW_N; row++) 
+				for (int row = 0; row < Config.NO_OF_ROWS; row++) 
 				{
 					if (board.isIndexEmpty(row, move)) 
 					{
-						board.set(row, move, p);
+						board.set(row, move, playerNumber);
 						return true;
 					}
 				}
@@ -153,40 +128,39 @@ class Connect
 	}
 	
 	/**
-	 * Checks if either player has won
-	 * @return	Symbol of winner, "" if none
+	 * @return	0 or 1 for winning players, 3 if no winner
 	 */
 	private int findWinner() 
 	{
-		g:
-		for (int g = -1; g < 3; g++) 
+		gradientLoop:
+		for (int gradient = -1; gradient < 3; gradient++) 
 		{
-			r:
-			for (int r = 0; r < Config.ROW_N; r++)
+			rowLoop:
+			for (int row = 0; row < Config.NO_OF_ROWS; row++)
 			{
-				c:
-				for (int c = 0; c < Config.COL_N; c++) 
+				columnLoop:
+				for (int col = 0; col < Config.NO_OF_COLS; col++) 
 				{
 					int[] counter = {0, 0};
 					try 
 					{
-						int row;
-						int col;
+						int newRow;
+						int newCol;
 						for (int i = 0; i < 4; i++) 
 						{
-							if (g == 2) 
+							if (gradient == 2) 
 							{
-								row = r + i;
-								col = c;
+								newRow = row + i;
+								newCol = col;
 							}
 							else 
 							{
-								row = r + (i * g);
-								col = c + i;
+								newRow = row + (i * gradient);
+								newCol = col + i;
 							}
-							for (int p = 0; p < Config.PLAYER_N; p++) 
+							for (int p = 0; p < Config.NO_OF_PLAYERS; p++) 
 							{
-								if (board.isIndexEqual(row, col, p)) 
+								if (board.isIndexEqual(newRow, newCol, p)) 
 								{
 									counter[p]++;
 								}
@@ -199,16 +173,16 @@ class Connect
 								return p;
 							}
 						}
-						continue c;
+						continue columnLoop;
 					} catch(IndexOutOfBoundsException e) 
 					{
-						if (g == 2) 
+						if (gradient == 2) 
 						{
-							break g;
+							break gradientLoop;
 						} 
 						else 
 						{
-							continue r;
+							continue rowLoop;
 						}
 					}
 				}
@@ -217,16 +191,12 @@ class Connect
 		return 3;
 	}
 	
-	/**
-	 * Prints moves arraylist if AI loses a game, for analysis purposes
-	 * @param winner	Winning symbol
-	 */
 	private void printMoves(int winner)
 	{
-		for (int p = 0; p < Config.PLAYER_N; p++) {
+		for (int p = 0; p < Config.NO_OF_PLAYERS; p++) {
 			if (winner != p && Config.IS_AI[p])
 			{
-				System.out.println(moves);
+				System.out.println(movesPlayed);
 				break;
 			}
 		}
