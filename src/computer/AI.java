@@ -177,7 +177,9 @@ public class AI extends Player {
 			}
 		}
 		
-		System.out.println(Arrays.toString(priorityPerColumn));
+		if (Config.DEBUG) {
+			System.out.println(Arrays.toString(priorityPerColumn));
+		}
 		Random r = new Random();
 		return Integer.toString(returnMove.get(r.nextInt(returnMove.size())));
 	}
