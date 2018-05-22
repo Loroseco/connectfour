@@ -57,7 +57,6 @@ public class Board {
 	}
 	
 	void print() {
-		debugBoard();
 		for (int row = Config.NO_OF_ROWS - 1; row > -1; row--) {
 			printBorder();	
 			for (int rowSection = 0; rowSection < 4; rowSection++) {
