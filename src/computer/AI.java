@@ -106,7 +106,7 @@ public class AI extends Player {
 				String s = pattern.substring(1, 2);
 				if ((board.isIndexEqual(row + i, col, playerNumber) && s.equals(AIConfig.PLAYER.get()) && i < n) 
 						|| (board.isIndexEqual(row + i, col, opponentNumber) && s.equals(AIConfig.OPPONENT.get()) && i < n)
-						|| (board.isIndexEmpty(row + 1, col) && i >= n)) {
+						|| (board.isIndexEmpty(row + i, col) && i >= n)) {
 					counter++;
 				} else {
 					break;
