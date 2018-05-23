@@ -1,12 +1,9 @@
 package computer;
  
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import server.Board;
 import server.Config;
-
-import java.math.BigInteger;
 
 /**
  * Player class to be used by AI
@@ -15,26 +12,19 @@ import java.math.BigInteger;
  */
 public class AI extends Player {
 	
-	private final Board board;
 	private final int opponentNumber;
-	
-	private final BigInteger[] priorityPerMatrixRow;
-	private BigInteger[] priorityPerColumn;
+	private final Board board;
+	private int[][] priorityPerColumn;
 	
 	public AI(int playerNumber, Board board) {
 		super(playerNumber);
 		this.board = board;
-		
-		opponentNumber = playerNumber == 0 ? 1 : 0;
-		priorityPerMatrixRow = new BigInteger[AIConfig.PRIORITY_MATRIX.length];
-		for (int p = 0; p < AIConfig.PRIORITY_MATRIX.length; p++) {
-			priorityPerMatrixRow[p] = new BigInteger("10").pow(AIConfig.PRIORITY_MATRIX.length - (p + 1));
-		}
+		this.opponentNumber = playerNumber == 0 ? 1 : 0;
 	}
 	
 	@Override
 	public String getMove() {
-		setPriorityPerColumn("0");
+		resetPriorityPerColumn();
 		
 		for (int boardRow = 0; boardRow < Config.NO_OF_ROWS; boardRow++) {
 			for (int boardCol = 0; boardCol < Config.NO_OF_COLS; boardCol++) {
@@ -42,13 +32,15 @@ public class AI extends Player {
 			}
 		}
 		
-		return calculateReturnMove();
+		return getCalculatedReturnMove();
 	}
 	
-	private void setPriorityPerColumn(String value) {
-		priorityPerColumn = new BigInteger[Config.NO_OF_COLS];
-		for (int col = 0; col < Config.NO_OF_COLS; col++) {
-			priorityPerColumn[col] =  new BigInteger(value);
+	private void resetPriorityPerColumn() {
+		priorityPerColumn = new int[Config.NO_OF_COLS][AIConfig.PRIORITY_MATRIX.length];
+		for (int col = 0; col < priorityPerColumn.length; col++) {
+			for (int priority = 0; priority < priorityPerColumn[col].length; priority++) {
+				priorityPerColumn[col][priority] = 0;
+			}
 		}
 	}
 	
@@ -72,7 +64,7 @@ public class AI extends Player {
 
 	private void addPriorityFromVerticalPattern(int row, int col, String pattern, int matrixRow) {	
 		if (doesVerticalPatternStartAtIndex(row, col, pattern)) {
-			priorityPerColumn[col] = priorityPerColumn[col].add(priorityPerMatrixRow[matrixRow]);
+			priorityPerColumn[col][matrixRow]++;
 		}
 	}
 	
@@ -90,10 +82,10 @@ public class AI extends Player {
 		String letter = pattern.substring(letterNumber, letterNumber + 1);
 		if (letter.equals(AIConfig.VALID.get())
 				|| (letter.equals(AIConfig.TWO.get()) && pattern.contains(AIConfig.PLAYER.get()))) {
-			priorityPerColumn[col + letterNumber] = priorityPerColumn[col + letterNumber].add(priorityPerMatrixRow[matrixRow]);
+			priorityPerColumn[col + letterNumber][matrixRow]++;
 		} else if (letter.equals(AIConfig.ONE.get())
 				|| (letter.equals(AIConfig.TWO.get()) && pattern.contains(AIConfig.OPPONENT.get()))) {
-			priorityPerColumn[col + letterNumber] = priorityPerColumn[col + letterNumber].add(priorityPerMatrixRow[matrixRow].multiply(new BigInteger("-1")));
+			priorityPerColumn[col + letterNumber][matrixRow]--;
 		}
 	}
 
@@ -160,26 +152,44 @@ public class AI extends Player {
 		}
 	}
 	
-	private String calculateReturnMove() {
-		BigInteger returnPriority = null;
+	private String getCalculatedReturnMove() {	
+		ArrayList<Integer> returnMoves = getHighestPriorityMoves();
+		debug();
+		int chosenMove = getClosestMoveToMiddleColumn(returnMoves);
+		return Integer.toString(chosenMove);
+	}
+
+	private ArrayList<Integer> getHighestPriorityMoves() {
+		int[] returnPriority = null;
 		ArrayList<Integer> returnMoves = new ArrayList<>();
+		
 		for (int col = 0; col < priorityPerColumn.length; col++) {
 			if (board.isColumnFull(col)) {
 				continue;
-			} 
-			else if (returnPriority == null || priorityPerColumn[col].compareTo(returnPriority) >= 0) {
-				if (returnPriority == null || priorityPerColumn[col].compareTo(returnPriority) == 1) {
+			} else if (returnPriority == null || isEqualOrHigherPriority(priorityPerColumn[col], returnPriority)) {
+				if (returnPriority == null || !priorityPerColumn[col].equals(returnPriority)) {
 					returnPriority = priorityPerColumn[col];
 					returnMoves = new ArrayList<>();
 				}
 				returnMoves.add(col);
 			}
+			
 		}
-		
+		return returnMoves;
+	}
+	
+	private void debug() {
 		if (Config.DEBUG) {
-			System.out.println(Arrays.toString(priorityPerColumn));
+			for (int[] col : priorityPerColumn) {
+				for (int priority : col) {
+					System.out.print(priority);
+				}
+				System.out.println();
+			}
 		}
-
+	}
+	
+	private int getClosestMoveToMiddleColumn(ArrayList<Integer> returnMoves) {
 		int chosenMove = -1;
 		int chosenVariance = Config.NO_OF_COLS;
 		int middleColumn = Config.NO_OF_COLS / 2;
@@ -191,7 +201,18 @@ public class AI extends Player {
 				chosenVariance = variance;
 			}
 		}
-		
-		return Integer.toString(chosenMove);
+		return chosenMove;
+	}
+	
+	private boolean isEqualOrHigherPriority(int[] firstArray, int[] secondArray) {
+		for (int priority = 0; priority < firstArray.length; priority++) {
+			if (firstArray[priority] > secondArray[priority]) {
+				return true;
+			}
+			if (firstArray[priority] < secondArray[priority]) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
