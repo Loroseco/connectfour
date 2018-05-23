@@ -13,7 +13,7 @@ public final class Config {
 	public static final int NO_OF_ROWS = 7;
 	public static final int NO_OF_COLS = 10;
 	public static final boolean[] IS_AI = {false, true};
-	public static final String EMPTY_SPACE = " ";
+	public static final int EMPTY_SPACE = 2;
 	
 	public static final boolean DEBUG = false;
 }
