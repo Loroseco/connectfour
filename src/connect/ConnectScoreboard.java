@@ -1,4 +1,4 @@
-package server;
+package connect;
 
 /**
  * Class used to track number of games each player has won

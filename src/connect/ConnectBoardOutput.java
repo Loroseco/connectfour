@@ -1,4 +1,4 @@
-package server;
+package connect;
 /**
  * Object that stores srtings to be outputted when the board is constructed.	<br>
  * 																				<br>

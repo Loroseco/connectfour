@@ -2,8 +2,7 @@ package framework;
 
 import java.util.Scanner;
 
-import server.ConnectConfig;
-import server.ConnectGame;
+import connect.*;
 
 /**
  * Class containing main function

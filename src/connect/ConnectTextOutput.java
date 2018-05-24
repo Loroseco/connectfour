@@ -1,4 +1,4 @@
-package server;
+package connect;
 
 /**
  * enum that stores all console output for the game.
