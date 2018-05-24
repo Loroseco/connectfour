@@ -10,20 +10,7 @@ import framework.Config;
  */
 public final class ConnectConfig extends Config {
 	
-	public static final boolean USE_DEFAULT_CONFIG = true;
-	
 	public static final int NO_OF_ROWS = 7;
 	public static final int NO_OF_COLS = 10;
 	public static final int EMPTY_SPACE = 2;
-	
-	public static void configure() {
-		if (!USE_DEFAULT_CONFIG) {
-			IS_AI[0] = false;
-			IS_AI[1] = true;
-			SYMBOLS[0] = "X";
-			SYMBOLS[1] = "O";
-			NO_OF_PLAYERS = SYMBOLS.length;
-			DEBUG = false;
-		}
-	}
 }

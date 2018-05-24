@@ -2,19 +2,21 @@ package connect;
 
 import java.util.Arrays;
 
+import framework.Board;
+
 /**
  * Board object. Handles Board reading and editing.
  * @author Loroseco
  *
  */
-public class ConnectBoard {
+public class ConnectBoard extends Board {
 	private int[][] board;
 	
-	ConnectBoard() {
+	public ConnectBoard() {
 		this.board = new int[ConnectConfig.NO_OF_ROWS][ConnectConfig.NO_OF_COLS];
 	}
 	
-	void set(int row, int col, int playerNumber) {
+	public void set(int row, int col, int playerNumber) {
 		board[row][col] = playerNumber;
 	}
 	
@@ -22,6 +24,10 @@ public class ConnectBoard {
 		return !isIndexEmpty(ConnectConfig.NO_OF_ROWS - 1, col);
 	}
 	
+	@Override
+	public boolean isGameOver() {
+		return isBoardFull();
+	}
 	public boolean isBoardFull() {
 		for (int col = 0; col < ConnectConfig.NO_OF_COLS; col++) 
 		{
@@ -56,7 +62,8 @@ public class ConnectBoard {
 		System.out.println(Arrays.deepToString(board));
 	}
 	
-	void print() {
+	@Override
+	public void print() {
 		if (ConnectConfig.DEBUG) {
 			debugBoard();
 		}
