@@ -14,8 +14,19 @@ class Main {
 	public static void main(String[] args) {
 		User.openScanner();
 		
-		playConnect();
-		
+//		System.out.print("CHOOSE A GAME: ");
+//		while (true) {
+//			String choice = User.getUserInput();
+//			if (choice.equals("0")) {
+//				playConnect();
+//				break;
+//			} else if (choice.equals("1")) {
+		playTicTacToe();
+//				break;
+//			} else {
+//				TextOutput.ERROR_INVALID.println();
+//			}
+//		}
 		User.closeScanner();
 	}
 	
