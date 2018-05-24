@@ -1,11 +1,13 @@
-package connect;
+package framework;
+
+import connect.ConnectConfig;
 
 /**
  * enum that stores all console output for the game.
  * @author Loroseco
  *
  */
-public enum ConnectTextOutput {
+public enum TextOutput {
 	HUMAN_MOVE("PLAYER %s - ENTER MOVE: "),
 	SCORE("PLAYER %s SCORE: %s"),
 	MOVE_MADE("MOVE MADE: PLAYER %s, COLUMN %s."),
@@ -19,7 +21,7 @@ public enum ConnectTextOutput {
 	
 	private String message;
 	
-	ConnectTextOutput(String message) {
+	TextOutput(String message) {
 		this.message = message;
 	}
 	
