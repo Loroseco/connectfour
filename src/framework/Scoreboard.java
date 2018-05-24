@@ -17,7 +17,7 @@ public class Scoreboard {
 	
 	public void printAllScores() {
 		for (int playerNumber = 0; playerNumber < Config.NO_OF_PLAYERS; playerNumber++) {
-			System.out.println(score); //TODO: Proper output handling here
+			TextOutput.SCORE.println(playerNumber, Integer.toString(score[playerNumber]));
 		}	
 	}
 	

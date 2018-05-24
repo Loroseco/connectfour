@@ -1,5 +1,6 @@
 package connect;
 
+import framework.TextOutput;
 import framework.Game;
 import framework.Player;
 import framework.Scoreboard;
@@ -21,7 +22,7 @@ public class ConnectGame extends Game {
 		try {
 			int move = Integer.parseInt(moveString);
 			if (((ConnectBoard) board).isColumnFull(move)) {
-				ConnectTextOutput.ERROR_COLUMN_FULL.println();
+				TextOutput.ERROR_COLUMN_FULL.println();
 				return false;
 			} else {
 				for (int row = 0; row < ConnectConfig.NO_OF_ROWS; row++) {
@@ -32,13 +33,13 @@ public class ConnectGame extends Game {
 				}
 			}
 		} catch (NumberFormatException e) {
-			ConnectTextOutput.ERROR_INVALID.println();
+			TextOutput.ERROR_INVALID.println();
 			return false;
 		} catch (IndexOutOfBoundsException e) {
-			ConnectTextOutput.ERROR_OUT_OF_BOUNDS.println();
+			TextOutput.ERROR_OUT_OF_BOUNDS.println();
 			return false;
 		}
-		ConnectTextOutput.ERROR_UNKNOWN.println();
+		TextOutput.ERROR_UNKNOWN.println();
 		return false;
 	}
 	
@@ -51,32 +52,14 @@ public class ConnectGame extends Game {
 		for (int gradient = -1; gradient < 3; gradient++) {
 			rowLoop:
 			for (int row = 0; row < ConnectConfig.NO_OF_ROWS; row++) {
-				columnLoop:
 				for (int col = 0; col < ConnectConfig.NO_OF_COLS; col++) {
-					int[] counter = {0, 0};
 					try {
-						int newRow;
-						int newCol;
-						for (int i = 0; i < 4; i++) {
-							if (gradient == 2) {
-								newRow = row + i;
-								newCol = col;
-							} else {
-								newRow = row + (i * gradient);
-								newCol = col + i;
-							}
-							for (int p = 0; p < ConnectConfig.NO_OF_PLAYERS; p++) {
-								if (((ConnectBoard) board).isIndexEqual(newRow, newCol, p)) {
-									counter[p]++;
-								}
-							}
+						int winner = checkForWinningPattern(row, col, gradient);
+						if (winner == 3) {
+							continue;
+						} else {
+							return winner;
 						}
-						for (int p = 0; p < counter.length; p++) {
-							if (counter[p] == 4) {
-								return p;
-							}
-						}
-						continue columnLoop;
 					} catch(IndexOutOfBoundsException e) {
 						if (gradient == 2) {
 							break gradientLoop;
@@ -85,6 +68,32 @@ public class ConnectGame extends Game {
 						}
 					}
 				}
+			}
+		}
+		return 3;
+	}
+	
+	private int checkForWinningPattern(int startRow, int startCol, int gradient) {
+		int[] counter = {0, 0};
+		int row;
+		int col;
+		for (int i = 0; i < 4; i++) {
+			if (gradient == 2) {
+				row = startRow + i;
+				col = startCol;
+			} else {
+				row = startRow + (i * gradient);
+				col = startCol + i;
+			}
+			for (int playerNumber = 0; playerNumber < ConnectConfig.NO_OF_PLAYERS; playerNumber++) {
+				if (((ConnectBoard) board).isIndexEqual(row, col, playerNumber)) {
+					counter[playerNumber]++;
+				}
+			}
+		}
+		for (int playerNumber = 0; playerNumber < counter.length; playerNumber++) {
+			if (counter[playerNumber] == 4) {
+				return playerNumber;
 			}
 		}
 		return 3;

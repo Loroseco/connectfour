@@ -27,7 +27,8 @@ public abstract class Game
 			playGame();
 			
 			while(true) {
-				String input = "no"; //TODO: Sort out user input here
+				TextOutput.PLAY_AGAIN.print();
+				String input = User.getUserInput();
 				if (input.equals("y") || input.equals("yes")) {
 					break;
 				}
@@ -35,7 +36,7 @@ public abstract class Game
 					playing = false;
 					break;
 				}
-				System.out.println("INVALID CHOICE");//TODO: Invalid error message here
+				TextOutput.ERROR_INVALID.println();
 			}
 		}
 	}
@@ -72,7 +73,7 @@ public abstract class Game
 						board.print();
 					}
 					movesPlayed.add(Integer.parseInt(move));
-					System.out.println("MOVE MADE: PLAYER " + Config.SYMBOLS[playerNumber] + " , " + move); //TODO: INPUT HERE
+					TextOutput.MOVE_MADE.println(playerNumber, move);
 					break;
 				}
 			}
