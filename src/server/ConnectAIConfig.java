@@ -1,4 +1,4 @@
-package computer;
+package server;
 
 /**
  * enum that manages the AI's priority matrix, as well as defining the representation of each type of move in the matrix.

@@ -1,9 +1,8 @@
-package client;
+package server;
 
 import java.util.Scanner;
 
 import framework.Player;
-import server.ConnectTextOutput;
 
 /**
  * Human class to be used by player, handles player input from console

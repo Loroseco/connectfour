@@ -3,8 +3,6 @@ package server;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import client.ConnectHuman;
-import computer.ConnectAI;
 import framework.Player;
 
 /**

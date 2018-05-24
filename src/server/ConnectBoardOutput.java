@@ -19,7 +19,7 @@ package server;
  * @author Loroseco
  * 
  */
-public final class BoardOutput {
+public final class ConnectBoardOutput {
 	/**
 	 * Text used to draw board
 	 */

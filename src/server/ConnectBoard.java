@@ -73,11 +73,11 @@ public class ConnectBoard {
 		printSide(row, rowSection);
 		for (int col = 0; col < ConnectConfig.NO_OF_COLS; col++) {
 			if (board[row][col] == 0) {
-				BoardOutput.print(rowSection);
+				ConnectBoardOutput.print(rowSection);
 			} else if (board[row][col] == 1) {
-				BoardOutput.print(rowSection + 4);
+				ConnectBoardOutput.print(rowSection + 4);
 			} else {
-				BoardOutput.print(8);
+				ConnectBoardOutput.print(8);
 			}
 		}
 		System.out.println();
@@ -91,15 +91,15 @@ public class ConnectBoard {
 				rowString = " " + rowString;
 			}
 		}
-		BoardOutput.print(10, rowString);
+		ConnectBoardOutput.print(10, rowString);
 	}
 	
 	private void printBorder() {
-		BoardOutput.printPartial(9);
+		ConnectBoardOutput.printPartial(9);
 		for (int col = 0; col < ConnectConfig.NO_OF_COLS - 1; col++) {
-			BoardOutput.print(9);
+			ConnectBoardOutput.print(9);
 		}
-		BoardOutput.println(9);
+		ConnectBoardOutput.println(9);
 	}
 
 	private void printBottomKey() {
@@ -110,7 +110,7 @@ public class ConnectBoard {
 			if (col < 10) {
 				colString = " " + colString;
 			}
-			BoardOutput.print(11, colString);
+			ConnectBoardOutput.print(11, colString);
 		}
 		System.out.println("\n");
 	}

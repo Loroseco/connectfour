@@ -1,10 +1,8 @@
-package computer;
+package server;
  
 import java.util.ArrayList;
 
 import framework.Player;
-import server.ConnectBoard;
-import server.ConnectConfig;
 
 /**
  * Player class to be used by AI

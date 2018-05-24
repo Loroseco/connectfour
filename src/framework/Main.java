@@ -2,6 +2,7 @@ package framework;
 
 import java.util.Scanner;
 
+import server.ConnectConfig;
 import server.ConnectGame;
 
 /**
@@ -9,12 +10,18 @@ import server.ConnectGame;
  * @author Loroseco
  *
  */
-class ConnectMain {
+class Main {
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
-		ConnectGame game = new ConnectGame(scan);
 		
-		game.play();
+		playConnect(scan);
+		
 		scan.close();
+	}
+	
+	public static void playConnect(Scanner scan) {
+		ConnectConfig.configure();
+		ConnectGame game = new ConnectGame(scan);
+		game.play();
 	}
 }
