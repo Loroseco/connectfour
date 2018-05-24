@@ -2,26 +2,26 @@ package client;
 
 import java.util.Scanner;
 
-import computer.Player;
-import server.TextOutput;
+import framework.Player;
+import server.ConnectTextOutput;
 
 /**
  * Human class to be used by player, handles player input from console
  * @author Loroseco
  *
  */
-public class Human extends Player {
+public class ConnectHuman extends Player {
 	
 	private final Scanner scan;
 	
-	public Human(int playerNumber, Scanner scan) {
+	public ConnectHuman(int playerNumber, Scanner scan) {
 		super(playerNumber);
 		this.scan = scan;
 	}
 	
 	@Override
 	public String getMove() {
-		TextOutput.HUMAN_MOVE.print(playerNumber);
+		ConnectTextOutput.HUMAN_MOVE.print(playerNumber);
 		return scan.next();
 	}
 }

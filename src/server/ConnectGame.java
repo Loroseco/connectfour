@@ -3,32 +3,32 @@ package server;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import client.Human;
-import computer.AI;
-import computer.Player;
+import client.ConnectHuman;
+import computer.ConnectAI;
+import framework.Player;
 
 /**
  * Class used to handle functions specific to Connect 4 (win condition, and the game loop itself).
  * @author Loroseco
  *
  */
-public class Connect {
+public class ConnectGame {
 	private final Scanner scan;
-	private final Board board;
+	private final ConnectBoard board;
 	private final ArrayList<Integer> movesPlayed;
-	private final Scoreboard score;
+	private final ConnectScoreboard score;
 	private final Player[] player;
 	
-	public Connect(Scanner scan) {
+	public ConnectGame(Scanner scan) {
 		this.scan = scan;
-		this.board = new Board();
+		this.board = new ConnectBoard();
 		this.movesPlayed = new ArrayList<>();
-		this.score = new Scoreboard();
+		this.score = new ConnectScoreboard();
 		this.player = new Player[2];
 		
 		for (int playerNumber = 0; playerNumber < 2; playerNumber++) {
-			player[playerNumber] = Config.IS_AI[playerNumber] ? new AI(playerNumber, board)
-							    							  : new Human(playerNumber, scan);
+			player[playerNumber] = ConnectConfig.IS_AI[playerNumber] ? new ConnectAI(playerNumber, board)
+							    							  : new ConnectHuman(playerNumber, scan);
 		}
 	}
 	
@@ -38,7 +38,7 @@ public class Connect {
 			playGame();
 			
 			while (true) {
-				TextOutput.PLAY_AGAIN.print();
+				ConnectTextOutput.PLAY_AGAIN.print();
 				String input = scan.next().toLowerCase();
 				if (input.equals("y") || input.equals("yes")) {
 					break;
@@ -47,7 +47,7 @@ public class Connect {
 					playing = false;
 					break;
 				}
-				TextOutput.ERROR_INVALID.println();
+				ConnectTextOutput.ERROR_INVALID.println();
 			}
 		}
 	}
@@ -63,11 +63,11 @@ public class Connect {
 		}
 		
 		if (winner == 0 || winner == 1) {
-			TextOutput.WINNER.println(winner);
+			ConnectTextOutput.WINNER.println(winner);
 			score.addScore(winner);
 			printMoves(winner);
 		} else {
-			TextOutput.DRAW.println();
+			ConnectTextOutput.DRAW.println();
 		}
 		score.printAllScores();
 	}
@@ -80,17 +80,17 @@ public class Connect {
 			else {
 				String move = player[playerNumber].getMove();
 				if (makeMove(move, playerNumber)) {
-					if (Config.IS_AI[playerNumber]) {
+					if (ConnectConfig.IS_AI[playerNumber]) {
 						board.print();
 					}
 					movesPlayed.add(Integer.parseInt(move));
-					TextOutput.MOVE_MADE.println(playerNumber, move);
+					ConnectTextOutput.MOVE_MADE.println(playerNumber, move);
 					break;
 				}
 			}
 		}
 		int winner = findWinner();
-		if (winner == playerNumber && !Config.IS_AI[playerNumber]) {
+		if (winner == playerNumber && !ConnectConfig.IS_AI[playerNumber]) {
 			board.print();
 		}
 		return winner;
@@ -101,10 +101,10 @@ public class Connect {
 		try {
 			int move = Integer.parseInt(moveString);
 			if (board.isColumnFull(move)) {
-				TextOutput.ERROR_COLUMN_FULL.println();
+				ConnectTextOutput.ERROR_COLUMN_FULL.println();
 				return false;
 			} else {
-				for (int row = 0; row < Config.NO_OF_ROWS; row++) {
+				for (int row = 0; row < ConnectConfig.NO_OF_ROWS; row++) {
 					if (board.isIndexEmpty(row, move)) {
 						board.set(row, move, playerNumber);
 						return true;
@@ -112,13 +112,13 @@ public class Connect {
 				}
 			}
 		} catch (NumberFormatException e) {
-			TextOutput.ERROR_INVALID.println();
+			ConnectTextOutput.ERROR_INVALID.println();
 			return false;
 		} catch (IndexOutOfBoundsException e) {
-			TextOutput.ERROR_OUT_OF_BOUNDS.println();
+			ConnectTextOutput.ERROR_OUT_OF_BOUNDS.println();
 			return false;
 		}
-		TextOutput.ERROR_UNKNOWN.println();
+		ConnectTextOutput.ERROR_UNKNOWN.println();
 		return false;
 	}
 	
@@ -129,9 +129,9 @@ public class Connect {
 		gradientLoop:
 		for (int gradient = -1; gradient < 3; gradient++) {
 			rowLoop:
-			for (int row = 0; row < Config.NO_OF_ROWS; row++) {
+			for (int row = 0; row < ConnectConfig.NO_OF_ROWS; row++) {
 				columnLoop:
-				for (int col = 0; col < Config.NO_OF_COLS; col++) {
+				for (int col = 0; col < ConnectConfig.NO_OF_COLS; col++) {
 					int[] counter = {0, 0};
 					try {
 						int newRow;
@@ -144,7 +144,7 @@ public class Connect {
 								newRow = row + (i * gradient);
 								newCol = col + i;
 							}
-							for (int p = 0; p < Config.NO_OF_PLAYERS; p++) {
+							for (int p = 0; p < ConnectConfig.NO_OF_PLAYERS; p++) {
 								if (board.isIndexEqual(newRow, newCol, p)) {
 									counter[p]++;
 								}
@@ -170,8 +170,8 @@ public class Connect {
 	}
 	
 	private void printMoves(int winner) {
-		for (int p = 0; p < Config.NO_OF_PLAYERS; p++) {
-			if (winner != p && Config.IS_AI[p]) {
+		for (int p = 0; p < ConnectConfig.NO_OF_PLAYERS; p++) {
+			if (winner != p && ConnectConfig.IS_AI[p]) {
 				System.out.println(movesPlayed);
 				break;
 			}

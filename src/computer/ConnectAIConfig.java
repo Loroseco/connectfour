@@ -5,7 +5,7 @@ package computer;
  * @author Loroseco
  *
  */
-public enum AIConfig {	
+public enum ConnectAIConfig {	
 	/** AI Symbol in PRIORITY_MATRIX */
 	PLAYER("P"),
 	/** Opponent Symbol in PRIORITY_MATRIX */
@@ -57,7 +57,7 @@ public enum AIConfig {
 	
 	private String symbol;
 	
-	AIConfig(String symbol) {
+	ConnectAIConfig(String symbol) {
 		this.symbol = symbol;
 	}
 	

@@ -5,7 +5,7 @@ package server;
  * @author Loroseco
  *
  */
-public enum TextOutput {
+public enum ConnectTextOutput {
 	HUMAN_MOVE("PLAYER %s - ENTER MOVE: "),
 	SCORE("PLAYER %s SCORE: %s"),
 	MOVE_MADE("MOVE MADE: PLAYER %s, COLUMN %s."),
@@ -19,7 +19,7 @@ public enum TextOutput {
 	
 	private String message;
 	
-	TextOutput(String message) {
+	ConnectTextOutput(String message) {
 		this.message = message;
 	}
 	
@@ -28,11 +28,11 @@ public enum TextOutput {
 	}
 	
 	public void print(int p) {
-		System.out.print(String.format(message, Config.SYMBOLS[p]));
+		System.out.print(String.format(message, ConnectConfig.SYMBOLS[p]));
 	}
 	
 	public void print(int p, String col) {
-		System.out.print(String.format(message, Config.SYMBOLS[p], col));
+		System.out.print(String.format(message, ConnectConfig.SYMBOLS[p], col));
 	}
 	
 	public void println() {
@@ -40,10 +40,10 @@ public enum TextOutput {
 	}
 	
 	public void println(int p) {
-		System.out.println(String.format(message, Config.SYMBOLS[p]));
+		System.out.println(String.format(message, ConnectConfig.SYMBOLS[p]));
 	}
 	
 	public void println(int p, String col) {
-		System.out.println(String.format(message, Config.SYMBOLS[p], col));
+		System.out.println(String.format(message, ConnectConfig.SYMBOLS[p], col));
 	}
 }

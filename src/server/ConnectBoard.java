@@ -7,11 +7,11 @@ import java.util.Arrays;
  * @author Loroseco
  *
  */
-public class Board {
+public class ConnectBoard {
 	private int[][] board;
 	
-	Board() {
-		this.board = new int[Config.NO_OF_ROWS][Config.NO_OF_COLS];
+	ConnectBoard() {
+		this.board = new int[ConnectConfig.NO_OF_ROWS][ConnectConfig.NO_OF_COLS];
 	}
 	
 	void set(int row, int col, int playerNumber) {
@@ -19,11 +19,11 @@ public class Board {
 	}
 	
 	public boolean isColumnFull(int col) {
-		return !isIndexEmpty(Config.NO_OF_ROWS - 1, col);
+		return !isIndexEmpty(ConnectConfig.NO_OF_ROWS - 1, col);
 	}
 	
 	public boolean isBoardFull() {
-		for (int col = 0; col < Config.NO_OF_COLS; col++) 
+		for (int col = 0; col < ConnectConfig.NO_OF_COLS; col++) 
 		{
 			if (!isColumnFull(col)) {
 				return false; 
@@ -33,7 +33,7 @@ public class Board {
 	}
 	
 	public boolean isIndexEmpty(int row, int col) {
-		return board[row][col] == Config.EMPTY_SPACE;
+		return board[row][col] == ConnectConfig.EMPTY_SPACE;
 	}
 	
 	public boolean isIndexEqual(int row, int col, int playerNumber) {
@@ -41,9 +41,9 @@ public class Board {
 	}
 
 	public void createBoard() {
-		for (int row = 0;  row < Config.NO_OF_ROWS; row++) {
-			for (int col = 0; col < Config.NO_OF_COLS; col++) {
-				board[row][col] = Config.EMPTY_SPACE;
+		for (int row = 0;  row < ConnectConfig.NO_OF_ROWS; row++) {
+			for (int col = 0; col < ConnectConfig.NO_OF_COLS; col++) {
+				board[row][col] = ConnectConfig.EMPTY_SPACE;
 			}
 		}
 		print();
@@ -57,10 +57,10 @@ public class Board {
 	}
 	
 	void print() {
-		if (Config.DEBUG) {
+		if (ConnectConfig.DEBUG) {
 			debugBoard();
 		}
-		for (int row = Config.NO_OF_ROWS - 1; row > -1; row--) {
+		for (int row = ConnectConfig.NO_OF_ROWS - 1; row > -1; row--) {
 			printBorder();	
 			for (int rowSection = 0; rowSection < 4; rowSection++) {
 				printRow(row, rowSection);
@@ -71,7 +71,7 @@ public class Board {
 	
 	private void printRow(int row, int rowSection) {
 		printSide(row, rowSection);
-		for (int col = 0; col < Config.NO_OF_COLS; col++) {
+		for (int col = 0; col < ConnectConfig.NO_OF_COLS; col++) {
 			if (board[row][col] == 0) {
 				BoardOutput.print(rowSection);
 			} else if (board[row][col] == 1) {
@@ -96,7 +96,7 @@ public class Board {
 	
 	private void printBorder() {
 		BoardOutput.printPartial(9);
-		for (int col = 0; col < Config.NO_OF_COLS - 1; col++) {
+		for (int col = 0; col < ConnectConfig.NO_OF_COLS - 1; col++) {
 			BoardOutput.print(9);
 		}
 		BoardOutput.println(9);
@@ -105,7 +105,7 @@ public class Board {
 	private void printBottomKey() {
 		printBorder();
 		printSide(0, 0);
-		for (int col = 0; col < Config.NO_OF_COLS; col++) {
+		for (int col = 0; col < ConnectConfig.NO_OF_COLS; col++) {
 			String colString = Integer.toString(col);
 			if (col < 10) {
 				colString = " " + colString;

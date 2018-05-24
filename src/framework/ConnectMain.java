@@ -2,17 +2,17 @@ package framework;
 
 import java.util.Scanner;
 
-import server.Connect;
+import server.ConnectGame;
 
 /**
  * Class containing main function
  * @author Loroseco
  *
  */
-class Main {
+class ConnectMain {
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
-		Connect game = new Connect(scan);
+		ConnectGame game = new ConnectGame(scan);
 		
 		game.play();
 		scan.close();

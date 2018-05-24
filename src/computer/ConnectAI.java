@@ -2,21 +2,22 @@ package computer;
  
 import java.util.ArrayList;
 
-import server.Board;
-import server.Config;
+import framework.Player;
+import server.ConnectBoard;
+import server.ConnectConfig;
 
 /**
  * Player class to be used by AI
  * @author Loroseco
  *
  */
-public class AI extends Player {
+public class ConnectAI extends Player {
 	
 	private final int opponentNumber;
-	private final Board board;
+	private final ConnectBoard board;
 	private int[][] priorityPerColumn;
 	
-	public AI(int playerNumber, Board board) {
+	public ConnectAI(int playerNumber, ConnectBoard board) {
 		super(playerNumber);
 		this.board = board;
 		this.opponentNumber = playerNumber == 0 ? 1 : 0;
@@ -26,8 +27,8 @@ public class AI extends Player {
 	public String getMove() {
 		resetPriorityPerColumn();
 		
-		for (int boardRow = 0; boardRow < Config.NO_OF_ROWS; boardRow++) {
-			for (int boardCol = 0; boardCol < Config.NO_OF_COLS; boardCol++) {
+		for (int boardRow = 0; boardRow < ConnectConfig.NO_OF_ROWS; boardRow++) {
+			for (int boardCol = 0; boardCol < ConnectConfig.NO_OF_COLS; boardCol++) {
 				addPriorityFromBoardIndex(boardRow, boardCol);
 			}
 		}
@@ -36,7 +37,7 @@ public class AI extends Player {
 	}
 	
 	private void resetPriorityPerColumn() {
-		priorityPerColumn = new int[Config.NO_OF_COLS][AIConfig.PRIORITY_MATRIX.length];
+		priorityPerColumn = new int[ConnectConfig.NO_OF_COLS][ConnectAIConfig.PRIORITY_MATRIX.length];
 		for (int col = 0; col < priorityPerColumn.length; col++) {
 			for (int priority = 0; priority < priorityPerColumn[col].length; priority++) {
 				priorityPerColumn[col][priority] = 0;
@@ -45,9 +46,9 @@ public class AI extends Player {
 	}
 	
 	private void addPriorityFromBoardIndex(int boardRow, int boardCol) {
-		for (int matrixRow = 0; matrixRow < AIConfig.PRIORITY_MATRIX.length; matrixRow++) {
-			for (int matrixCol = 0; matrixCol < AIConfig.PRIORITY_MATRIX[matrixRow].length; matrixCol++) {
-				String pattern = AIConfig.PRIORITY_MATRIX[matrixRow][matrixCol];
+		for (int matrixRow = 0; matrixRow < ConnectAIConfig.PRIORITY_MATRIX.length; matrixRow++) {
+			for (int matrixCol = 0; matrixCol < ConnectAIConfig.PRIORITY_MATRIX[matrixRow].length; matrixCol++) {
+				String pattern = ConnectAIConfig.PRIORITY_MATRIX[matrixRow][matrixCol];
 
 				if (isPatternVertical(pattern)) {
 					addPriorityFromVerticalPattern(boardRow, boardCol, pattern, matrixRow);
@@ -59,7 +60,7 @@ public class AI extends Player {
 	}
 	
 	private boolean isPatternVertical(String pattern) {
-		return pattern.startsWith(AIConfig.VERTICAL.get());
+		return pattern.startsWith(ConnectAIConfig.VERTICAL.get());
 	}
 
 	private void addPriorityFromVerticalPattern(int row, int col, String pattern, int matrixRow) {	
@@ -80,11 +81,11 @@ public class AI extends Player {
 	
 	private void addPriorityFromPatternLetter(int col, int matrixRow, String pattern, int letterNumber) {
 		String letter = pattern.substring(letterNumber, letterNumber + 1);
-		if (letter.equals(AIConfig.VALID.get())
-				|| (letter.equals(AIConfig.TWO.get()) && pattern.contains(AIConfig.PLAYER.get()))) {
+		if (letter.equals(ConnectAIConfig.VALID.get())
+				|| (letter.equals(ConnectAIConfig.TWO.get()) && pattern.contains(ConnectAIConfig.PLAYER.get()))) {
 			priorityPerColumn[col + letterNumber][matrixRow]++;
-		} else if (letter.equals(AIConfig.ONE.get())
-				|| (letter.equals(AIConfig.TWO.get()) && pattern.contains(AIConfig.OPPONENT.get()))) {
+		} else if (letter.equals(ConnectAIConfig.ONE.get())
+				|| (letter.equals(ConnectAIConfig.TWO.get()) && pattern.contains(ConnectAIConfig.OPPONENT.get()))) {
 			priorityPerColumn[col + letterNumber][matrixRow]--;
 		}
 	}
@@ -96,8 +97,8 @@ public class AI extends Player {
 			int n = Integer.parseInt(pattern.substring(2, 3));
 			for (int i = 0; i < 4; i++) {
 				String s = pattern.substring(1, 2);
-				if ((board.isIndexEqual(row + i, col, playerNumber) && s.equals(AIConfig.PLAYER.get()) && i < n) 
-						|| (board.isIndexEqual(row + i, col, opponentNumber) && s.equals(AIConfig.OPPONENT.get()) && i < n)
+				if ((board.isIndexEqual(row + i, col, playerNumber) && s.equals(ConnectAIConfig.PLAYER.get()) && i < n) 
+						|| (board.isIndexEqual(row + i, col, opponentNumber) && s.equals(ConnectAIConfig.OPPONENT.get()) && i < n)
 						|| (board.isIndexEmpty(row + i, col) && i >= n)) {
 					counter++;
 				} else {
@@ -120,14 +121,14 @@ public class AI extends Player {
 				int patternCol = col + letterNumber;
 				
 				String letter = pattern.substring(letterNumber, letterNumber + 1);
-				if ((board.isIndexEqual(patternRow, patternCol, playerNumber) && letter.equals(AIConfig.PLAYER.get()))
-						|| (board.isIndexEqual(patternRow, patternCol, opponentNumber) && letter.equals(AIConfig.OPPONENT.get()))) {
+				if ((board.isIndexEqual(patternRow, patternCol, playerNumber) && letter.equals(ConnectAIConfig.PLAYER.get()))
+						|| (board.isIndexEqual(patternRow, patternCol, opponentNumber) && letter.equals(ConnectAIConfig.OPPONENT.get()))) {
 					counter++;
 				} else if (board.isIndexEmpty(patternRow, patternCol) 
-						&& (letter.equals(AIConfig.ONE.get()) || letter.equals(AIConfig.TWO.get()) 
-								|| letter.equals(AIConfig.NO_SCORE.get()) || letter.equals(AIConfig.VALID.get()))) {
+						&& (letter.equals(ConnectAIConfig.ONE.get()) || letter.equals(ConnectAIConfig.TWO.get()) 
+								|| letter.equals(ConnectAIConfig.NO_SCORE.get()) || letter.equals(ConnectAIConfig.VALID.get()))) {
 					int depth = findDepth(patternRow, patternCol, 0);
-					if ((depth == 0 && (letter.equals(AIConfig.VALID.get()) || letter.equals(AIConfig.NO_SCORE.get())))
+					if ((depth == 0 && (letter.equals(ConnectAIConfig.VALID.get()) || letter.equals(ConnectAIConfig.NO_SCORE.get())))
 							|| Integer.toString(depth).equals(letter)) {
 						counter++;
 					}
@@ -179,7 +180,7 @@ public class AI extends Player {
 	}
 	
 	private void debug() {
-		if (Config.DEBUG) {
+		if (ConnectConfig.DEBUG) {
 			for (int[] col : priorityPerColumn) {
 				for (int priority : col) {
 					System.out.print(priority);
@@ -191,8 +192,8 @@ public class AI extends Player {
 	
 	private int getClosestMoveToMiddleColumn(ArrayList<Integer> returnMoves) {
 		int chosenMove = -1;
-		int chosenVariance = Config.NO_OF_COLS;
-		int middleColumn = Config.NO_OF_COLS / 2;
+		int chosenVariance = ConnectConfig.NO_OF_COLS;
+		int middleColumn = ConnectConfig.NO_OF_COLS / 2;
 		
 		for (int move : returnMoves) {
 			int variance = Math.abs(move - middleColumn);

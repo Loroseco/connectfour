@@ -1,4 +1,4 @@
-package computer;
+package framework;
 
 /**
  * Parent player class
