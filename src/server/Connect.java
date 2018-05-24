@@ -12,13 +12,15 @@ import computer.Player;
  * @author Loroseco
  *
  */
-class Connect {
+public class Connect {
+	private final Scanner scan;
 	private final Board board;
 	private final ArrayList<Integer> movesPlayed;
 	private final Scoreboard score;
 	private final Player[] player;
 	
-	Connect(Scanner scan) {
+	public Connect(Scanner scan) {
+		this.scan = scan;
 		this.board = new Board();
 		this.movesPlayed = new ArrayList<>();
 		this.score = new Scoreboard();
@@ -30,7 +32,26 @@ class Connect {
 		}
 	}
 	
-	void play() {
+	public void play() {
+		boolean playing = true;
+		while (playing) {
+			playGame();
+			
+			while (true) {
+				TextOutput.PLAY_AGAIN.print();
+				String input = scan.next().toLowerCase();
+				if (input.equals("y") || input.equals("yes")) {
+					break;
+				}
+				if (input.equals("n") || input.equals("no")) {
+					playing = false;
+					break;
+				}
+				TextOutput.ERROR_INVALID.println();
+			}
+		}
+	}
+	void playGame() {
 		board.createBoard();
 		movesPlayed.clear();
 
