@@ -2,6 +2,7 @@ package connect;
 
 import framework.Game;
 import framework.Player;
+import framework.Scoreboard;
 
 /**
  * Class used to handle functions specific to Connect 4 (win condition, and the game loop itself).
@@ -10,7 +11,7 @@ import framework.Player;
  */
 public class ConnectGame extends Game {
 	
-	public ConnectGame(ConnectBoard board, ConnectScoreboard score, Player[] player) {
+	public ConnectGame(ConnectBoard board, Scoreboard score, Player[] player) {
 		super(board, score, player);
 	}
 	
