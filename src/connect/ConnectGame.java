@@ -1,6 +1,7 @@
 package connect;
 
 import framework.TextOutput;
+import framework.Config;
 import framework.Game;
 import framework.Player;
 import framework.Scoreboard;
@@ -25,7 +26,7 @@ public class ConnectGame extends Game {
 				TextOutput.ERROR_COLUMN_FULL.println();
 				return false;
 			} else {
-				for (int row = 0; row < ConnectConfig.NO_OF_ROWS; row++) {
+				for (int row = 0; row < Config.ROW_NUMBER_CONNECT; row++) {
 					if (((ConnectBoard) board).isIndexEmpty(row, move)) {
 						((ConnectBoard) board).set(row, move, playerNumber);
 						return true;
@@ -51,8 +52,8 @@ public class ConnectGame extends Game {
 		gradientLoop:
 		for (int gradient = -1; gradient < 3; gradient++) {
 			rowLoop:
-			for (int row = 0; row < ConnectConfig.NO_OF_ROWS; row++) {
-				for (int col = 0; col < ConnectConfig.NO_OF_COLS; col++) {
+			for (int row = 0; row < Config.ROW_NUMBER_CONNECT; row++) {
+				for (int col = 0; col < Config.COL_NUMBER_CONNECT; col++) {
 					try {
 						int winner = checkForWinningPattern(row, col, gradient);
 						if (winner == 3) {
@@ -85,7 +86,7 @@ public class ConnectGame extends Game {
 				row = startRow + (i * gradient);
 				col = startCol + i;
 			}
-			for (int playerNumber = 0; playerNumber < ConnectConfig.NO_OF_PLAYERS; playerNumber++) {
+			for (int playerNumber = 0; playerNumber < Config.NO_OF_PLAYERS; playerNumber++) {
 				if (((ConnectBoard) board).isIndexEqual(row, col, playerNumber)) {
 					counter[playerNumber]++;
 				}

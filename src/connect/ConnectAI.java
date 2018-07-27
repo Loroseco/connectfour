@@ -2,6 +2,7 @@ package connect;
  
 import java.util.ArrayList;
 
+import framework.Config;
 import framework.Player;
 
 /**
@@ -25,8 +26,8 @@ public class ConnectAI extends Player {
 	public String getMove() {
 		resetPriorityPerColumn();
 		
-		for (int boardRow = 0; boardRow < ConnectConfig.NO_OF_ROWS; boardRow++) {
-			for (int boardCol = 0; boardCol < ConnectConfig.NO_OF_COLS; boardCol++) {
+		for (int boardRow = 0; boardRow < Config.ROW_NUMBER_CONNECT; boardRow++) {
+			for (int boardCol = 0; boardCol < Config.COL_NUMBER_CONNECT; boardCol++) {
 				addPriorityFromBoardIndex(boardRow, boardCol);
 			}
 		}
@@ -35,7 +36,7 @@ public class ConnectAI extends Player {
 	}
 	
 	private void resetPriorityPerColumn() {
-		priorityPerColumn = new int[ConnectConfig.NO_OF_COLS][ConnectAIConfig.PRIORITY_MATRIX.length];
+		priorityPerColumn = new int[Config.COL_NUMBER_CONNECT][ConnectAIConfig.PRIORITY_MATRIX.length];
 		for (int col = 0; col < priorityPerColumn.length; col++) {
 			for (int priority = 0; priority < priorityPerColumn[col].length; priority++) {
 				priorityPerColumn[col][priority] = 0;
@@ -178,7 +179,7 @@ public class ConnectAI extends Player {
 	}
 	
 	private void debug() {
-		if (ConnectConfig.DEBUG) {
+		if (Config.DEBUG) {
 			for (int[] col : priorityPerColumn) {
 				for (int priority : col) {
 					System.out.print(priority);
@@ -190,8 +191,8 @@ public class ConnectAI extends Player {
 	
 	private int getClosestMoveToMiddleColumn(ArrayList<Integer> returnMoves) {
 		int chosenMove = -1;
-		int chosenVariance = ConnectConfig.NO_OF_COLS;
-		int middleColumn = ConnectConfig.NO_OF_COLS / 2;
+		int chosenVariance = Config.COL_NUMBER_CONNECT;
+		int middleColumn = Config.COL_NUMBER_CONNECT / 2;
 		
 		for (int move : returnMoves) {
 			int variance = Math.abs(move - middleColumn);

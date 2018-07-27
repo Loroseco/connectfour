@@ -28,7 +28,7 @@ public abstract class Game
 			
 			while(true) {
 				TextOutput.PLAY_AGAIN.print();
-				String input = User.getUserInput();
+				String input = User.getInput();
 				if (input.equals("y") || input.equals("yes")) {
 					break;
 				}
@@ -64,7 +64,7 @@ public abstract class Game
 	
 	public int playTurn(int playerNumber) {
 		while (true) {
-			if (board.isGameOver()) {
+			if (board.isBoardFull()) {
 				return 2;
 			} else {
 				String move = player[playerNumber].getMove();

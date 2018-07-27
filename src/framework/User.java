@@ -10,7 +10,7 @@ public final class User {
 		scan = new Scanner(System.in);
 	}
 	
-	public static String getUserInput() {
+	public static String getInput() {
 		return scan.next();
 	}
 	

@@ -1,7 +1,5 @@
 package framework;
 
-import connect.ConnectConfig;
-
 /**
  * enum that stores all console output for the game.
  * @author Loroseco
@@ -15,7 +13,7 @@ public enum TextOutput {
 	WINNER("WINNER: PLAYER %s."),
 	DRAW("GAME OVER: DRAW."),
 	ERROR_COLUMN_FULL("INVALID MOVE: COLUMN IS FULL."),
-	ERROR_INDEX_FULL("INVALID ERROR: SPACE IS FULL."),
+	ERROR_INDEX_FULL("INVALID MOVE: SPACE IS FULL."),
 	ERROR_INVALID("INVALID CHOICE."),
 	ERROR_OUT_OF_BOUNDS("NUMBER OUT OF BOUNDS."),
 	ERROR_UNKNOWN("UNKNOWN ERROR. PLEASE TRY AGAIN.");
@@ -31,11 +29,11 @@ public enum TextOutput {
 	}
 	
 	public void print(int p) {
-		System.out.print(String.format(message, ConnectConfig.SYMBOLS[p]));
+		System.out.print(String.format(message, Config.SYMBOLS[p]));
 	}
 	
 	public void print(int p, String col) {
-		System.out.print(String.format(message, ConnectConfig.SYMBOLS[p], col));
+		System.out.print(String.format(message, Config.SYMBOLS[p], col));
 	}
 	
 	public void println() {
@@ -43,10 +41,10 @@ public enum TextOutput {
 	}
 	
 	public void println(int p) {
-		System.out.println(String.format(message, ConnectConfig.SYMBOLS[p]));
+		System.out.println(String.format(message, Config.SYMBOLS[p]));
 	}
 	
 	public void println(int p, String col) {
-		System.out.println(String.format(message, ConnectConfig.SYMBOLS[p], col));
+		System.out.println(String.format(message, Config.SYMBOLS[p], col));
 	}
 }

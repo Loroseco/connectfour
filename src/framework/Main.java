@@ -1,9 +1,13 @@
 package framework;
 
-import connect.*;
+import connect.ConnectAI;
+import connect.ConnectBoard;
+import connect.ConnectGame;
+import connect.ConnectHuman;
 import tictactoe.TicAI;
 import tictactoe.TicBoard;
 import tictactoe.TicGame;
+import tictactoe.TicHuman;
 
 /**
  * Class containing main function
@@ -31,12 +35,12 @@ class Main {
 	}
 	
 	public static void playConnect() {
-		ConnectBoard board = new ConnectBoard();
+		ConnectBoard board = new ConnectBoard(Config.ROW_NUMBER_CONNECT, Config.COL_NUMBER_CONNECT);
 		Scoreboard score = new Scoreboard();
 		Player[] player = new Player[Config.NO_OF_PLAYERS];
 		for (int playerNumber = 0; playerNumber < 2; playerNumber++) {
 			player[playerNumber] = Config.IS_AI[playerNumber] ? new ConnectAI(playerNumber, (ConnectBoard) board)
-							    							  : new Human(playerNumber);
+							    							  : new ConnectHuman(playerNumber);
 		}
 
 		ConnectGame game = new ConnectGame(board, score, player);
@@ -44,12 +48,12 @@ class Main {
 	}
 	
 	public static void playTicTacToe() {
-		TicBoard board = new TicBoard();
+		TicBoard board = new TicBoard(Config.ROW_NUMBER_TIC, Config.COL_NUMBER_TIC);
 		Scoreboard score = new Scoreboard();
 		Player[] player = new Player[Config.NO_OF_PLAYERS];
 		for (int playerNumber = 0; playerNumber < 2; playerNumber++) {
 			player[playerNumber] = Config.IS_AI[playerNumber] ? new TicAI(playerNumber, (TicBoard) board)
-															  : new Human(playerNumber);
+															  : new TicHuman(playerNumber);
 		}
 		
 		TicGame game = new TicGame(board, score, player);
